@@ -1,2 +1,21 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<section>
+    <div class="container mt-5">
+        <div class="row">
+            {{#each products}}
+            <div class="col-md-3">
+                <div class="card mb-5" style="width: 18rem;">
+                    <img src="{{this.image}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.name}}</h5>
+                        <p class="card-text">{{this.description}}</p>
+                    </div>
+                    <div class="card-header bg-light text-center">
+                        <h5>RS.{{this.price}}</h5>
+                        <a href="#" class="btn btn-primary rounded-pill font-weight-bold">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>

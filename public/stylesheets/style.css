@@ -1,8 +1,17 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.col-md-3{
+    display: flex;
 }
 
-a {
-  color: #00B7FF;
+.card {
+    width: 100% !important;
+}
+
+.card-body {
+    height: 200px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+ 
+.card-img-top {
+    height: 175px;
 }

@@ -1,8 +1,8 @@
 <section>
-    <div class="container mt-5">
+    <div class="container mt-3">
         <div class="row">
             {{#each products}}
-            <div class="col-md-3">
+            <div class="col-md-3 col-6">
                 <div class="card mb-5" style="width: 18rem;">
                     <img src="{{this.image}}" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -10,8 +10,8 @@
                         <p class="card-text">{{this.description}}</p>
                     </div>
                     <div class="card-header bg-light text-center">
-                        <h5>RS.{{this.price}}</h5>
-                        <a href="#" class="btn btn-primary rounded-pill font-weight-bold">Add to Cart</a>
+                        <h5>From ₹{{this.price}}</h5>
+                        <a href="#" class="btn btn-primary rounded-pill">Add to Cart</a>
                     </div>
                 </div>
             </div>

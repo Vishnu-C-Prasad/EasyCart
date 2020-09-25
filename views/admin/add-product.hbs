@@ -19,7 +19,13 @@
             </div>
             <div class="form-group">
                 <label for="">Image</label>
-                <input type="file" name="image" class="form-control-file" id="">
+                <br>
+                <label class="btn btn-light border border-secondary" for="my-file-selector">
+                    <input id="my-file-selector" type="file" name="image" style="display:none"
+                        onchange="$('#upload-file-info').show().html(this.files[0].name)">
+                    Choose Image
+                </label>
+                <span class='bg-light text-dark rounded-pill ml-2 p-2 pl-4 pr-4' id="upload-file-info"></span>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

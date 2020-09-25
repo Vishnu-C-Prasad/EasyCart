@@ -1,17 +1,50 @@
-.col-md-3{
-    display: flex;
+body::-webkit-scrollbar {
+  width: 0px;
+  background-color: #f5f5f5;
+}
+
+.col-md-3 {
+  display: flex;
 }
 
 .card {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 .card-body {
-    height: 200px;
-    overflow-x: hidden;
-    overflow-y: hidden;
+  height: 125px !important;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
- 
+
+.card-body::-webkit-scrollbar-track {
+  background-color: #f8f9fa;
+}
+
+.card-body::-webkit-scrollbar {
+  width: 5px;
+  background-color: #f5f5f5;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+  background-color: #031321;
+}
+
 .card-img-top {
-    height: 175px;
+  width: 100% !important;
+  height: auto !important;
+}
+
+.d-block {
+  width: 100% !important;
+  height: 40vh !important;
+}
+
+.table-img {
+  height: auto !important;
+  width: 5em !important;
+}
+
+#upload-file-info {
+  display: none;
 }

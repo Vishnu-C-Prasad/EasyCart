@@ -4,34 +4,56 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
+  let carouselItems = [
+    {
+      class: 'active',
+      image: 'https://image01.realme.net/general/20200923/1600857864731.jpg',
+      name: 'Realme Narzo 20A',
+      description: 'The Rush of Performance',
+      price: '8,499'
+    },
+    {
+      image: 'https://image01.realme.net/general/20200923/1600859455584.jpg',
+      name: 'Realme Narzo 20 PRO',
+      description: 'The Speed of Dart',
+      price: '14,999'
+    },
+    {
+      image: 'https://image01.realme.net/general/20200923/1600859632742.jpg',
+      name: 'Realme Narzo 20',
+      description: 'The Surge of Power',
+      price: '10,499'
+    },
+  ];
+
   let products = [
     {
       name: 'Realme 6',
-      description: '(Comet Blue, 64 GB) (6 GB RAM) · 6 GB RAM | 64 GB ROM | Expandable Upto 256 GB · 16.51 cm (6.5 inch) Full HD+ Display · 64MP + 8MP + 2MP + 2MP Camera',
-      price: 14999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTTsmS-gVvfB7fLTUQNZHEIuDITTzDGU2Dx7A&usqp=CAU'
+      description: '64MP Pro Camera. Pro Display.',
+      price: '14,999',
+      image: 'https://image01.realme.net/general/20200302/1583145086637.jpg'
     },
     {
-      name: 'Redmi Note 9 Pro',
-      description: 'Interstellar Black, 6GB RAM, 128GB Storage, 48MP Quad Camera & Full HD+ Display. - Latest 8nm Snapdragon 720G & Gorilla Glass 5 Protection',
-      price: 16999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQI0PyQ5_bGyWHVJ-9FmmBXTF1hlAhd2n9i3A&usqp=CAU'
+      name: 'Realme X50 Pro ',
+      description: 'Speed of the Future',
+      price: '39,999',
+      image: 'https://image01.realme.net/general/20200225/1582612881938.jpg'
     },
     {
-      name: 'OnePlus Nord',
-      description: 'The same Fast and Smooth experience that uniquely OnePlus. Flagship camera, Nightscape, Dual selfie cameras, OxygenOS, 90 Hz AMOLED display',
-      price: 27999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQyPaylve3bWPLQWvbV7PVIGWaAoyBimxuPMg&usqp=CAU'
+      name: 'Realme X2 Pro',
+      description: 'Indias Fastest Charging Flagship',
+      price: '29,999',
+      image: 'https://image01.realme.net/general/20191112/1573530955589.jpg'
     },
     {
-      name: 'OnePlus 8 Pro',
-      description: 'With over 280 software optimizations, the OnePlus 8 Pro runs seamlessly at 120 Hz, so swiping and scrolling feels smooth and effortless',
-      price: 54999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQERFtfECmu4c0EAzHqwtwHSvWGh72qougu4A&usqp=CAU'
+      name: 'Realme X3',
+      description: 'Super Zoom. Super Speed.',
+      price: '24,999',
+      image: 'https://image01.realme.net/general/20200610/1591795633564.jpg'
     }
   ];
 
-  res.render('index', { products, admin:false });
+  res.render('index', { title: 'EasyCart | Home', products, carouselItems, admin:false });
 });
 
 module.exports = router;

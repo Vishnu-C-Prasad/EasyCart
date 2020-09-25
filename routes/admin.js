@@ -5,46 +5,45 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
 
   let products = [
-   {
+    {
       name: 'Realme 6',
       category: 'Mobile',
-      description: '(Comet Blue, 64 GB) (6 GB RAM) · 6 GB RAM | 64 GB ROM | Expandable Upto 256 GB · 16.51 cm (6.5 inch) Full HD+ Display · 64MP + 8MP + 2MP + 2MP Camera',
-      price: 14999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTTsmS-gVvfB7fLTUQNZHEIuDITTzDGU2Dx7A&usqp=CAU'
+      description: '64MP Pro Camera. Pro Display.',
+      price: '14,999',
+      image: 'https://image01.realme.net/general/20200302/1583145086637.jpg'
     },
     {
-      name: 'Redmi Note 9 Pro',
+      name: 'Realme X50 Pro ',
       category: 'Mobile',
-      description: 'Interstellar Black, 6GB RAM, 128GB Storage, 48MP Quad Camera & Full HD+ Display. - Latest 8nm Snapdragon 720G & Gorilla Glass 5 Protection',
-      price: 16999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQI0PyQ5_bGyWHVJ-9FmmBXTF1hlAhd2n9i3A&usqp=CAU'
+      description: 'Speed of the Future',
+      price: '39,999',
+      image: 'https://image01.realme.net/general/20200225/1582612881938.jpg'
     },
     {
-      name: 'OnePlus Nord',
+      name: 'Realme X2 Pro',
       category: 'Mobile',
-      description: 'The same Fast and Smooth experience that uniquely OnePlus. Flagship camera, Nightscape, Dual selfie cameras, OxygenOS, 90 Hz AMOLED display',
-      price: 27999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQyPaylve3bWPLQWvbV7PVIGWaAoyBimxuPMg&usqp=CAU'
+      description: 'Indias Fastest Charging Flagship',
+      price: '29,999',
+      image: 'https://image01.realme.net/general/20191112/1573530955589.jpg'
     },
     {
-      name: 'OnePlus 8 Pro',
+      name: 'Realme X3',
       category: 'Mobile',
-      description: 'With over 280 software optimizations, the OnePlus 8 Pro runs seamlessly at 120 Hz, so swiping and scrolling feels smooth and effortless',
-      price: 54999,
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQERFtfECmu4c0EAzHqwtwHSvWGh72qougu4A&usqp=CAU'
+      description: 'Super Zoom. Super Speed.',
+      price: '24,999',
+      image: 'https://image01.realme.net/general/20200610/1591795633564.jpg'
     }
   ];
 
-  res.render('admin/admin-products', { admin: true, products });
+  res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, products });
 });
 
-router.get('/add-product', function(req, res) {
-  res.render('admin/add-product');
+router.get('/add-product', function (req, res) {
+  res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true });
 });
 
-router.post('/add-product', function(req, res) {
-  console.log(req.body);
-  console.log(req.files.image);
+router.post('/add-product', function (req, res) {
+  console.log(req.body, req.files.image);
 });
 
 module.exports = router;

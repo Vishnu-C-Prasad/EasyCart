@@ -1,0 +1,29 @@
+<section>
+    <div class="container mt-3">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {{#each carouselItems}}
+                <div class="carousel-item {{this.class}}">
+                    <img class="d-block w-100" src="{{this.image}}" alt="First slide">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-left">{{this.name}}</h5>
+                        <p class="text-left m-0">{{this.description}}</p>
+                        <h6 class="text-left pt-2 pb-2">From ₹{{this.price}}</h6>
+                        <a href="" class="btn btn-outline-light float-left">Learn More.</a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded rounded-pill p-3 pt-5 pb-5"
+                    aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded rounded-pill p-3 pt-5 pb-5"
+                    aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</section>

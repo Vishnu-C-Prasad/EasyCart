@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var productHelpers = require('../helpers/product-helpers');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -43,7 +44,20 @@ router.get('/add-product', function (req, res) {
 });
 
 router.post('/add-product', function (req, res) {
-  console.log(req.body, req.files.image);
+  productHelpers.addProduct(req.body, (id) => {
+    let image = req.files.image;
+
+    image.mv(`./public/images/product-images/${id}.jpg`, (err, done) => {
+      if (err){
+        console.log(err);
+      } else {
+        console.log(done);
+        
+        res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true });
+      }
+    });
+
+  });
 });
 
 module.exports = router;

@@ -6,9 +6,9 @@ const state = {
 
 module.exports.connect = function (done) {
     const url = 'mongodb://localhost:27017';
-    const dbName = 'EasyCart';
+    const dbName = 'EasyCartParellel';
 
-    mongoClient.connect(url, (err, data) => {
+    mongoClient.connect(url, { useUnifiedTopology: true }, (err, data) => {
         if (err) {
             return done(err);
         }

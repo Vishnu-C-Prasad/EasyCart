@@ -45,6 +45,6 @@ body::-webkit-scrollbar {
   width: 5em !important;
 }
 
-#upload-file-info {
+.upload-file-info, #upload-file-info {
   display: none;
 }

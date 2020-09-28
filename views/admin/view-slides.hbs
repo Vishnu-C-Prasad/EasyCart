@@ -1,0 +1,33 @@
+<section>
+    <div class="container">
+        <div class="container">
+            <div class="row mt-3">
+                <a href="/admin/delete-slide" class="btn btn-primary ml-auto">Delete Slide</a>
+                <a href="/admin/update-slide" class="btn btn-primary ml-2">Update Slide</a>
+                <a href="/admin/add-slide" class="btn btn-primary ml-2">Add to Slide</a>
+            </div>
+        </div>
+        <table class="table table-responsive-sm mt-3">
+            <thead class="bg-primary text-light">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each carouselItems}}
+                <tr>
+                    <td scope="row">{{this._id}}</td>
+                    <td>{{this.name}}</td>
+                    <td><img src="/images/slide-images/{{this._id}}.jpg" alt="" class="img-fluid img-thumbnail table-img"></td>
+                    <td>{{this.description}}</td>
+                    <td>Rs.{{this.price}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,52 @@
+<section>
+    <div class="container mt-3">
+        <table class="table table-responsive-sm mt-3">
+            <thead class="bg-primary text-light">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            {{#each carouselItems}}
+            <form action="/admin/delete-slide" method="POST" enctype="multipart/form-data">
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" value="{{this._id}}" name="_id" readonly class="form-control">
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" value="{{this.name}}" name="name" readonly class="form-control">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <img src="/images/slide-images/{{this._id}}.jpg" alt=""
+                                    class="img-fluid img-thumbnail table-img">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" value="{{this.description}}" name="description" readonly
+                                    class="form-control">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" value="{{this.price}}" name="price" readonly class="form-control">
+                            </div>
+                        </td>
+                        <td class="pr-0">
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </form>
+            {{/each}}
+        </table>
+    </div>
+</section>

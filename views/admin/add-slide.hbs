@@ -1,13 +1,12 @@
 <section>
     <div class="container mt-5">
-        <form action="/admin/add-product" method="POST" enctype="multipart/form-data">
+        <form action="/admin/add-slide" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="text" value="{{class}}" hidden readonly  name="class" class="form-control">
+            </div>
             <div class="form-group">
                 <label for="">Name</label>
                 <input type="text" name="name" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="">Category</label>
-                <input type="text" name="category" class="form-control">
             </div>
             <div class="form-group">
                 <label for="">Description</label>

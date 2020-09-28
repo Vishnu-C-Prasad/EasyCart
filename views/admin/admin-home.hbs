@@ -1,0 +1,73 @@
+<section>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3" style="width: 100%;">
+                    <div class="container">
+                        <div class="container">
+                            <div class="row mt-3">
+                                <h5 class="text-primary mb-0 mt-2">Manage Slides</h5>
+                                <a href="/admin/delete-slide" class="btn btn-primary ml-auto">Delete Slide</a>
+                                <a href="/admin/update-slide" class="btn btn-primary ml-2">Update Slide</a>
+                                <a href="/admin/add-slide" class="btn btn-primary ml-2">Add to Slide</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        {{>user-carousel}}
+                    </div>
+                    <div class="text-center m-3">
+                        <a href="/admin/all-slides" class="btn btn-primary" style="width: 100%;">View All Slides</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3" style="width: 100%;">
+                    <div class="container">
+                        <div class="container">
+                            <div class="row mt-3">
+                                <h5 class="text-primary mb-0 mt-2">Manage Products</h5>
+                                <a href="/admin/add-product" class="btn btn-primary ml-auto">Add Product</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="container">
+                            <table class="table table-responsive-sm mt-3">
+                                <thead class="bg-light text-dark">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#with product}}
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td><img src="/images/product-images/{{_id}}.jpg" alt=""
+                                                class="img-fluid img-thumbnail table-img">
+                                            <h6>{{name}}</h6>
+                                        </td>
+                                        <td>{{category}}</td>
+                                        <td>{{description}}</td>
+                                        <td>Rs.{{price}}</td>
+                                    </tr>
+                                    {{/with}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-center m-3">
+                        <a href="/admin/all-products" class="btn btn-primary" style="width: 100%;">View All Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

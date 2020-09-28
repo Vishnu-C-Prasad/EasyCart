@@ -1,42 +1,94 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
 var productHelpers = require('../helpers/product-helpers');
+var slideHelpers = require('../helpers/slide-helpers');
 
-/* GET users listing. */
 router.get('/', function (req, res, next) {
+  productHelpers.getProduct().then((products) => {
+    slideHelpers.getSlide().then((carouselItems) => {
+      const product = products[0];
+      res.render('admin/admin-home', { title: 'AdminPanel | Home', admin: true, carouselItems, product });
+    })
+  });
+});
 
-  let products = [
-    {
-      name: 'Realme 6',
-      category: 'Mobile',
-      description: '64MP Pro Camera. Pro Display.',
-      price: '14,999',
-      image: 'https://image01.realme.net/general/20200302/1583145086637.jpg'
-    },
-    {
-      name: 'Realme X50 Pro ',
-      category: 'Mobile',
-      description: 'Speed of the Future',
-      price: '39,999',
-      image: 'https://image01.realme.net/general/20200225/1582612881938.jpg'
-    },
-    {
-      name: 'Realme X2 Pro',
-      category: 'Mobile',
-      description: 'Indias Fastest Charging Flagship',
-      price: '29,999',
-      image: 'https://image01.realme.net/general/20191112/1573530955589.jpg'
-    },
-    {
-      name: 'Realme X3',
-      category: 'Mobile',
-      description: 'Super Zoom. Super Speed.',
-      price: '24,999',
-      image: 'https://image01.realme.net/general/20200610/1591795633564.jpg'
+router.get('/all-slides', function(req, res) {
+  slideHelpers.getSlide().then((carouselItems) => {
+    res.render('admin/view-slides', { title: 'AdminPanel | All Slides', admin: true, carouselItems});
+  });
+});
+
+router.get('/update-slide', function (req, res, next) {
+  slideHelpers.getSlide().then((carouselItems) => {
+    res.render('admin/update-slide', { title: 'AdminPanel | Update Slide', admin: true, carouselItems });
+  })
+});
+
+router.post('/update-slide', function (req, res) {
+  fs.unlinkSync(`./public/images/slide-images/${req.body._id}.jpg`);
+  let image = req.files.image;
+
+  image.mv(`./public/images/slide-images/${req.body._id}.jpg`, (err, done) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(done);
     }
-  ];
+  });
 
-  res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, products });
+  slideHelpers.updateSlide(req.body).then(() => {
+    slideHelpers.getSlide().then((carouselItems) => {
+      res.render('admin/update-slide', { title: 'AdminPanel | Update Slide', admin: true, carouselItems });
+    });
+  });
+});
+
+router.get('/add-slide', function (req, res, next) {
+  slideHelpers.getSlide().then((carouselItems) => {
+    if (!carouselItems[0]) {
+      res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, class: 'active' });
+    } else {
+      res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, class: '' });
+    }
+  })
+});
+
+router.post('/add-slide', function (req, res) {
+  slideHelpers.addSlide(req.body, (id) => {
+    let image = req.files.image;
+
+    image.mv(`./public/images/slide-images/${id}.jpg`, (err, done) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(done);
+
+        res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true });
+      }
+    });
+  });
+});
+
+router.get('/delete-slide', function (req, res, next) {
+  slideHelpers.getSlide().then((carouselItems) => {
+    res.render('admin/delete-slide', { title: 'AdminPanel | Delete Slide', admin: true, carouselItems });
+  });
+});
+
+router.post('/delete-slide', function (req, res) {
+  fs.unlinkSync(`./public/images/slide-images/${req.body._id}.jpg`);
+  slideHelpers.deleteSlide(req.body._id).then(() => {
+    slideHelpers.getSlide().then((carouselItems) => {
+      res.render('admin/delete-slide', { title: 'AdminPanel | Delete Slide', admin: true, carouselItems });
+    });
+  });
+});
+
+router.get('/all-products', function (req, res, next) {
+  productHelpers.getProduct().then((products) => {
+    res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, products });
+  });
 });
 
 router.get('/add-product', function (req, res) {
@@ -48,11 +100,11 @@ router.post('/add-product', function (req, res) {
     let image = req.files.image;
 
     image.mv(`./public/images/product-images/${id}.jpg`, (err, done) => {
-      if (err){
+      if (err) {
         console.log(err);
       } else {
         console.log(done);
-        
+
         res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true });
       }
     });

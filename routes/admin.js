@@ -13,9 +13,9 @@ router.get('/', function (req, res, next) {
   });
 });
 
-router.get('/all-slides', function(req, res) {
+router.get('/all-slides', function (req, res) {
   slideHelpers.getSlide().then((carouselItems) => {
-    res.render('admin/view-slides', { title: 'AdminPanel | All Slides', admin: true, carouselItems});
+    res.render('admin/view-slides', { title: 'AdminPanel | All Slides', admin: true, carouselItems });
   });
 });
 
@@ -26,16 +26,19 @@ router.get('/update-slide', function (req, res, next) {
 });
 
 router.post('/update-slide', function (req, res) {
-  fs.unlinkSync(`./public/images/slide-images/${req.body._id}.jpg`);
-  let image = req.files.image;
+  if (req.files) {
+    fs.unlinkSync(`./public/images/slide-images/${req.body._id}.jpg`);
 
-  image.mv(`./public/images/slide-images/${req.body._id}.jpg`, (err, done) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(done);
-    }
-  });
+    let image = req.files.image;
+
+    image.mv(`./public/images/slide-images/${req.body._id}.jpg`, (err, done) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(done);
+      }
+    });
+  }
 
   slideHelpers.updateSlide(req.body).then(() => {
     slideHelpers.getSlide().then((carouselItems) => {

@@ -10,7 +10,6 @@
         <table class="table table-responsive-sm mt-3">
             <thead class="bg-primary text-light">
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">Image</th>
                     <th scope="col">Description</th>
@@ -20,7 +19,6 @@
             <tbody>
                 {{#each carouselItems}}
                 <tr>
-                    <td scope="row">{{this._id}}</td>
                     <td>{{this.name}}</td>
                     <td><img src="/images/slide-images/{{this._id}}.jpg" alt="" class="img-fluid img-thumbnail table-img"></td>
                     <td>{{this.description}}</td>

@@ -8,7 +8,9 @@ var fileUpload = require('express-fileupload');
 var db = require('./config/connection');
 
 var userRouter = require('./routes/user');
-var adminRouter = require('./routes/admin');
+var adminRouter = require('./routes/admin/admin');
+var adminProductRouter = require('./routes/admin/admin-products');
+var adminSlideRouter = require('./routes/admin/admin-slide');
 
 var app = express();
 
@@ -31,6 +33,8 @@ db.connect((err) => {
 });
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
+app.use('/admin', adminProductRouter);
+app.use('/admin', adminSlideRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

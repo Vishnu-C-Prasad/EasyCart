@@ -3,7 +3,7 @@
         <table class="table table-responsive-sm mt-3">
             <thead class="bg-primary text-light">
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col" hidden>ID</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">Image</th>
                     <th scope="col">Description</th>
@@ -15,7 +15,7 @@
             <form action="/admin/update-slide" method="POST" enctype="multipart/form-data">
                 <tbody>
                     <tr>
-                        <td>
+                        <td hidden>
                             <input type="text" value="{{this._id}}" readonly name="_id" class="form-control">
                         </td>
                         <td>

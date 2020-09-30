@@ -1,6 +1,6 @@
 var express = require('express');
-const productHelpers = require('../helpers/product-helpers');
-const slideHelpers = require('../helpers/slide-helpers');
+const productHelpers = require('../../helpers/product-helpers');
+const slideHelpers = require('../../helpers/slide-helpers');
 var router = express.Router();
 
 /* GET home page. */

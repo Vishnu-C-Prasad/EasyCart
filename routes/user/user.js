@@ -7,7 +7,6 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {
   let user = req.session.user;
-  console.log(user);
 
   productHelpers.getProduct().then((products) => {
     slideHelpers.getSlide().then((carouselItems) => {
@@ -27,6 +26,9 @@ router.get('/signup', (req, res) => {
 router.post('/signup', (req, res) => {
   userHelpers.doSignup(req.body).then((response) => {
     console.log(response);
+    req.session.loggedIn = true;
+    req.session.user = response;
+    res.redirect('/');
   });
 });
 

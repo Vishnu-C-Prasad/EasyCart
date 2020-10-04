@@ -1,4 +1,5 @@
 module.exports = {
     PRODUCT_COLLECTION: 'product',
-    SLIDE_COLLECTION: 'slide'
+    SLIDE_COLLECTION: 'slide',
+    USER_COLLECTION: 'user'
 }

@@ -6,6 +6,7 @@ var logger = require('morgan');
 var hbs = require('express-handlebars');
 var fileUpload = require('express-fileupload');
 var db = require('./config/connection');
+var session = require('express-session');
 
 var userRouter = require('./routes/user/user');
 var adminRouter = require('./routes/admin/admin');
@@ -27,6 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(fileUpload());
+app.use(session({ secret: 'EasyCartKey', cookie: { maxAge: 600000 } }));
 db.connect((err) => {
  if (err) console.log(`Connection Error: ${err}`);
  else console.log('Database Connected to PORT: 27017');

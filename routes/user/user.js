@@ -8,19 +8,28 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
   let user = req.session.user;
 
-  productHelpers.getProduct().then((products) => {
-    slideHelpers.getSlide().then((carouselItems) => {
+  productHelpers.getAllProducts().then((products) => {
+    slideHelpers.getAllSlides().then((carouselItems) => {
       res.render('user/view-products', { title: 'EasyCart | Home', products, carouselItems, user });
     });
   });
 });
 
 router.get('/login', (req, res) => {
-  res.render('user/login');
+  if (req.session.loggedIn) {
+    res.redirect('/');
+  } else {
+    res.render('user/login', { title: 'EasyCart | Login', loginErr: req.session.loginErr });
+    req.session.loginErr = false;
+  }
 });
 
 router.get('/signup', (req, res) => {
-  res.render('user/signup')
+  if (req.session.loggedIn) {
+    res.redirect('/');
+  } else {
+    res.render('user/signup', { title: 'EasyCart | Signup' })
+  }
 });
 
 router.post('/signup', (req, res) => {
@@ -39,6 +48,7 @@ router.post('/login', (req, res) => {
       req.session.user = response.user;
       res.redirect('/');
     } else {
+      req.session.loginErr = 'Invalid Username or Password';
       res.redirect('/login');
     }
   });
@@ -47,6 +57,11 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/');
+});
+
+router.get('/cart', (req, res) => {
+  let user = req.session.user;
+  res.render('user/cart', { title: 'EasyCart | Cart', loggedIn: req.session.loggedIn, user });
 });
 
 module.exports = router;

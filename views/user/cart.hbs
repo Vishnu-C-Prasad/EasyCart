@@ -1,0 +1,19 @@
+<div class="container mt-5">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="p-2">My Cart</h5>
+            <div class="text-center">
+                <img src="images/empty-cart.webp" class="img-fluid" style="width: 15rem;">
+                {{#if loggedIn}}
+                <h5 class="font-weight-normal">Your cart is empty!</h5>
+                <p class="small">Add items to it now.</p>
+                <a href="/" class="btn btn-primary pr-5 pl-5">Shop now</a>
+                {{else}}
+                <h5 class="font-weight-normal">Missing Cart items?</h5>
+                <p class="small">Login to see the items you added previously</p>
+                <a href="/login" class="btn btn-primary pr-5 pl-5">Login</a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>

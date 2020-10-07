@@ -1,0 +1,36 @@
+<section>
+    <div class="container mt-5 mb-5">
+        <h1>Edit Product</h1>
+        <form action="/admin/edit-product/{{product._id}}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="">Name</label>
+                <input type="text" name="name" value="{{product.name}}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">category</label>
+                <input type="text" name="category" value="{{product.category}}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Description</label>
+                <input type="text" name="description" value="{{product.description}}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Price</label>
+                <input type="text" name="price" value="{{product.price}}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="">Image</label>
+                <br>
+                <img src="/images/product-images/{{product._id}}.jpg" alt="" class="img-fluid" id="my-file-selector-image" style="width: 10%; height: auto;">
+                <br>
+                <label class="btn btn-light border border-secondary" for="my-file-selector">
+                    <input id="my-file-selector" type="file" name="image" style="display:none"
+                        onchange="$('#upload-file-info').show().html(this.files[0].name)">
+                    Choose Image
+                </label>
+                <span class='bg-light text-dark rounded-pill ml-2 p-2 pl-4 pr-4' id="upload-file-info"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</section>

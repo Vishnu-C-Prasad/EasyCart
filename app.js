@@ -28,7 +28,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(fileUpload());
-app.use(session({ secret: 'EasyCartKey', cookie: { maxAge: 600000 } }));
+app.use(session({ secret: 'EasyCartKey', cookie: { maxAge: 1000 * 3600 * 24 * 30 * 2 } }));
 db.connect((err) => {
  if (err) console.log(`Connection Error: ${err}`);
  else console.log('Database Connected to PORT: 27017');

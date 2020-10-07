@@ -1,24 +1,54 @@
 <div class="row">
-    <div class="col-md-6 m-auto">
+    <div class="col-md-7 m-auto">
         <div class="container mt-5 pl-5">
-            <h1 class="text-center"><i class="fas fa-user-circle"></i></h1>
-            <h2 class="text-center">Create new account</h2>
-            <form action="/signup" method="POST">
-                <div class="form-group">
-                    <label for="">Name</label>
-                    <input type="text" class="form-control" required name="name" placeholder="Enter Name">
+            <div class="card mb-3">
+                <div class="row no-gutters" style="height: 80vh;">
+                    <div class="col-md-4 text-white p-4 d-flex align-content-between flex-wrap" style="background-color: #2874f0;">
+                        <div>
+                            <h2>Looks like you're new here!</h2>
+                            <p class="small">Sign up to get started</p>
+                        </div>
+                        <div>
+                            <img src="\images\EasyCartLogin.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-md-8 m-auto">
+                        <div class="card-body">
+                            <div class="text-center mb-5">
+                                <svg width="5em" height="5em" viewBox="0 0 16 16" class="bi bi-person-circle"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                                </svg>
+                            </div>
+                            <form action="/signup" method="POST">
+                                <div class="form-group">
+                                    <label for="">Name</label>
+                                    <input type="text" class="form-control" required name="name"
+                                        placeholder="Enter Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Email Address</label>
+                                    <input type="email" class="form-control" required name="email"
+                                        placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Password</label>
+                                    <input type="password" class="form-control" required name="password"
+                                        placeholder="password">
+                                </div>
+                                <button type="submit" class="btn btn-primary float-right">Signup</button>
+                            </form>
+                            <div class="mt-5 pt-5 text-center">
+                                <a href="/login">Existing User? Log in</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="">Email Address</label>
-                    <input type="email" class="form-control" required name="email" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="">Password</label>
-                    <input type="password" class="form-control" required name="password" placeholder="password">
-                </div>
-                <a href="/login">Already have an accout ?</a>
-                <button type="submit" class="btn btn-primary float-right">Signup</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>

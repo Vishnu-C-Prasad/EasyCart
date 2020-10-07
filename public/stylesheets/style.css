@@ -11,7 +11,7 @@ body::-webkit-scrollbar {
   width: 100% !important;
 }
 
-.card-body {
+.product-card-body {
   height: 125px !important;
   overflow-x: hidden;
   overflow-y: auto;

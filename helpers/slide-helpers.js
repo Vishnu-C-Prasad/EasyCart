@@ -1,5 +1,6 @@
 var db = require('../config/connection');
 var collection = require('../config/collection');
+const { response } = require('express');
 var ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
@@ -8,46 +9,55 @@ module.exports = {
             callback(data.ops[0]._id);
         });
     },
-    getSlide: () => {
+    getAllSlides: () => {
         return new Promise(async (resolve, reject) => {
             const carouselItems = await db.get().collection(collection.SLIDE_COLLECTION).find().toArray();
             resolve(carouselItems);
         });
     },
-    updateSlide: (data) => {
-        return new Promise(async (resolve, reject) => {
-            db.get().collection(collection.SLIDE_COLLECTION).updateOne({
-                _id: new ObjectID(data._id)
-            }, {
-                $set: {
-                    name: data.name,
-                    description: data.description,
-                    price: data.price
-                }
-            }).then((data) => {
-                resolve(data);
+    getSlide: (slideId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.SLIDE_COLLECTION).findOne({ _id: new ObjectID(slideId) }).then((slide) => {
+                resolve(slide);
             });
         });
     },
-    deleteSlide: (id) => {
+    updateSlide: (slideId, slideDetails) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.SLIDE_COLLECTION).deleteOne({ _id: new ObjectID(id) }).then(async (data) => {
-                const carouselItems = await db.get().collection(collection.SLIDE_COLLECTION).find().toArray();
-                if (carouselItems[0]){
-                    if (carouselItems[0].class === 'active') {
-                        resolve(data);
+            db.get().collection(collection.SLIDE_COLLECTION).updateOne({
+                _id: new ObjectID(slideId)
+            }, {
+                $set: {
+                    class: slideDetails.class,
+                    name: slideDetails.name,
+                    description: slideDetails.description,
+                    price: slideDetails.price
+                }
+            }).then((response) => {
+                resolve(response);
+            });
+        });
+    },
+    deleteSlide: (slideId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.SLIDE_COLLECTION).removeOne({ _id: new ObjectID(slideId) }).then(async (response) => {
+                const slides = await db.get().collection(collection.SLIDE_COLLECTION).find().toArray();
+                if (slides[0]) {
+                    if (slides[0].class === 'active') {
+                        resolve(response);
                     } else {
                         db.get().collection(collection.SLIDE_COLLECTION).updateOne({
-                            _id: new ObjectID(carouselItems[0]._id)
+                            _id: new ObjectID(slides[0]._id)
                         }, {
                             $set: {
                                 class: 'active'
                             }
+                        }).then(() => {
+                            resolve(response);
                         });
-                        resolve(data);
                     }
                 } else {
-                    resolve(data);
+                    resolve(response);
                 }
             });
         });

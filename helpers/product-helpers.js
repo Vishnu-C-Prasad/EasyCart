@@ -1,6 +1,7 @@
 var db = require('../config/connection');
 var collection = require('../config/collection');
-var ObjectID =require('mongodb').ObjectID;
+const { response } = require('express');
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
     addProduct: (product, callback) => {
@@ -8,32 +9,39 @@ module.exports = {
             callback(data.ops[0]._id);
         });
     },
-    getProduct: () => {
-        return new Promise( async (resolve, reject) => {
+    getAllProducts: () => {
+        return new Promise(async (resolve, reject) => {
             const products = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
             resolve(products);
         });
     },
-    updateProduct: (data) => {
-        return new Promise(async (resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({
-                _id: new ObjectID(data._id)
-            }, {
-                $set: {
-                    name: data.name,
-                    category: data.category,
-                    description: data.description,
-                    price: data.price
-                }
-            }).then((data) => {
-                resolve(data);
+    getProduct: (productID) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: new ObjectID(productID) }).then((product) => {
+                resolve(product);
             });
         });
     },
-    deleteProduct: (id) => {
+    updateProduct: (productID, productDetails) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({ _id: new ObjectID(id) }).then(async (data) => {
-                    resolve(data);
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({
+                _id: new ObjectID(productID)
+            }, {
+                $set: {
+                    name: productDetails.name,
+                    category: productDetails.category,
+                    description: productDetails.description,
+                    price: productDetails.price
+                }
+            }).then((response) => {
+                resolve(response);
+            });
+        });
+    },
+    deleteProduct: (productID) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.PRODUCT_COLLECTION).removeOne({ _id: new ObjectID(productID) }).then((response) => {
+                resolve(response);
             });
         });
     }

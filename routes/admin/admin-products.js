@@ -3,9 +3,14 @@ var router = express.Router();
 var fs = require('fs');
 var productHelpers = require('../../helpers/product-helpers');
 
+const state = {
+  toastMessage: false
+}
+
 router.get('/all-products', function (req, res, next) {
-  productHelpers.getProduct().then((products) => {
-    res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, products });
+  productHelpers.getAllProducts().then((products) => {
+    res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, products, toastMessage: state.toastMessage });
+    state.toastMessage = false;
   });
 });
 
@@ -15,6 +20,7 @@ router.get('/add-product', function (req, res) {
 
 router.post('/add-product', function (req, res) {
   productHelpers.addProduct(req.body, (id) => {
+    state.toastMessage = `Added ${req.body.name}.`;
     let image = req.files.image;
 
     image.mv(`./public/images/product-images/${id}.jpg`, (err, done) => {
@@ -23,53 +29,44 @@ router.post('/add-product', function (req, res) {
       } else {
         console.log(done);
 
-        res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true });
+        res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true, toastMessage: state.toastMessage });
+        state.toastMessage = false;
       }
     });
 
   });
 });
 
-router.get('/update-product', function (req, res) {
-  productHelpers.getProduct().then((products) => {
-    res.render('admin/update-product', { title: 'AdminPanel | Update Product', admin: true, products });
+router.get('/edit-product/:id', async (req, res) => {
+  let product = await productHelpers.getProduct(req.params.id);
+  res.render('admin/edit-product', { title: 'AdminPanel | Edit Products', product })
+});
+
+router.post('/edit-product/:id', (req, res) => {
+  productHelpers.updateProduct(req.params.id, req.body).then(() => {
+    state.toastMessage = `Updated ${req.body.name} details.`;
+    res.redirect('/admin/all-products');
+
+    if (req.files.image) {
+      let image = req.files.image;
+
+      image.mv(`./public/images/product-images/${req.params.id}.jpg`, (err, done) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(done);
+        }
+      });
+    }
   });
 });
 
-router.post('/update-product', function (req, res) {
-  if (req.files) {
-    fs.unlinkSync(`./public/images/product-images/${req.body._id}.jpg`);
-
-    let image = req.files.image;
-
-    image.mv(`./public/images/product-images/${req.body._id}.jpg`, (err, done) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(done);
-      }
-    });
-  }
-
-  productHelpers.updateProduct(req.body).then(() => {
-    productHelpers.getProduct().then((products) => {
-      res.render('admin/update-product', { title: 'AdminPanel | Update Product', admin: true, products });
-    });
-  });
-});
-
-router.get('/delete-product', function (req, res) {
-  productHelpers.getProduct().then((products) => {
-    res.render('admin/delete-product', { title: 'Adminpanel | Delete Product', admin: true, products });
-  });
-});
-
-router.post('/delete-product', function (req, res) {
-  fs.unlinkSync(`./public/images/product-images/${req.body._id}.jpg`);
-  productHelpers.deleteProduct(req.body._id).then(() => {
-    productHelpers.getProduct().then((products) => {
-      res.render('admin/delete-product', { title: 'AdminPanel | Delete Product', admin: true, products });
-    });
+router.get('/delete-product/:id', async (req, res) => {
+  let product = await productHelpers.getProduct(req.params.id);
+  productHelpers.deleteProduct(req.params.id).then(() => {
+    fs.unlinkSync(`./public/images/product-images/${req.params.id}.jpg`);
+    state.toastMessage = `Deleted ${product.name}.`;
+    res.redirect('/admin/all-products');
   });
 });
 

@@ -1,38 +1,27 @@
 <section>
-    <div class="container mt-5">
-        <h1>Add Slide</h1>
-        {{#if toastMessage}}
-        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
-            <div class="toast-header">
-                <strong class="mr-auto text-primary">EasyCart</strong>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body text-danger">
-                {{toastMessage}}
-            </div>
-        </div>
-        {{/if}}
-        <form action="/admin/add-slide" method="POST" enctype="multipart/form-data">
+    <div class="container mt-5 mb-5">
+        <h1>Edit Slide</h1>
+        <form action="/admin/edit-slide/{{slide._id}}" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <input type="text" value="{{class}}" hidden readonly  name="class" class="form-control">
+                <input type="text" value="{{slide.class}}" hidden readonly  name="class" class="form-control">
             </div>
             <div class="form-group">
                 <label for="">Name</label>
-                <input type="text" name="name" class="form-control">
+                <input type="text" value="{{slide.name}}" name="name" class="form-control">
             </div>
             <div class="form-group">
                 <label for="">Description</label>
-                <input type="text" name="description" class="form-control">
+                <input type="text" value="{{slide.description}}" name="description" class="form-control">
             </div>
             <div class="form-group">
                 <label for="">Price</label>
-                <input type="text" name="price" class="form-control">
+                <input type="text" value="{{slide.price}}" name="price" class="form-control">
             </div>
             <div class="form-group">
                 <label for="">Image</label>
                 <br>
+                <img src="/images/slide-images/{{slide._id}}.jpg" alt="" class="img-fluid" id="my-file-selector-image" style="width: 50%;">
+                <br><br>
                 <label class="btn btn-light border border-secondary" for="my-file-selector">
                     <input id="my-file-selector" type="file" name="image" style="display:none"
                         onchange="$('#upload-file-info').show().html(this.files[0].name)">

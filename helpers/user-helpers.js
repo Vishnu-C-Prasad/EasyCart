@@ -1,6 +1,7 @@
 var db = require('../config/connection');
 var collection = require('../config/collection');
 var bcrypt = require('bcrypt');
+const {ObjectID} = require('mongodb');
 
 module.exports = {
     doSignup: (userData) => {
@@ -31,6 +32,71 @@ module.exports = {
                 console.log('Cannot find user');
                 resolve({ status: false });
             }
+        });
+    },
+    addToCart: (productId, userId) => {
+        return new Promise(async (resolve, reject) => {
+            const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: ObjectID(userId) });
+            if (userCart) {
+                db.get().collection(collection.CART_COLLECTION).updateOne({
+                    user: ObjectID(userId)
+                }, {
+                    $push: {
+                        products: ObjectID(productId)
+                    }
+                }).then((response) => {
+                    resolve(response);
+                });
+            } else {
+                const cartObject = {
+                    user: ObjectID(userId),
+                    products: [ObjectID(productId)]
+                }
+                db.get().collection(collection.CART_COLLECTION).insertOne(cartObject).then((response) => {
+                    resolve(response);
+                });
+            }
+        });
+    },
+    getCartItems: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            const cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate([
+                {
+                    $match: {
+                        user: ObjectID(userId)
+                    }
+                }, {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        let: { productList: '$products' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $in: ['$_id', '$$productList']
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'cartItems'
+                    }
+                }
+            ]).toArray();
+            if (cartItems[0]) {
+                resolve(cartItems[0].cartItems);
+            } else {
+                resolve(cartItems);
+            }
+        });
+    },
+    getCartCount: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let count = 0;
+            const cartItems = await db.get().collection(collection.CART_COLLECTION).findOne({ user: ObjectID(userId) });
+            if (cartItems) {
+                count = cartItems.products.length
+            }
+            resolve(count);
         });
     }
 }

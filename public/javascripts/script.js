@@ -1,13 +1,5 @@
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#my-file-selector-image').attr('src', e.target.result);
-        }
-
-        reader.readAsDataURL(input.files[0]);
-    }
+const loadImage = (event) => {
+    document.getElementById('viewImage').src = URL.createObjectURL(event.target.files[0]);
 }
 
 $("#my-file-selector").change(function () {

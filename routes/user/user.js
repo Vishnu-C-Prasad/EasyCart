@@ -76,7 +76,7 @@ router.get('/cart', verifyLogin, async (req, res) => {
 
   let totalPrice = 0;
   cartItems.forEach(item => {
-    totalPrice += parseInt(item.price);  
+    totalPrice += parseInt(item.price);
   });
 
   res.render('user/cart', { title: 'EasyCart | Cart', user: req.session.user, cartItems, cartCount, totalPrice });
@@ -86,6 +86,11 @@ router.get('/add-to-cart/:id', verifyLogin, (req, res) => {
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
     res.redirect('/cart');
   });
+});
+
+router.get('/my-profile/', verifyLogin, async (req, res) => {
+  const cartCount = await userHelpers.getCartCount(req.session.user._id);
+  res.render('user/view-profile', { user: req.session.user, cartCount });
 });
 
 module.exports = router;

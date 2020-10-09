@@ -1,0 +1,164 @@
+<section>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body py-2">
+                        <div class="row px-2">
+                            <img src="/images/profile-pic-male.svg" alt="">
+                            <div class="mx-3">
+                                <p class="m-0 pt-2 small">Hello,</p>
+                                <h6 class="mt-1">{{user.name}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-3" style="width: 18rem;">
+                    <div class="card-body py-2">
+                        <div class="row py-3 border-bottom">
+                            <span class="mx-3">
+                                <svg width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                                    class="bi bi-bag-check-fill text-primary" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M5.5 3.5a2.5 2.5 0 0 1 5 0V4h-5v-.5zm6 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                                </svg>
+                            </span>
+                            <a href="" class="text-decoration-none text-secondary font-weight-bold mt-auto">MY
+                                ORDERS</a>
+                        </div>
+                        <div class="row py-3 border-bottom">
+                            <span class="mx-3">
+                                <svg width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                                    class="bi bi-person-circle text-primary" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                                </svg>
+                            </span>
+                            <p class="text-secondary font-weight-bold m-0 mt-auto">ACCOUNT SETTINGS</p>
+                            <div style="width: 100%;">
+                                <ul class="list-group mt-3">
+                                    <li class="list-group-item list-group-item-action border-0 pl-5">
+                                        <a href="" class="text-decoration-none text-dark pl-2">Profile Information</a>
+                                    </li>
+                                    <li class="list-group-item list-group-item-action border-0 pl-5">
+                                        <a href="" class="text-decoration-none text-dark pl-2">Manage Addresses</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row py-3 border-bottom">
+                            <span class="mx-3">
+                                <svg width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                                    class="bi bi-box-arrow-right text-primary" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+                                    <path fill-rule="evenodd"
+                                        d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                                </svg>
+                            </span>
+                            <a type="button" class="text-decoration-none text-secondary font-weight-bold mt-auto"
+                                data-toggle="modal" data-target="#staticBackdrop{{user._id}}">Logout</a>
+                            <div class="modal fade" id="staticBackdrop{{user._id}}" data-backdrop="static"
+                                data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-primary" id="staticBackdropLabel">EasyCart</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <p class="font-weight-bold m-auto">Are you want to logout
+                                                    ?</p>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer border-0 pt-0">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <a href="/logout"
+                                                class="btn btn-danger">Logout</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <div>
+                            <div class="row">
+                                <h5 class="ml-3">Personal Information</h5>
+                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
+                            </div>
+                            <div class="py-3 mb-3 border-bottom">
+                                <form class="form-inline">
+                                    <input class="form-control form-control mr-sm-2" type="text" value="{{user.name}}"
+                                        readonly>
+                                    <button class="btn btn btn-primary my-2 my-sm-0" type="submit" hidden>Save</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <h5 class="ml-3">Email Address</h5>
+                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
+                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Change
+                                    Password</a>
+                            </div>
+                            <div class="py-3 mb-3 border-bottom">
+                                <form class="form-inline">
+                                    <input class="form-control form-control mr-sm-2" type="email" value="{{user.email}}"
+                                        readonly>
+                                    <button class="btn btn btn-primary my-2 my-sm-0" type="submit" hidden>Save</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row">
+                                <h5 class="ml-3">Mobile Number</h5>
+                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
+                            </div>
+                            <div class="py-3 mb-3 border-bottom">
+                                <form class="form-inline">
+                                    <input class="form-control form-control mr-sm-2" type="email"
+                                        value="{{user.mobile}}" readonly>
+                                    <button class="btn btn btn-primary my-2 my-sm-0" type="submit" hidden>Save</button>
+                                </form>
+                            </div>
+                            <div>
+                                <h5 class="">FAQs</h5>
+                                <div>
+                                    <h6>What happens when I update my email address (or mobile number)?</h6>
+                                    <p>Your login email id (or mobile number) changes, likewise. You'll receive all your
+                                        account related communication on your updated email address (or mobile number).
+                                    </p>
+                                    <h6>When will my EasyCart account be updated with the new email address (or mobile
+                                        number)?</h6>
+                                    <p>It happens as soon as you confirm the verification code sent to your email (or
+                                        mobile) and save the changes.</p>
+                                    <h6>What happens to my existing EasyCart account when I update my email address (or
+                                        mobile number)?</h6>
+                                    <p>Updating your email address (or mobile number) doesn't invalidate your account.
+                                        Your account remains fully functional. You'll continue seeing your Order
+                                        history, saved information and personal details.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

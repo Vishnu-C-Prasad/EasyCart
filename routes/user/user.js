@@ -12,6 +12,10 @@ const verifyLogin = (req, res, next) => {
   }
 }
 
+const state = {
+  toastMessage: false
+}
+
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   let cartCount = null;
@@ -76,14 +80,34 @@ router.get('/cart', verifyLogin, async (req, res) => {
 
   let totalPrice = 0;
   cartItems.forEach(item => {
-    totalPrice += parseInt(item.price);
+    totalPrice += parseInt(item.products[0].price * item.quantity);
   });
 
-  res.render('user/cart', { title: 'EasyCart | Cart', user: req.session.user, cartItems, cartCount, totalPrice });
+  res.render('user/cart', { title: 'EasyCart | Cart', user: req.session.user, cartItems, cartCount, totalPrice, toastMessage: state.toastMessage });
+  state.toastMessage = false;
 });
 
 router.get('/add-to-cart/:id', verifyLogin, (req, res) => {
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
+    res.redirect('/cart');
+  });
+});
+
+router.get('/cart/remove-from-cart/:id', (req, res) => {
+  userHelpers.removeFromCart(req.params.id, req.session.user._id).then(() => {
+    state.toastMessage = 'Removed one item from Cart';
+    res.redirect('/cart');
+  });
+});
+
+router.get('/cart/increase-quantity/:id', (req, res) => {
+  userHelpers.increaseQuantity(req.params.id, req.session.user._id).then(() => {
+    res.redirect('/cart');
+  });
+});
+
+router.get('/cart/decrease-quantity/:id', (req, res) => {
+  userHelpers.decreaseQuantity(req.params.id, req.session.user._id).then(() => {
     res.redirect('/cart');
   });
 });

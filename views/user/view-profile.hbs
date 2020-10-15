@@ -43,10 +43,10 @@
                             <div style="width: 100%;">
                                 <ul class="list-group mt-3">
                                     <li class="list-group-item list-group-item-action border-0 pl-5">
-                                        <a href="" class="text-decoration-none text-dark pl-2">Profile Information</a>
+                                        <a role="button" id="personal-info-toggle" class="text-decoration-none text-dark pl-2">Profile Information</a>
                                     </li>
                                     <li class="list-group-item list-group-item-action border-0 pl-5">
-                                        <a href="" class="text-decoration-none text-dark pl-2">Manage Addresses</a>
+                                        <a role="button" id="manage-addresses-toggle" class="text-decoration-none text-dark pl-2">Manage Addresses</a>
                                     </li>
                                 </ul>
                             </div>
@@ -84,8 +84,7 @@
                                         <div class="modal-footer border-0 pt-0">
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Close</button>
-                                            <a href="/logout"
-                                                class="btn btn-danger">Logout</a>
+                                            <a href="/logout" class="btn btn-danger">Logout</a>
                                         </div>
                                     </div>
                                 </div>
@@ -97,62 +96,193 @@
             <div class="col-md-8">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                        <div>
-                            <div class="row">
-                                <h5 class="ml-3">Personal Information</h5>
-                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
-                            </div>
-                            <div class="py-3 mb-3 border-bottom">
-                                <form class="form-inline">
-                                    <input class="form-control form-control mr-sm-2" type="text" value="{{user.name}}"
-                                        readonly>
-                                    <button class="btn btn btn-primary my-2 my-sm-0" type="submit" hidden>Save</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="row">
-                                <h5 class="ml-3">Email Address</h5>
-                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
-                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Change
-                                    Password</a>
-                            </div>
-                            <div class="py-3 mb-3 border-bottom">
-                                <form class="form-inline">
-                                    <input class="form-control form-control mr-sm-2" type="email" value="{{user.email}}"
-                                        readonly>
-                                    <button class="btn btn btn-primary my-2 my-sm-0" type="submit" hidden>Save</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="row">
-                                <h5 class="ml-3">Mobile Number</h5>
-                                <a href="" class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
-                            </div>
-                            <div class="py-3 mb-3 border-bottom">
-                                <form class="form-inline">
-                                    <input class="form-control form-control mr-sm-2" type="email"
-                                        value="{{user.mobile}}" readonly>
-                                    <button class="btn btn btn-primary my-2 my-sm-0" type="submit" hidden>Save</button>
-                                </form>
+                        <div id="personal-info">
+                            <div>
+                                <div class="row">
+                                    <h5 class="ml-3">Personal Information</h5>
+                                    <a role="button" id="edit-personal-info"
+                                        class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
+                                    <a role="button" id="cancel-personal-info" hidden
+                                        class="text-decoration-none text-primary font-weight-bold ml-4">Cancel</a>
+                                </div>
+                                <div class="py-3 mb-3 border-bottom">
+                                    <form class="form-inline">
+                                        <input id="input-personal-info" class="form-control form-control mr-sm-2"
+                                            type="text" value="{{user.name}}" readonly>
+                                        <button id="save-personal-info" class="btn btn btn-primary my-2 my-sm-0"
+                                            type="submit" hidden>Save</button>
+                                    </form>
+                                </div>
                             </div>
                             <div>
-                                <h5 class="">FAQs</h5>
+                                <div class="row">
+                                    <h5 class="ml-3">Email Address</h5>
+                                    <a role="button" id="edit-email"
+                                        class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
+                                    <a role="button" id="cancel-email" hidden
+                                        class="text-decoration-none text-primary font-weight-bold ml-4">Cancel</a>
+                                    <a type="button" class="text-decoration-none text-primary font-weight-bold ml-4"
+                                        data-toggle="modal" data-target="#staticBackdrop">Change
+                                        Password</a>
+                                    <div class="modal fade" id="staticBackdrop" data-backdrop="static"
+                                        data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-primary" id="staticBackdropLabel">
+                                                        EasyCart
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="Input-current-password">Current password</label>
+                                                            <input type="password" name="currentPassword"
+                                                                class="form-control" id="Input-current-password">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="Input-new-password">New password</label>
+                                                            <input type="password" name="newPassword"
+                                                                class="form-control" id="Input-new-password">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="Input-confirm-password">Confirm new
+                                                                password</label>
+                                                            <input type="password" name="confirmPassword"
+                                                                class="form-control" id="Input-confirm-password">
+                                                        </div>
+                                                        <div class="row">
+                                                            <button type="submit"
+                                                                class="btn btn-primary ml-auto mr-3">Submit</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-3 mb-3 border-bottom">
+                                    <form class="form-inline">
+                                        <input id="input-email" class="form-control form-control mr-sm-2" type="email"
+                                            value="{{user.email}}" readonly>
+                                        <button id="save-email" class="btn btn btn-primary my-2 my-sm-0" type="submit"
+                                            hidden>Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    <h5 class="ml-3">Mobile Number</h5>
+                                    <a role="button" id="edit-mobile"
+                                        class="text-decoration-none text-primary font-weight-bold ml-4">Edit</a>
+                                    <a role="button" id="cancel-mobile" hidden
+                                        class="text-decoration-none text-primary font-weight-bold ml-4">Cancel</a>
+                                </div>
+                                <div class="py-3 mb-3 border-bottom">
+                                    <form class="form-inline">
+                                        <input id="input-mobile" class="form-control form-control mr-sm-2" type="email"
+                                            value="{{user.mobile}}" readonly>
+                                        <button id="save-mobile" class="btn btn btn-primary my-2 my-sm-0" type="submit"
+                                            hidden>Save</button>
+                                    </form>
+                                </div>
                                 <div>
-                                    <h6>What happens when I update my email address (or mobile number)?</h6>
-                                    <p>Your login email id (or mobile number) changes, likewise. You'll receive all your
-                                        account related communication on your updated email address (or mobile number).
-                                    </p>
-                                    <h6>When will my EasyCart account be updated with the new email address (or mobile
-                                        number)?</h6>
-                                    <p>It happens as soon as you confirm the verification code sent to your email (or
-                                        mobile) and save the changes.</p>
-                                    <h6>What happens to my existing EasyCart account when I update my email address (or
-                                        mobile number)?</h6>
-                                    <p>Updating your email address (or mobile number) doesn't invalidate your account.
-                                        Your account remains fully functional. You'll continue seeing your Order
-                                        history, saved information and personal details.</p>
+                                    <h5 class="">FAQs</h5>
+                                    <div>
+                                        <h6>What happens when I update my email address (or mobile number)?</h6>
+                                        <p>Your login email id (or mobile number) changes, likewise. You'll receive all
+                                            your
+                                            account related communication on your updated email address (or mobile
+                                            number).
+                                        </p>
+                                        <h6>When will my EasyCart account be updated with the new email address (or
+                                            mobile
+                                            number)?</h6>
+                                        <p>It happens as soon as you confirm the verification code sent to your email
+                                            (or
+                                            mobile) and save the changes.</p>
+                                        <h6>What happens to my existing EasyCart account when I update my email address
+                                            (or
+                                            mobile number)?</h6>
+                                        <p>Updating your email address (or mobile number) doesn't invalidate your
+                                            account.
+                                            Your account remains fully functional. You'll continue seeing your Order
+                                            history, saved information and personal details.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="manage-addresses" hidden>
+                            <div>
+                                <div class="row">
+                                    <h5 class="ml-3">Manage Adresses</h5>
+                                </div>
+                                <div class="py-3 border-bottom">
+                                    <div class="py-3 px-3 mb-3 border">
+                                        <a role="button" id="add-new-address" class="text-decoration-none">
+                                            <h6 class="m-0">+ ADD A NEW ADDRESS</h6>
+                                        </a>
+                                        <div id="new-address-form" class="py-3" hidden>
+                                            <form action="">
+                                                <div class="row my-3">
+                                                    <div class="col">
+                                                        <label for="">Name</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="">Mobile number</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="row my-3">
+                                                    <div class="col">
+                                                        <label for="">Pincode</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="">Locality</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="row my-3">
+                                                    <div class="col">
+                                                        <label for="">Address (Area and Street)</label>
+                                                        <textarea name="" id="" cols="50" rows="5" style="width: 100%;"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row my-3">
+                                                    <div class="col">
+                                                        <label for="">City/District/Town</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="">State</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="row my-3">
+                                                    <div class="col">
+                                                        <label for="">Landmark (Optional)</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="">Alternate Phone (Optional)</label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="row my-3">
+                                                    <button type="submit" class="btn btn-primary ml-3">Submit</button>
+                                                    <a role="button" id="cancel-new-address"
+                                                        class="text-decoration-none font-weight-bold ml-4 mt-auto">Cancel</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

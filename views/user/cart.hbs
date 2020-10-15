@@ -8,29 +8,30 @@
                     {{#each cartItems}}
                     <div class="row mt-4 pb-4 border-bottom">
                         <div class="col-md-4">
-                            <img src="/images/product-images/{{this._id}}.jpg" alt="" class="img-fluid">
+                            <img src="/images/product-images/{{this.item}}.jpg" alt="" class="img-fluid">
                             <form class="form-inline my-2 my-lg-0 ml-5">
-                                <button class="btn btn-light btn-sm border-secondary rounded-circle p-0"
-                                    style="width: 2em; height:2em;">
-                                    <a href="" class="text-decoration-none text-center font-weight-bold">-</a>
-                                </button>
+                                <a href="/cart/decrease-quantity/{{this.item}}"
+                                    class="btn btn-light btn-sm border border-secondary font-weight-bold"
+                                    style="width: 2em; height:2em;">-</a>
                                 <input class="form-control form-control-sm m-sm-2 text-center bg-white" type="text"
-                                    name="count" value="1" readonly style="width: 20%;">
-                                <button class="btn btn-light btn-sm border border-secondary rounded-circle p-0"
-                                    style="width: 2em; height:2em;">
-                                    <a href="" class="text-decoration-none text-center font-weight-bold">+</a>
-                                </button>
+                                    name="count" value="{{this.quantity}}" readonly style="width: 3em; height:2em;">
+                                <a href="/cart/increase-quantity/{{this.item}}"
+                                    class="btn btn-light btn-sm border border-secondary font-weight-bold"
+                                    style="width: 2em; height:2em;">+</a>
                             </form>
                         </div>
                         <div class="col-md-8 d-flex flex-column justify-content-between flex-wrap">
                             <div>
+                                {{#each this.products}}
                                 <h5>{{this.name}}</h5>
                                 <h6>{{this.category}}</h6>
                                 <p>{{this.description}}</p>
                                 <h5><span style="font-family: Roboto,Arial,sans-serif;">₹</span> {{this.price}}</h5>
+                                {{/each}}
                             </div>
                             <div class="mb-5">
-                                <a href="" class="font-weight-bold text-decoration-none text-danger">REMOVE</a>
+                                <a href="/cart/remove-from-cart/{{this.item}}"
+                                    class="font-weight-bold text-decoration-none text-danger">REMOVE</a>
                             </div>
                         </div>
                     </div>
@@ -44,13 +45,27 @@
             </div>
         </div>
         <div class="col-md-4">
+            {{#if toastMessage}}
+            <div class="toast mb-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+                <div class="toast-header">
+                    <strong class="mr-auto text-primary">EasyCart</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body text-danger">
+                    {{toastMessage}}
+                </div>
+            </div>
+            {{/if}}
             <div class="card" style="width: 18rem;">
                 <div class="card-body pb-0">
                     <h6 class="text-secondary border-bottom pb-3">PRICE DETAILS</h6>
                     <div class="border-bottom p-3">
                         <div class="row">
                             <p>Price ({{cartCount}} items)</p>
-                            <p class="ml-auto"><span style="font-family: Roboto,Arial,sans-serif;">₹</span> {{totalPrice}}</p>
+                            <p class="ml-auto"><span style="font-family: Roboto,Arial,sans-serif;">₹</span>
+                                {{totalPrice}}</p>
                         </div>
                         <div class="row">
                             <p>Delivery Charges</p>
@@ -59,14 +74,16 @@
                     </div>
                     <div class="row p-3">
                         <h6>Total Amount</h6>
-                        <h6 class="ml-auto"><span style="font-family: Roboto,Arial,sans-serif;">₹</span> {{totalPrice}}</h6>
+                        <h6 class="ml-auto"><span style="font-family: Roboto,Arial,sans-serif;">₹</span> {{totalPrice}}
+                        </h6>
                     </div>
                 </div>
                 <div class="card-footer pb-0" style="background-color: #fffbf6;">
                     <div class="row">
                         <div class="col-2 pt-2">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-shield-fill-check text-center text-success"
-                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="2em" height="2em" viewBox="0 0 16 16"
+                                class="bi bi-shield-fill-check text-center text-success" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd"
                                     d="M8 .5c-.662 0-1.77.249-2.813.525a61.11 61.11 0 0 0-2.772.815 1.454 1.454 0 0 0-1.003 1.184c-.573 4.197.756 7.307 2.368 9.365a11.192 11.192 0 0 0 2.417 2.3c.371.256.715.451 1.007.586.27.124.558.225.796.225s.527-.101.796-.225c.292-.135.636-.33 1.007-.586a11.191 11.191 0 0 0 2.418-2.3c1.611-2.058 2.94-5.168 2.367-9.365a1.454 1.454 0 0 0-1.003-1.184 61.09 61.09 0 0 0-2.772-.815C9.77.749 8.663.5 8 .5zm2.854 6.354a.5.5 0 0 0-.708-.708L7.5 8.793 6.354 7.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
                             </svg>
@@ -80,6 +97,21 @@
         </div>
     </div>
     {{else}}
+    {{#if toastMessage}}
+    <div class="row">
+        <div class="toast ml-auto mr-3 mb-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+            <div class="toast-header">
+                <strong class="mr-auto text-primary">EasyCart</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body text-danger">
+                {{toastMessage}}
+            </div>
+        </div>
+    </div>
+    {{/if}}
     <div class="card" style="width: 18rem;">
         <div class="card-body">
             <h5 class="p-2">My Cart</h5>

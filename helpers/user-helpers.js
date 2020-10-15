@@ -1,7 +1,7 @@
 var db = require('../config/connection');
 var collection = require('../config/collection');
 var bcrypt = require('bcrypt');
-const {ObjectID} = require('mongodb');
+const { ObjectID } = require('mongodb');
 
 module.exports = {
     doSignup: (userData) => {
@@ -35,27 +35,63 @@ module.exports = {
         });
     },
     addToCart: (productId, userId) => {
+        let productObject = {
+            item: ObjectID(productId),
+            quantity: 1
+        }
         return new Promise(async (resolve, reject) => {
             const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: ObjectID(userId) });
             if (userCart) {
-                db.get().collection(collection.CART_COLLECTION).updateOne({
-                    user: ObjectID(userId)
-                }, {
-                    $push: {
-                        products: ObjectID(productId)
-                    }
-                }).then((response) => {
-                    resolve(response);
-                });
+                productExist = userCart.products.findIndex(product => product.item == productId);
+
+                if (productExist != -1) {
+                    db.get().collection(collection.CART_COLLECTION).updateOne({
+                        user: ObjectID(userId),
+                        'products.item': ObjectID(productId)
+                    }, {
+                        $inc: {
+                            'products.$.quantity': 1
+                        }
+                    }).then((response) => {
+                        resolve(response);
+                    });
+                } else {
+                    db.get().collection(collection.CART_COLLECTION).updateOne({
+                        user: ObjectID(userId)
+                    }, {
+                        $push: {
+                            products: productObject
+                        }
+                    }).then((response) => {
+                        resolve(response);
+                    });
+                }
             } else {
                 const cartObject = {
                     user: ObjectID(userId),
-                    products: [ObjectID(productId)]
+                    products: [productObject]
                 }
                 db.get().collection(collection.CART_COLLECTION).insertOne(cartObject).then((response) => {
                     resolve(response);
                 });
             }
+        });
+    },
+    removeFromCart: (productId, userId) => {
+        return new Promise(async (resolve, reject) => {
+            const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: ObjectID(userId) });
+            productIndex = userCart.products.findIndex(product => product.item == productId);
+
+            db.get().collection(collection.CART_COLLECTION).updateOne({
+                user: ObjectID(userId),
+                'products.item': ObjectID(productId)
+            }, {
+                $pull: {
+                    products: { item: ObjectID(productId) }
+                }
+            }).then((response) => {
+                resolve(response);
+            });
         });
     },
     getCartItems: (userId) => {
@@ -66,27 +102,22 @@ module.exports = {
                         user: ObjectID(userId)
                     }
                 }, {
+                    $unwind: '$products'
+                }, {
+                    $project: {
+                        item: '$products.item',
+                        quantity: '$products.quantity'
+                    }
+                }, {
                     $lookup: {
                         from: collection.PRODUCT_COLLECTION,
-                        let: { productList: '$products' },
-                        pipeline: [
-                            {
-                                $match: {
-                                    $expr: {
-                                        $in: ['$_id', '$$productList']
-                                    }
-                                }
-                            }
-                        ],
-                        as: 'cartItems'
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'products'
                     }
                 }
             ]).toArray();
-            if (cartItems[0]) {
-                resolve(cartItems[0].cartItems);
-            } else {
-                resolve(cartItems);
-            }
+            resolve(cartItems);
         });
     },
     getCartCount: (userId) => {
@@ -94,9 +125,46 @@ module.exports = {
             let count = 0;
             const cartItems = await db.get().collection(collection.CART_COLLECTION).findOne({ user: ObjectID(userId) });
             if (cartItems) {
-                count = cartItems.products.length
+                cartItems.products.forEach((product) => {
+                    count += product.quantity
+                });
             }
             resolve(count);
+        });
+    },
+    increaseQuantity: (productId, userId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.CART_COLLECTION).updateOne({
+                user: ObjectID(userId),
+                'products.item': ObjectID(productId)
+            }, {
+                $inc: {
+                    'products.$.quantity': 1
+                }
+            }).then((response) => {
+                resolve(response);
+            });
+        });
+    },
+    decreaseQuantity: (productId, userId) => {
+        return new Promise(async (resolve, reject) => {
+            const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: ObjectID(userId) });
+            const product = userCart.products.filter((product) => product.item == productId);
+
+            if (product[0].quantity > 1) {
+                db.get().collection(collection.CART_COLLECTION).updateOne({
+                    user: ObjectID(userId),
+                    'products.item': ObjectID(productId)
+                }, {
+                    $inc: {
+                        'products.$.quantity': -1
+                    }
+                }).then((response) => {
+                    resolve(response);
+                });
+            } else {
+                resolve();
+            }
         });
     }
 }

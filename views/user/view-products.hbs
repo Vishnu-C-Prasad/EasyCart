@@ -14,7 +14,8 @@
                     </div>
                     <div class="card-header bg-light text-center">
                         <h5>From ₹{{this.price}}</h5>
-                        <a href="/add-to-cart/{{this._id}}" class="btn btn-primary rounded-pill">Add to Cart</a>
+                        <a role="button" onclick="addToCart(event, '{{this._id}}')"
+                            class="btn btn-primary rounded-pill">Add to Cart</a>
                     </div>
                 </div>
             </div>

@@ -4,33 +4,35 @@
         <div class="col-md-8">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="p-2">My Cart ({{cartCount}})</h5>
+                    <h5 class="p-2">My Cart (<span id="my-cart-count">{{cartCount}}</span>)</h5>
                     {{#each cartItems}}
-                    <div class="row mt-4 pb-4 border-bottom">
+                    <div id="div{{this.product._id}}" class="row mt-4 pb-4 border-bottom">
                         <div class="col-md-4">
                             <img src="/images/product-images/{{this.item}}.jpg" alt="" class="img-fluid">
                             <form class="form-inline my-2 my-lg-0 ml-5">
-                                <a href="/cart/decrease-quantity/{{this.item}}"
+                                <a role="button"
+                                    onclick="changeProductQuantity(event, '{{this._id}}', '{{this.product._id}}', -1)"
                                     class="btn btn-light btn-sm border border-secondary font-weight-bold"
                                     style="width: 2em; height:2em;">-</a>
-                                <input class="form-control form-control-sm m-sm-2 text-center bg-white" type="text"
+                                <input id="{{this.product._id}}"
+                                    class="form-control form-control-sm m-sm-2 text-center bg-white" type="text"
                                     name="count" value="{{this.quantity}}" readonly style="width: 3em; height:2em;">
-                                <a href="/cart/increase-quantity/{{this.item}}"
+                                <a role="button"
+                                    onclick="changeProductQuantity(event, '{{this._id}}', '{{this.product._id}}', 1)"
                                     class="btn btn-light btn-sm border border-secondary font-weight-bold"
                                     style="width: 2em; height:2em;">+</a>
                             </form>
                         </div>
                         <div class="col-md-8 d-flex flex-column justify-content-between flex-wrap">
                             <div>
-                                {{#each this.products}}
-                                <h5>{{this.name}}</h5>
-                                <h6>{{this.category}}</h6>
-                                <p>{{this.description}}</p>
-                                <h5><span style="font-family: Roboto,Arial,sans-serif;">₹</span> {{this.price}}</h5>
-                                {{/each}}
+                                <h5>{{this.product.name}}</h5>
+                                <h6>{{this.product.category}}</h6>
+                                <p>{{this.product.description}}</p>
+                                <h5><span style="font-family: Roboto,Arial,sans-serif;">₹</span> <span id="{{this.product._id}}-price">{{this.product.price}}</span>
+                                </h5>
                             </div>
                             <div class="mb-5">
-                                <a href="/cart/remove-from-cart/{{this.item}}"
+                                <a role="button" onclick="removeFromCart(event, '{{this._id}}', '{{this.product._id}}')"
                                     class="font-weight-bold text-decoration-none text-danger">REMOVE</a>
                             </div>
                         </div>
@@ -45,27 +47,14 @@
             </div>
         </div>
         <div class="col-md-4">
-            {{#if toastMessage}}
-            <div class="toast mb-3" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
-                <div class="toast-header">
-                    <strong class="mr-auto text-primary">EasyCart</strong>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="toast-body text-danger">
-                    {{toastMessage}}
-                </div>
-            </div>
-            {{/if}}
             <div class="card" style="width: 18rem;">
                 <div class="card-body pb-0">
                     <h6 class="text-secondary border-bottom pb-3">PRICE DETAILS</h6>
                     <div class="border-bottom p-3">
                         <div class="row">
-                            <p>Price ({{cartCount}} items)</p>
+                            <p>Price (<span id="price-section-count">{{cartCount}}</span> items)</p>
                             <p class="ml-auto"><span style="font-family: Roboto,Arial,sans-serif;">₹</span>
-                                {{totalPrice}}</p>
+                                <span id="total-price">{{totalAmount}}</span></p>
                         </div>
                         <div class="row">
                             <p>Delivery Charges</p>
@@ -74,7 +63,8 @@
                     </div>
                     <div class="row p-3">
                         <h6>Total Amount</h6>
-                        <h6 class="ml-auto"><span style="font-family: Roboto,Arial,sans-serif;">₹</span> {{totalPrice}}
+                        <h6 class="ml-auto"><span style="font-family: Roboto,Arial,sans-serif;">₹</span> <span
+                                id="total-amount">{{totalAmount}}</span>
                         </h6>
                     </div>
                 </div>

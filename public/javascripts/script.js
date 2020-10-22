@@ -18,6 +18,46 @@ const addToCart = (event, productId) => {
     });
 }
 
+$('#Add-Address-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/add-new-address',
+        data: $('#Add-Address-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            const div = `<h6>${response.name} &nbsp;&nbsp;${response.mobile}</h6> <p class="m-0">${response.address}, ${response.locality}, ${response.landmark}, ${response.city}, ${response.state} - <span class="font-weight-bold">${response.pincode}</span></p>`
+            document.getElementById('new-address-content').innerHTML = div;
+            document.getElementById('new-address-form').setAttribute("hidden", true);
+            document.getElementById('new-address-show').removeAttribute("hidden");
+        }
+    });
+});
+
+const setAddress = (address) => {
+    console.log(address.name);
+    document.getElementById('name').value = address.name
+    document.getElementById('mobile').value = address.mobile
+    document.getElementById('pincode').value = address.pincode
+    document.getElementById('locality').value = address.locality
+    document.getElementById('address').value = address.address
+    document.getElementById('city').value = address.city
+    document.getElementById('state').value = address.state
+    document.getElementById('landmark').value = address.landmark
+    document.getElementById('altPhone').value = address.altPhone
+}
+
+$('#checkout-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/place-order',
+        data: $('#checkout-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            alert(response);
+        }
+    });
+}); 
+
 const changeProductQuantity = (event, cartId, productId, count) => {
     let quantity = document.getElementById(productId).value;
     quantity = parseInt(quantity);
@@ -71,7 +111,7 @@ const removeFromCart = (event, cartId, productId) => {
                 alert("Product removed from cart");
                 if (parseInt(document.getElementById('my-cart-count').innerHTML) === quantity) {
                     location.reload();
-                } else {    
+                } else {
                     console.log(quantity, productPrice, quantity * productPrice);
                     document.getElementById(`div${productId}`).remove();
                     document.getElementById('total-price').innerHTML = parseInt(document.getElementById('total-price').innerHTML) - (productPrice * quantity);

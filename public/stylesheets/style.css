@@ -1,6 +1,5 @@
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 0px;
-  background-color: #f5f5f5;
 }
 
 .col-md-3 {
@@ -47,4 +46,10 @@ body::-webkit-scrollbar {
 
 .upload-file-info, #upload-file-info {
   display: none;
+}
+
+#addresses-form {
+  height: 75vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

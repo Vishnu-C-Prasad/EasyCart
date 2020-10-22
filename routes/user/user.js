@@ -107,4 +107,20 @@ router.get('/my-profile/', verifyLogin, async (req, res) => {
   res.render('user/view-profile', { user: req.session.user, cartCount });
 });
 
+router.post('/add-new-address', (req, res) => {
+  userHelpers.addNewAddress(req.session.user._id, req.body).then((response) => {
+    req.session.user = response;
+    res.json(req.body);
+  });
+});
+
+router.get('/place-order',verifyLogin, async (req, res) => {
+  const totalAmount = await userHelpers.getTotalAmount(req.session.user._id);
+  res.render('user/place-order', { user: req.session.user, totalAmount });
+});
+
+router.post('/place-order', (req, res) => {
+  console.log(req.body);
+});
+
 module.exports = router;

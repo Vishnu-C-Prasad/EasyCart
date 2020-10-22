@@ -2,6 +2,7 @@ var db = require('../config/connection');
 var collection = require('../config/collection');
 var bcrypt = require('bcrypt');
 const { ObjectID } = require('mongodb');
+const { response } = require('express');
 
 module.exports = {
     doSignup: (userData) => {
@@ -218,11 +219,25 @@ module.exports = {
                     }
                 }
             ]).toArray();
-            if(totalAmount[0]) {
+            if (totalAmount[0]) {
                 resolve(totalAmount[0].total);
             } else {
                 resolve();
             }
+        });
+    },
+    addNewAddress: (userId, data) => {
+        return new Promise((resolve, response) => {
+            db.get().collection(collection.USER_COLLECTION).updateOne({
+                _id: ObjectID(userId)
+            }, {
+                $push: {
+                    addresses: data
+                }
+            }).then((response) => {
+                const user = db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
+                resolve(user)
+            });
         });
     }
 }

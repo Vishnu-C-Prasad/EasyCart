@@ -28,7 +28,8 @@
                                 <h5>{{this.product.name}}</h5>
                                 <h6>{{this.product.category}}</h6>
                                 <p>{{this.product.description}}</p>
-                                <h5><span style="font-family: Roboto,Arial,sans-serif;">₹</span> <span id="{{this.product._id}}-price">{{this.product.price}}</span>
+                                <h5><span style="font-family: Roboto,Arial,sans-serif;">₹</span> <span
+                                        id="{{this.product._id}}-price">{{this.product.price}}</span>
                                 </h5>
                             </div>
                             <div class="mb-5">
@@ -38,11 +39,6 @@
                         </div>
                     </div>
                     {{/each}}
-                    <div class="row">
-                        <a href=""
-                            class="btn btn-primary btn-lg font-weight-bold pr-5 pl-5 pb-3 ml-auto mr-4 mt-4 "><span
-                                class="small font-weight-bold ml-4 mr-4">PLACE ORDER</span></a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -82,6 +78,10 @@
                             <p class="ml-auto">Safe and Secure Payments.Easy returns.100% Authentic products.</p>
                         </div>
                     </div>
+                </div>
+                <div class="m-2">
+                    <a href="/place-order" class="btn btn-primary font-weight-bold float-right"><span
+                            class="small font-weight-bold ml-4 mr-4">PLACE ORDER</span></a>
                 </div>
             </div>
         </div>

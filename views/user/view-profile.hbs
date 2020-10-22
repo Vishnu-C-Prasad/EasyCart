@@ -43,10 +43,12 @@
                             <div style="width: 100%;">
                                 <ul class="list-group mt-3">
                                     <li class="list-group-item list-group-item-action border-0 pl-5">
-                                        <a role="button" id="personal-info-toggle" class="text-decoration-none text-dark pl-2">Profile Information</a>
+                                        <a role="button" id="personal-info-toggle"
+                                            class="text-decoration-none text-dark pl-2">Profile Information</a>
                                     </li>
                                     <li class="list-group-item list-group-item-action border-0 pl-5">
-                                        <a role="button" id="manage-addresses-toggle" class="text-decoration-none text-dark pl-2">Manage Addresses</a>
+                                        <a role="button" id="manage-addresses-toggle"
+                                            class="text-decoration-none text-dark pl-2">Manage Addresses</a>
                                     </li>
                                 </ul>
                             </div>
@@ -228,51 +230,52 @@
                                             <h6 class="m-0">+ ADD A NEW ADDRESS</h6>
                                         </a>
                                         <div id="new-address-form" class="py-3" hidden>
-                                            <form action="">
+                                            <form id="Add-Address-form">
                                                 <div class="row my-3">
                                                     <div class="col">
                                                         <label for="">Name</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="name">
                                                     </div>
                                                     <div class="col">
                                                         <label for="">Mobile number</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="mobile">
                                                     </div>
                                                 </div>
                                                 <div class="row my-3">
                                                     <div class="col">
                                                         <label for="">Pincode</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="pincode">
                                                     </div>
                                                     <div class="col">
                                                         <label for="">Locality</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="locality">
                                                     </div>
                                                 </div>
                                                 <div class="row my-3">
                                                     <div class="col">
                                                         <label for="">Address (Area and Street)</label>
-                                                        <textarea name="" id="" cols="50" rows="5" style="width: 100%;"></textarea>
+                                                        <input type="text" name="address"
+                                                            style="width: 100%; height: 5rem;">
                                                     </div>
                                                 </div>
                                                 <div class="row my-3">
                                                     <div class="col">
                                                         <label for="">City/District/Town</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="city">
                                                     </div>
                                                     <div class="col">
                                                         <label for="">State</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="state">
                                                     </div>
                                                 </div>
                                                 <div class="row my-3">
                                                     <div class="col">
                                                         <label for="">Landmark (Optional)</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="landmark">
                                                     </div>
                                                     <div class="col">
                                                         <label for="">Alternate Phone (Optional)</label>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control" name="altPhone">
                                                     </div>
                                                 </div>
                                                 <div class="row my-3">
@@ -281,6 +284,51 @@
                                                         class="text-decoration-none font-weight-bold ml-4 mt-auto">Cancel</a>
                                                 </div>
                                             </form>
+                                        </div>
+                                    </div>
+                                    {{#each user.addresses}}
+                                    <div class="border">
+                                        <div class="row mx-2">
+                                            <div class="ml-auto dropdown">
+                                                <a class="text-dark small dropdown-toggle text-decoration-none" href="#"
+                                                    role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    Manage
+                                                </a>
+
+                                                <div class="dropdown-menu dropdown-menu-right"
+                                                    aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item small" href="#">Edit</a>
+                                                    <a class="dropdown-item small" href="#">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pt-0 pb-4 px-4">
+                                            <h6>{{this.name}} &nbsp;&nbsp; {{this.mobile}}</h6>
+                                            <p class="m-0">{{this.address}}, {{this.locality}}, {{this.landmark}},
+                                                {{this.city}}, {{this.state}} - <span
+                                                    class="font-weight-bold">{{this.pincode}}</span></p>
+                                        </div>
+                                    </div>
+                                    {{/each}}
+                                    <div class="border" id="new-address-show" hidden>
+                                        <div class="row mx-2">
+                                            <div class="ml-auto dropdown">
+                                                <a class="text-dark small dropdown-toggle text-decoration-none" href="#"
+                                                    role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    Manage
+                                                </a>
+
+                                                <div class="dropdown-menu dropdown-menu-right"
+                                                    aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item small" href="#">Edit</a>
+                                                    <a class="dropdown-item small" href="#">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pt-0 pb-4 px-4" id="new-address-content">
+                                            
                                         </div>
                                     </div>
                                 </div>

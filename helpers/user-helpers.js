@@ -227,7 +227,9 @@ module.exports = {
         });
     },
     addNewAddress: (userId, data) => {
+        console.log(data);
         return new Promise((resolve, response) => {
+            data._id = new ObjectID();
             db.get().collection(collection.USER_COLLECTION).updateOne({
                 _id: ObjectID(userId)
             }, {
@@ -238,6 +240,102 @@ module.exports = {
                 const user = db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
                 resolve(user)
             });
+        });
+    },
+    getAddress: (userId, addressId) => {
+        return new Promise(async (resolve, reject) => {
+            const user = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
+
+            const address = user.addresses.filter((address) => {
+                return address._id == addressId
+            })
+
+            resolve(address[0]);
+        });
+    },
+    getCartItemsList: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            const cart = await db.get().collection(collection.CART_COLLECTION).findOne({ user: ObjectID(userId) });
+            resolve(cart.products);
+        });
+    },
+    placeOrder: (userId, address, paymentMethod, products, totalAmount) => {
+        return new Promise((resolve, reject) => {
+            let status = paymentMethod === 'COD' ? 'placed' : 'pending';
+            let orderObject = {
+                userId: ObjectID(userId),
+                deliveryAddress:address,
+                paymentMethod: paymentMethod,
+                products: products,
+                totalAmount: totalAmount,
+                status: status,
+                date: new Date()
+            }
+
+            db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObject).then((response) => {
+                db.get().collection(collection.CART_COLLECTION).removeOne({ user: ObjectID(userId) });
+                resolve(response.ops[0]._id);
+            });
+        });
+    },
+    getOrder: (orderId) => {
+        return new Promise(async (resolve, reject) => {
+            const orderDetails = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: ObjectID(orderId) });
+            const productDetails = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        _id: ObjectID(orderId)
+                    }
+                }, {
+                    $unwind: '$products'
+                }, {
+                    $project: {
+                        item: '$products.item',
+                        quantity: '$products.quantity'
+                    }
+                }, {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                }, {
+                    $project: {
+                        item: 1,
+                        quantity: 1,
+                        product: { $arrayElemAt: ['$product', 0] }
+                    }
+                }
+            ]).toArray();
+            resolve({ orderDetails, productDetails });
+        });
+    },
+    getAllOrders: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            const orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        userId: ObjectID(userId)
+                    }
+                }, {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        let: { productList: '$products.item' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $in: ['$_id', '$$productList']
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'productDetails'
+                    }
+                }
+            ]).toArray();
+            resolve(orders);
         });
     }
 }

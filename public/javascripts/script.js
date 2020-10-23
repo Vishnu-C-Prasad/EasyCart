@@ -33,19 +33,6 @@ $('#Add-Address-form').submit((e) => {
     });
 });
 
-const setAddress = (address) => {
-    console.log(address.name);
-    document.getElementById('name').value = address.name
-    document.getElementById('mobile').value = address.mobile
-    document.getElementById('pincode').value = address.pincode
-    document.getElementById('locality').value = address.locality
-    document.getElementById('address').value = address.address
-    document.getElementById('city').value = address.city
-    document.getElementById('state').value = address.state
-    document.getElementById('landmark').value = address.landmark
-    document.getElementById('altPhone').value = address.altPhone
-}
-
 $('#checkout-form').submit((e) => {
     e.preventDefault();
     $.ajax({
@@ -53,7 +40,9 @@ $('#checkout-form').submit((e) => {
         data: $('#checkout-form').serialize(),
         method: 'post',
         success: (response) => {
-            alert(response);
+            if (response.codSuccess) {
+                location.href = `/order-success/${response._id}`
+            }
         }
     });
 }); 

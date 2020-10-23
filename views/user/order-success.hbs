@@ -1,0 +1,59 @@
+<section>
+    <div class="container mt-5 mb-5">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <div class="row m-1 border-bottom">
+                    <h5 class="card-title mb-5">Hi {{user.name}},</h5>
+                    {{#with order}}
+                    <div class="ml-auto">
+                        <h6>Order status: <span>{{orderDetails.status}}</span></h6>
+                        <h6>Order placed on: <span class="font-weight-normal">{{orderDetails.date}}</span></h6>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6 border-right">
+                        <h5 class="mb-4">Order successfully placed.</h5>
+                        <p>We are pleased to confirm your order number <span>{{orderDetails._id}}</span></p>
+                        <p>Thank you for shopping with EasyCart</p>
+                        <a class="btn btn-primary" href="/my-orders">Manage your order</a>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="mb-4">Delivery Address</h5>
+                        {{#with orderDetails}}
+                        <h6>{{deliveryAddress.name}}</h6>
+                        <p>{{deliveryAddress.address}}, {{deliveryAddress.locality}}, {{deliveryAddress.landmark}},
+                            {{deliveryAddress.city}}, {{deliveryAddress.state}}</p>
+                        <p>Pincode. <span>{{deliveryAddress.pincode}}</span></p>
+                        <p>Mob. <span>{{deliveryAddress.mobile}}, {{deliveryAddress.altPhone}}</span></p>
+                        {{/with}}
+                    </div>
+                </div>
+                {{#each productDetails}}
+                <div class="row mt-4 pb-4 border-bottom">
+                    <div class="col-md-2">
+                        <img src="/images/product-images/{{this.product._id}}.jpg" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-md-10 d-flex flex-column justify-content-between flex-wrap">
+                        <div>
+                            <h5>{{this.product.name}}</h5>
+                            <h6>{{this.product.category}}</h6>
+                            <p>{{this.product.description}}</p>
+                            <div class="row ml-1">
+                                <h5><span style="font-family: Roboto,Arial,sans-serif;">₹</span>{{this.product.price}}
+                                </h5>
+                                <p class="bg-light border ml-3 pl-2 pr-2">Qty: {{this.quantity}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <div class="mt-5">
+                    <h6>Payment details</h6>
+                    <p>Amount Payable on Delivery <span
+                            style="font-family: Roboto,Arial,sans-serif;">₹</span>{{orderDetails.totalAmount}}</p>
+                </div>
+                {{/with}}
+            </div>
+        </div>
+    </div>
+</section>

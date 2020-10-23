@@ -114,13 +114,36 @@ router.post('/add-new-address', (req, res) => {
   });
 });
 
-router.get('/place-order',verifyLogin, async (req, res) => {
+router.get('/place-order', verifyLogin, async (req, res) => {
   const totalAmount = await userHelpers.getTotalAmount(req.session.user._id);
-  res.render('user/place-order', { user: req.session.user, totalAmount });
+  const cartItems = await userHelpers.getCartItems(req.session.user._id);
+  res.render('user/place-order', { user: req.session.user, totalAmount, cartItems });
 });
 
-router.post('/place-order', (req, res) => {
-  console.log(req.body);
+router.post('/place-order', async (req, res) => {
+  const address = await userHelpers.getAddress(req.session.user._id, req.body.addressId);
+  const products = await userHelpers.getCartItemsList(req.session.user._id);
+  const totalAmount = await userHelpers.getTotalAmount(req.session.user._id);
+  userHelpers.placeOrder(req.session.user._id, address, req.body.paymentMethod, products, totalAmount).then((orderId) => {
+    res.json({ codSuccess: true, _id: orderId });
+  });
+});
+
+router.get('/order-success/:id', verifyLogin, async (req, res) => {
+  const order = await userHelpers.getOrder(req.params.id);
+  console.log(order);
+  res.render('user/order-success', { order, user: req.session.user });
+});
+
+router.get('/my-orders', verifyLogin, async (req, res) => {
+  const orders = await userHelpers.getAllOrders(req.session.user._id);
+  res.render('user/my-orders', { orders, user: req.session.user });
+});
+
+router.get('/view-order/:id', async (req, res) => {
+  const order = await userHelpers.getOrder(req.params.id);
+  console.log(order);
+  res.render('user/view-order', { order, user: req.session.user });
 });
 
 module.exports = router;

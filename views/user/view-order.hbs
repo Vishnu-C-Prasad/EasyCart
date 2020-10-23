@@ -1,0 +1,62 @@
+<section>
+    {{#with order}}
+    <div class="container mb-5 mt-5">
+        <div class="card mb-3" style="width: 18rem;">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6 pt-2 pl-4 border-right">
+                        <h5 class="mb-4">Delivery Address</h5>
+                        {{#with orderDetails}}
+                        <h6>{{deliveryAddress.name}}</h6>
+                        <p>{{deliveryAddress.address}}, {{deliveryAddress.locality}}, {{deliveryAddress.landmark}},
+                            {{deliveryAddress.city}}, {{deliveryAddress.state}}</p>
+                        <p>Pincode. <span>{{deliveryAddress.pincode}}</span></p>
+                        <p>Mob. <span>{{deliveryAddress.mobile}}, {{deliveryAddress.altPhone}}</span></p>
+                        {{/with}}
+                    </div>
+                    <div class="col-md-6 pt-2 pl-4">
+                        <h6 class="mb-4">Payment details</h6>
+                        <h5>Total Amount: <span
+                                style="font-family: Roboto,Arial,sans-serif;">₹</span>{{orderDetails.totalAmount}}</h5>
+                        <p>Payment: <span>{{orderDetails.paymentMethod}}</span></p>
+                        <p>Amount Payable on Delivery: <span
+                                style="font-family: Roboto,Arial,sans-serif;">₹</span>{{orderDetails.totalAmount}}</p>
+                    </div>
+                </div>
+                <div class="p-2 pt-3 border-top">
+                    <h6 class="mb-4">Order Details</h6>
+                    <h6 class="font-weight-normal">ID: <span>{{orderDetails._id}}</span></h6>
+                    <h6 class="font-weight-normal">Status: <span>{{orderDetails.status}}</span></h6>
+                    <h6 class="font-weight-normal">Placed on: <span>{{orderDetails.date}}</span></h6>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-3" style="width: 18rem;">
+            <div class="card-body">
+                <div class="row">
+                    {{#each productDetails}}
+                    <div class="col-md-6 border-right">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="/images/product-images/{{this.product._id}}.jpg" alt="" class="img-fluid">
+                            </div>
+                            <div class="col-md-8">
+                                <h5>{{this.product.name}}</h5>
+                                <h6>{{this.product.category}}</h6>
+                                <p>{{this.product.description}}</p>
+                                <div class="row ml-1">
+                                    <h5><span
+                                            style="font-family: Roboto,Arial,sans-serif;">₹</span>{{this.product.price}}
+                                    </h5>
+                                    <p class="bg-light border ml-3 pl-2 pr-2">Qty: {{this.quantity}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/with}}
+</section>

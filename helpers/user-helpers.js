@@ -232,7 +232,6 @@ module.exports = {
         });
     },
     addNewAddress: (userId, data) => {
-        console.log(data);
         return new Promise((resolve, response) => {
             data._id = new ObjectID();
             db.get().collection(collection.USER_COLLECTION).updateOne({

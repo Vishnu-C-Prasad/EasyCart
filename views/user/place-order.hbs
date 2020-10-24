@@ -48,6 +48,67 @@
                                     </div>
                                 </div>
                                 {{/each}}
+                                <div class="py-3 px-3 mb-3 border">
+                                    <a role="button" id="add-new-address" class="text-decoration-none">
+                                        <h6 class="m-0">+ ADD A NEW ADDRESS</h6>
+                                    </a>
+                                    <div id="new-address-form" class="py-3" hidden>
+                                        <form id="add-address-checkout">
+                                            <div class="row my-3">
+                                                <div class="col">
+                                                    <label for="">Name</label>
+                                                    <input type="text" class="form-control" name="name">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="">Mobile number</label>
+                                                    <input type="text" class="form-control" name="mobile">
+                                                </div>
+                                            </div>
+                                            <div class="row my-3">
+                                                <div class="col">
+                                                    <label for="">Pincode</label>
+                                                    <input type="text" class="form-control" name="pincode">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="">Locality</label>
+                                                    <input type="text" class="form-control" name="locality">
+                                                </div>
+                                            </div>
+                                            <div class="row my-3">
+                                                <div class="col">
+                                                    <label for="">Address (Area and Street)</label>
+                                                    <input type="text" name="address"
+                                                        style="width: 100%; height: 5rem;">
+                                                </div>
+                                            </div>
+                                            <div class="row my-3">
+                                                <div class="col">
+                                                    <label for="">City/District/Town</label>
+                                                    <input type="text" class="form-control" name="city">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="">State</label>
+                                                    <input type="text" class="form-control" name="state">
+                                                </div>
+                                            </div>
+                                            <div class="row my-3">
+                                                <div class="col">
+                                                    <label for="">Landmark (Optional)</label>
+                                                    <input type="text" class="form-control" name="landmark">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="">Alternate Phone (Optional)</label>
+                                                    <input type="text" class="form-control" name="altPhone">
+                                                </div>
+                                            </div>
+                                            <div class="row my-3">
+                                                <button type="submit" class="btn btn-primary ml-3">Submit</button>
+                                                <a role="button" id="cancel-new-address"
+                                                    class="text-decoration-none font-weight-bold ml-4 mt-auto">Cancel</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -134,7 +195,7 @@
                                             <label class="form-radio-label" for="Online-payment">Online payment</label>
                                         </div>
                                     </div>
-                                        <button type="submit" class="btn btn-primary float-right mb-3">CHECKOUT</button>
+                                    <button type="submit" class="btn btn-primary float-right mb-3">CHECKOUT</button>
                                 </form>
                             </div>
                         </div>

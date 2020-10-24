@@ -1,5 +1,6 @@
 <section>
     <div class="container mt-5 mb-5 small">
+        {{#if orders}}
         {{#each orders}}
         <a href="/view-order/{{this._id}}" class="text-decoration-none text-dark">
             <div class="card mb-3" style="width: 18rem;">
@@ -28,8 +29,10 @@
                         <div class="col-md-6">
                             <h5>Delivery Address</h5>
                             <h6>{{this.deliveryAddress.name}}</h6>
-                            <p>{{this.deliveryAddress.address}}, {{this.deliveryAddress.locality}}, {{this.deliveryAddress.landmark}},
-                                {{this.deliveryAddress.city}}, {{this.deliveryAddress.state}} - {{this.deliveryAddress.pincode}}</p>
+                            <p>{{this.deliveryAddress.address}}, {{this.deliveryAddress.locality}},
+                                {{this.deliveryAddress.landmark}},
+                                {{this.deliveryAddress.city}}, {{this.deliveryAddress.state}} -
+                                {{this.deliveryAddress.pincode}}</p>
                             <p>Mob. <span>{{this.deliveryAddress.mobile}}, {{this.deliveryAddress.altPhone}}</span></p>
                         </div>
                     </div>
@@ -37,5 +40,17 @@
             </div>
         </a>
         {{/each}}
+        {{else}}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <div class="text-center empty-cart">
+                    <img src="images/empty-cart.webp" class="img-fluid" style="width: 15rem;">
+                    <h5 class="font-weight-normal">No orders available</h5>
+                    <p class="small">Order now.</p>
+                    <a href="/" class="btn btn-primary pr-5 pl-5">Shop now</a>
+                </div>
+            </div>
+        </div>
+        {{/if}}
     </div>
 </section>

@@ -45,7 +45,6 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', (req, res) => {
   userHelpers.doSignup(req.body).then((response) => {
-    console.log(response);
     req.session.loggedIn = true;
     req.session.user = response;
     res.redirect('/');
@@ -147,9 +146,7 @@ router.post('/verify-payment', (req, res) => {
 });
 
 router.get('/order-success/:id', verifyLogin, async (req, res) => {
-  console.log(req.params.id);
   const order = await userHelpers.getOrder(req.params.id);
-  console.log(order);
   res.render('user/order-success', { order, user: req.session.user });
 });
 
@@ -160,7 +157,6 @@ router.get('/my-orders', verifyLogin, async (req, res) => {
 
 router.get('/view-order/:id', async (req, res) => {
   const order = await userHelpers.getOrder(req.params.id);
-  console.log(order);
   res.render('user/view-order', { order, user: req.session.user });
 });
 

@@ -99,6 +99,20 @@ $('#Add-Address-form').submit((e) => {
     });
 });
 
+$('#add-address-checkout').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/add-new-address',
+        data: $('#add-address-checkout').serialize(),
+        method: 'post',
+        success: (response) => {
+           if(response) {
+               location.reload();
+           }
+        }
+    });
+});
+
 $('#checkout-form').submit((e) => {
     e.preventDefault();
     $.ajax({
@@ -121,22 +135,22 @@ const razorpayPayment = (order) => {
         "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
         "name": "EasyCart",
-        "description": "Test Transaction",
+        "description": "Secure Payments",
         "image": "https://avatars2.githubusercontent.com/u/64061326?s=460&u=361cb89e920400e33326d1abbdcda9399f15f955&v=4",
         "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "handler": function (response){
             verifyPayment(response, order);
         },
         "prefill": {
-            "name": "Gaurav Kumar",
-            "email": "gaurav.kumar@example.com",
+            "name": "Vishnu C Prasad",
+            "email": "vishnucprasad@example.com",
             "contact": "9999999999"
         },
         "notes": {
-            "address": "Razorpay Corporate Office"
+            "address": "EasyCart PVT.Ltd"
         },
         "theme": {
-            "color": "#F37254"
+            "color": "#007bff"
         }
     };
     var rzp1 = new Razorpay(options);

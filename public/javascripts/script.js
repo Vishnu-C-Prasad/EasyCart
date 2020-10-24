@@ -18,35 +18,6 @@ const addToCart = (event, productId) => {
     });
 }
 
-$('#Add-Address-form').submit((e) => {
-    e.preventDefault();
-    $.ajax({
-        url: '/add-new-address',
-        data: $('#Add-Address-form').serialize(),
-        method: 'post',
-        success: (response) => {
-            const div = `<h6>${response.name} &nbsp;&nbsp;${response.mobile}</h6> <p class="m-0">${response.address}, ${response.locality}, ${response.landmark}, ${response.city}, ${response.state} - <span class="font-weight-bold">${response.pincode}</span></p>`
-            document.getElementById('new-address-content').innerHTML = div;
-            document.getElementById('new-address-form').setAttribute("hidden", true);
-            document.getElementById('new-address-show').removeAttribute("hidden");
-        }
-    });
-});
-
-$('#checkout-form').submit((e) => {
-    e.preventDefault();
-    $.ajax({
-        url: '/place-order',
-        data: $('#checkout-form').serialize(),
-        method: 'post',
-        success: (response) => {
-            if (response.codSuccess) {
-                location.href = `/order-success/${response._id}`
-            }
-        }
-    });
-}); 
-
 const changeProductQuantity = (event, cartId, productId, count) => {
     let quantity = document.getElementById(productId).value;
     quantity = parseInt(quantity);
@@ -108,6 +79,84 @@ const removeFromCart = (event, cartId, productId) => {
                     document.getElementById('my-cart-count').innerHTML = parseInt(document.getElementById('my-cart-count').innerHTML) - quantity;
                     document.getElementById('price-section-count').innerHTML = parseInt(document.getElementById('price-section-count').innerHTML) - quantity;
                 }
+            }
+        }
+    });
+}
+
+$('#Add-Address-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/add-new-address',
+        data: $('#Add-Address-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            const div = `<h6>${response.name} &nbsp;&nbsp;${response.mobile}</h6> <p class="m-0">${response.address}, ${response.locality}, ${response.landmark}, ${response.city}, ${response.state} - <span class="font-weight-bold">${response.pincode}</span></p>`
+            document.getElementById('new-address-content').innerHTML = div;
+            document.getElementById('new-address-form').setAttribute("hidden", true);
+            document.getElementById('new-address-show').removeAttribute("hidden");
+        }
+    });
+});
+
+$('#checkout-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/place-order',
+        data: $('#checkout-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            if (response.codSuccess) {
+                location.href = `/order-success/${response._id}`
+            } else {
+                razorpayPayment(response);
+            }
+        }
+    });
+});
+
+const razorpayPayment = (order) => {
+    var options = {
+        "key": "rzp_test_TJAQ6gBYztR2QQ", // Enter the Key ID generated from the Dashboard
+        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "EasyCart",
+        "description": "Test Transaction",
+        "image": "https://avatars2.githubusercontent.com/u/64061326?s=460&u=361cb89e920400e33326d1abbdcda9399f15f955&v=4",
+        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+            verifyPayment(response, order);
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "gaurav.kumar@example.com",
+            "contact": "9999999999"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#F37254"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+}
+
+const verifyPayment = (payment, order) => {
+    console.log(order);
+    $.ajax({
+        url: 'verify-payment',
+        data: {
+            payment,
+            order
+        },
+        method: 'post',
+        success: (response) => {
+            if (response.status) {
+                location.href = `/order-success/${order.receipt}`
+            } else {
+                alert(response.errMessage);
             }
         }
     });

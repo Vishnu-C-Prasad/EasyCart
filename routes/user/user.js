@@ -125,11 +125,29 @@ router.post('/place-order', async (req, res) => {
   const products = await userHelpers.getCartItemsList(req.session.user._id);
   const totalAmount = await userHelpers.getTotalAmount(req.session.user._id);
   userHelpers.placeOrder(req.session.user._id, address, req.body.paymentMethod, products, totalAmount).then((orderId) => {
-    res.json({ codSuccess: true, _id: orderId });
+    if (req.body.paymentMethod === 'COD') {
+      res.json({ codSuccess: true, _id: orderId });
+    } else if (req.body.paymentMethod === 'onlinepayment') {
+      userHelpers.generateRazorpay(orderId, totalAmount).then((response) => {
+        res.json(response);
+      });
+    }
+  });
+});
+
+router.post('/verify-payment', (req, res) => {
+  console.log(req.body);
+  userHelpers.verifyPayment(req.body).then(() => {
+    userHelpers.changeOrderStatus(req.body['order[receipt]']).then(() => {
+      res.json({ status: true });
+    });
+  }).catch((err) => {
+    res.json({ status: false, errMessage: 'Payment falied' });
   });
 });
 
 router.get('/order-success/:id', verifyLogin, async (req, res) => {
+  console.log(req.params.id);
   const order = await userHelpers.getOrder(req.params.id);
   console.log(order);
   res.render('user/order-success', { order, user: req.session.user });

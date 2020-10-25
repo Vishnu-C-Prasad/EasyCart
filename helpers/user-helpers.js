@@ -2,7 +2,6 @@ var db = require('../config/connection');
 var collection = require('../config/collection');
 var bcrypt = require('bcrypt');
 const { ObjectID } = require('mongodb');
-const { response } = require('express');
 var Razorpay = require('razorpay');
 var instance = new Razorpay({
     key_id: 'rzp_test_TJAQ6gBYztR2QQ',
@@ -384,6 +383,18 @@ module.exports = {
                 }
             }).then((response) => {
                 resolve(response);
+            });
+        });
+    },
+    editPersonalInfo: (data, userId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.USER_COLLECTION).updateOne({
+                _id: ObjectID(userId)
+            }, {
+                $set: data
+            }).then(() => {
+                const user = db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
+                resolve(user);
             });
         });
     }

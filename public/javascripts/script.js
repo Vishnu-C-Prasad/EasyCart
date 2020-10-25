@@ -1,3 +1,6 @@
+$(document).ready(function () {
+    $('.toast').toast('show');
+});
 const loadImage = (event) => {
     document.getElementById('viewImage').src = URL.createObjectURL(event.target.files[0]);
 }
@@ -176,9 +179,25 @@ const verifyPayment = (payment, order) => {
     });
 }
 
-$(document).ready(function () {
-    $('.toast').toast('show');
-});
+const editPersonalInfo = (formId) => {
+    $(`#${formId}`).submit((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: '/edit-personal-info',
+            data: $(`#${formId}`).serialize(),
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById('update-success-alert').removeAttribute('hidden');
+                    setTimeout(() => {
+                        document.getElementById('update-success-alert').setAttribute('hidden', true);
+                    }, 5000);
+                }
+            }
+        });
+    });    
+}
+
 
 $(document).ready(function () {
     $("#edit-personal-info").click(function () {

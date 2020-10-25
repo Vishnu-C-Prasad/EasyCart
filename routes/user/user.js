@@ -160,4 +160,11 @@ router.get('/view-order/:id', async (req, res) => {
   res.render('user/view-order', { order, user: req.session.user });
 });
 
+router.post('/edit-personal-info', (req, res) => {
+  userHelpers.editPersonalInfo(req.body, req.session.user._id).then((user) => {
+    req.session.user = user;
+    res.json({status: true});
+  });
+});
+
 module.exports = router;

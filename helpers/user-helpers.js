@@ -397,5 +397,70 @@ module.exports = {
                 resolve(user);
             });
         });
+    },
+    changePassword: ({ currentPassword, newPassword, confirmPassword }, password, userId) => {
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(currentPassword, password).then(async (status) => {
+                if (status) {
+                    if (newPassword === confirmPassword) {
+                        newPassword = await bcrypt.hash(newPassword, 10);
+                        db.get().collection(collection.USER_COLLECTION).updateOne({
+                            _id: ObjectID(userId)
+                        }, {
+                            $set: {
+                                password: newPassword
+                            }
+                        }).then((response) => {
+                            resolve({ status: true, successMessage: 'Password changed successfully' });
+                        })
+                    } else {
+                        resolve({ status: false, errMessage: "Entered password dosen't match" });
+                    }
+                } else {
+                    resolve({ status: false, errMessage: 'Current password is incorrect' });
+                }
+            });
+        });
+    },
+    deleteAddress: ({ addressId }, userId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.USER_COLLECTION).updateOne({
+                _id: ObjectID(userId)
+            }, {
+                $pull: {
+                    addresses: {
+                        _id: ObjectID(addressId)
+                    }
+                }
+            }).then(() => {
+                const user = db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
+                resolve(user);
+            });
+        });
+    },
+    editAddress: (address, userId) => {
+        address._id = ObjectID(address._id);
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.USER_COLLECTION).updateOne({
+                _id: ObjectID(userId)
+            }, {
+                $pull: {
+                    addresses: {
+                        _id: ObjectID(address._id)
+                    }
+                }
+            }).then(() => {
+                db.get().collection(collection.USER_COLLECTION).updateOne({
+                    _id: ObjectID(userId)
+                }, {
+                    $push: {
+                        addresses: address
+                    }
+                }).then(() => {
+                    const user = db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
+                    resolve(user);
+                });
+            });
+        });
     }
 }

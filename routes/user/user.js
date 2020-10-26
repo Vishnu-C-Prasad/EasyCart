@@ -167,4 +167,24 @@ router.post('/edit-personal-info', (req, res) => {
   });
 });
 
+router.post('/change-password', (req, res) => {
+  userHelpers.changePassword(req.body, req.session.user.password, req.session.user._id).then((response) => {
+    res.json(response);
+  });
+});
+
+router.post('/delete-address', (req, res) => {
+  userHelpers.deleteAddress(req.body, req.session.user._id).then((user) => {
+    req.session.user = user;
+    res.json({status: true});
+  });
+});
+
+router.post('/edit-address', (req, res) => {
+  userHelpers.editAddress(req.body, req.session.user._id).then((user) => {
+    req.session.user = user;
+    res.json(req.body);
+  });
+});
+
 module.exports = router;

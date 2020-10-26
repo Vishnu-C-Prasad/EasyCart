@@ -1,6 +1,3 @@
-$(document).ready(function () {
-    $('.toast').toast('show');
-});
 const loadImage = (event) => {
     document.getElementById('viewImage').src = URL.createObjectURL(event.target.files[0]);
 }
@@ -109,9 +106,9 @@ $('#add-address-checkout').submit((e) => {
         data: $('#add-address-checkout').serialize(),
         method: 'post',
         success: (response) => {
-           if(response) {
-               location.reload();
-           }
+            if (response) {
+                location.reload();
+            }
         }
     });
 });
@@ -141,7 +138,7 @@ const razorpayPayment = (order) => {
         "description": "Secure Payments",
         "image": "https://avatars2.githubusercontent.com/u/64061326?s=460&u=361cb89e920400e33326d1abbdcda9399f15f955&v=4",
         "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "handler": function (response){
+        "handler": function (response) {
             verifyPayment(response, order);
         },
         "prefill": {
@@ -195,9 +192,78 @@ const editPersonalInfo = (formId) => {
                 }
             }
         });
-    });    
+    });
 }
 
+$('#change-password-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/change-password',
+        data: $('#change-password-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            if (response.status) {
+                document.getElementById('password-change-alert-body').innerHTML = response.successMessage;
+                document.getElementById('password-change-alert-body').classList.remove("text-danger");
+                document.getElementById('password-change-alert').removeAttribute('hidden');
+                setTimeout(() => {
+                    document.getElementById('password-change-alert').setAttribute('hidden', true);
+                }, 5000);
+            } else {
+                document.getElementById('password-change-alert-body').innerHTML = response.errMessage;
+                document.getElementById('password-change-alert-body').classList.add("text-danger");
+                document.getElementById('password-change-alert').removeAttribute('hidden');
+                setTimeout(() => {
+                    document.getElementById('password-change-alert').setAttribute('hidden', true);
+                }, 5000);
+            }
+        }
+    });
+});
+
+const deleteAddress = (event, addressId) => {
+    event.preventDefault();
+    $.ajax({
+        url: '/delete-address',
+        data: {
+            addressId
+        },
+        method: 'post',
+        success: (response) => {
+            document.getElementById(`address-${addressId}`).remove();
+            document.getElementById('manage-address-alert-body').innerHTML = 'Address deleted';
+            document.getElementById('manage-address-alert-body').classList.add("text-danger");
+            document.getElementById('manage-address-alert').removeAttribute('hidden');
+            setTimeout(() => {
+                document.getElementById('manage-address-alert').setAttribute('hidden', true);
+            }, 5000);
+        }
+    });
+}
+
+const editAddress = (event, addressId) => {
+    $(`#edit-address-form-${addressId}`).submit((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: '/edit-address',
+            data: $(`#edit-address-form-${addressId}`).serialize(),
+            method: 'post',
+            success: (response) => {
+                console.log(response);
+                document.getElementById(`address-${addressId}`).remove();
+                const div = `<h6>${response.name} &nbsp;&nbsp;${response.mobile}</h6> <p class="m-0">${response.address}, ${response.locality}, ${response.landmark}, ${response.city}, ${response.state} - <span class="font-weight-bold">${response.pincode}</span></p>`
+                document.getElementById('new-address-content').innerHTML = div;
+                document.getElementById('new-address-show').removeAttribute("hidden");
+                document.getElementById('manage-address-alert-body').innerHTML = 'Address edited successfully';
+                document.getElementById('manage-address-alert-body').classList.remove("text-danger");
+                document.getElementById('manage-address-alert').removeAttribute('hidden');
+                setTimeout(() => {
+                    document.getElementById('manage-address-alert').setAttribute('hidden', true);
+                }, 5000);
+            }
+        });
+    });
+}
 
 $(document).ready(function () {
     $("#edit-personal-info").click(function () {

@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-7 m-auto">
+        <div class="container mt-5 pl-5">
+            <div class="card mb-3">
+                <div class="row no-gutters" style="height: 80vh;">
+                    <div class="col-md-4 text-white p-4 d-flex align-content-between flex-wrap" style="background-color: #2874f0;">
+                        <div>
+                            <h2>Login</h2>
+                            <p class="small">Get access to Admin Panel</p>
+                        </div>
+                        <div>
+                            <img src="\images\EasyCartLogin.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-md-8 m-auto">
+                        <div class="card-body">
+                            <div class="text-center mb-5">
+                                <svg width="5em" height="5em" viewBox="0 0 16 16" class="bi bi-person-circle"
+                                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                                    <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                                </svg>
+                            </div>
+                            <form action="/admin/login" method="POST">
+                                <div class="form-group">
+                                    <label for="">Email Address</label>
+                                    <input type="email" class="form-control" name="email" placeholder="Enter email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="password">
+                                </div>
+                                {{#if loginErr}}
+                                <p class="text-danger">{{loginErr}}</p>
+                                {{/if}}
+                                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

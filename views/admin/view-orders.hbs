@@ -1,0 +1,54 @@
+<section>
+    <div class="container my-5">
+        <table class="table table-responsive-sm mt-3" id="data-table">
+            <thead class="bg-primary text-light">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Delivery Details</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                {{#with this}}
+                {{#each productDetails}}
+                <tr>
+                    <td>
+                        <img src="/images/product-images/{{this._id}}.jpg" alt=""
+                            class="img-fluid img-thumbnail table-img">
+                        <h6>{{this.name}}</h6>
+                    </td>
+                    <td>{{this.description}}</td>
+                    <td>Rs.{{this.price}}</td>
+                    <td>
+                        <h6>Order ID: <span class="font-weight-normal">{{../this._id}}</span></h6>
+                        <h6>{{../this.deliveryAddress.name}}</h6>
+                        <p>{{../this.deliveryAddress.address}}, {{../this.deliveryAddress.locality}},
+                            {{../this.deliveryAddress.landmark}},
+                            {{../this.deliveryAddress.city}}, {{../this.deliveryAddress.state}} -
+                            {{../this.deliveryAddress.pincode}}, Mob. <span>{{../this.deliveryAddress.mobile}},
+                                {{../this.deliveryAddress.altPhone}}</span></p>
+                    </td>
+                    <td>
+                        Order_{{#if ../this.status.placed}}Placed{{/if}}{{#if ../this.status.pending}}Pending{{/if}}{{#if ../this.status.shipped}}Shipped{{/if}}{{#if ../this.status.delivered}}Delivered{{/if}}
+                    </td>
+                    <td class="text-center" style="width: 15%;">
+                        {{#if ../this.status.placed}}
+                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;">Ship Order</a>
+                        {{/if}}
+                        {{#if ../this.status.shipped}}
+                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;">Order Delivered</a>
+                        {{/if}}
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;">Cancel Order</a>
+                    </td>
+                </tr>
+                {{/each}}
+                {{/with}}
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>

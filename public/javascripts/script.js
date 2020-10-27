@@ -1,3 +1,7 @@
+$(document).ready( function () {
+    $('#data-table').DataTable();
+} );
+
 const loadImage = (event) => {
     document.getElementById('viewImage').src = URL.createObjectURL(event.target.files[0]);
 }

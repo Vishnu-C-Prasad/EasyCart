@@ -6,7 +6,9 @@
                     <h5 class="card-title mb-5">Hi {{user.name}},</h5>
                     {{#with order}}
                     <div class="ml-auto">
-                        <h6>Order status: <span>{{orderDetails.status}}</span></h6>
+                        <h6>Order status:
+                            <span>{{#if orderDetails.status.placed}}Placed{{/if}}{{#if orderDetails.status.pending}}Pending{{/if}}{{#if orderDetails.status.shipped}}Shipped{{/if}}{{#if orderDetails.status.delivered}}Delivered{{/if}}</span>
+                        </h6>
                         <h6>Order placed on: <span class="font-weight-normal">{{orderDetails.date}}</span></h6>
                     </div>
                 </div>

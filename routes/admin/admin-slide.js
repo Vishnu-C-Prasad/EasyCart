@@ -9,7 +9,7 @@ const state = {
 
 router.get('/all-slides', function (req, res) {
   slideHelpers.getAllSlides().then((carouselItems) => {
-    res.render('admin/view-slides', { title: 'AdminPanel | All Slides', admin: true, carouselItems, toastMessage: state.toastMessage });
+    res.render('admin/view-slides', { title: 'AdminPanel | All Slides', admin: true, adminDetails: req.session.admin, carouselItems, toastMessage: state.toastMessage });
     state.toastMessage = false;
   });
 });
@@ -17,9 +17,9 @@ router.get('/all-slides', function (req, res) {
 router.get('/add-slide', function (req, res, next) {
   slideHelpers.getAllSlides().then((carouselItems) => {
     if (!carouselItems[0]) {
-      res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, class: 'active' });
+      res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, adminDetails: req.session.admin, class: 'active' });
     } else {
-      res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, class: '' });
+      res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, adminDetails: req.session.admin, class: '' });
     }
   })
 });
@@ -35,7 +35,7 @@ router.post('/add-slide', function (req, res) {
       } else {
         console.log(done);
 
-        res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, toastMessage: state.toastMessage });
+        res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, adminDetails: req.session.admin, toastMessage: state.toastMessage });
         state.toastMessage = false;
       }
     });

@@ -264,7 +264,19 @@ module.exports = {
     },
     placeOrder: (userId, address, paymentMethod, products, totalAmount) => {
         return new Promise((resolve, reject) => {
-            let status = paymentMethod === 'COD' ? 'placed' : 'pending';
+            let status = {
+                pending: false,
+                placed: false,
+                shipped: false,
+                delivered: false
+            }
+
+            if (paymentMethod === 'COD') {
+                status.placed = true;
+            } else {
+                status.pending = true;
+            }
+
             let orderObject = {
                 userId: ObjectID(userId),
                 deliveryAddress: address,
@@ -379,7 +391,8 @@ module.exports = {
                 _id: ObjectID(orderId)
             }, {
                 $set: {
-                    status: 'placed'
+                    'status.pending': false,
+                    'status.placed': true
                 }
             }).then((response) => {
                 resolve(response);

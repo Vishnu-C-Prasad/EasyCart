@@ -9,13 +9,13 @@ const state = {
 
 router.get('/all-products', function (req, res, next) {
   productHelpers.getAllProducts().then((products) => {
-    res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, products, toastMessage: state.toastMessage });
+    res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, adminDetails: req.session.admin, products, toastMessage: state.toastMessage });
     state.toastMessage = false;
   });
 });
 
 router.get('/add-product', function (req, res) {
-  res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true });
+  res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true, adminDetails: req.session.admin });
 });
 
 router.post('/add-product', function (req, res) {
@@ -29,7 +29,7 @@ router.post('/add-product', function (req, res) {
       } else {
         console.log(done);
 
-        res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true, toastMessage: state.toastMessage });
+        res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true, adminDetails: req.session.admin, toastMessage: state.toastMessage });
         state.toastMessage = false;
       }
     });
@@ -39,7 +39,7 @@ router.post('/add-product', function (req, res) {
 
 router.get('/edit-product/:id', async (req, res) => {
   let product = await productHelpers.getProduct(req.params.id);
-  res.render('admin/edit-product', { title: 'AdminPanel | Edit Products', product })
+  res.render('admin/edit-product', { title: 'AdminPanel | Edit Products', admin: true, adminDetails: req.session.admin, product })
 });
 
 router.post('/edit-product/:id', (req, res) => {

@@ -5,7 +5,7 @@ var userHelpers = require('../../helpers/user-helpers');
 var router = express.Router();
 
 const verifyLogin = (req, res, next) => {
-  if (req.session.loggedIn) {
+  if (req.session.userLoggedIn) {
     next();
   } else {
     res.redirect('/login');
@@ -21,22 +21,22 @@ router.get('/', async function (req, res, next) {
 
   productHelpers.getAllProducts().then((products) => {
     slideHelpers.getAllSlides().then((carouselItems) => {
-      res.render('user/view-products', { title: 'EasyCart | Home', products, carouselItems, user: req.session.user, loggedIn: req.session.loggedIn, cartCount });
+      res.render('user/view-products', { title: 'EasyCart | Home', products, carouselItems, user: req.session.user, loggedIn: req.session.userLoggedIn, cartCount });
     });
   });
 });
 
 router.get('/login', (req, res) => {
-  if (req.session.loggedIn) {
+  if (req.session.userLoggedIn) {
     res.redirect('/');
   } else {
-    res.render('user/login', { title: 'EasyCart | Login', loginErr: req.session.loginErr });
-    req.session.loginErr = false;
+    res.render('user/login', { title: 'EasyCart | Login', loginErr: req.session.userLoginErr });
+    req.session.userLoginErr = false;
   }
 });
 
 router.get('/signup', (req, res) => {
-  if (req.session.loggedIn) {
+  if (req.session.userLoggedIn) {
     res.redirect('/');
   } else {
     res.render('user/signup', { title: 'EasyCart | Signup' })
@@ -45,7 +45,7 @@ router.get('/signup', (req, res) => {
 
 router.post('/signup', (req, res) => {
   userHelpers.doSignup(req.body).then((response) => {
-    req.session.loggedIn = true;
+    req.session.userLoggedIn = true;
     req.session.user = response;
     res.redirect('/');
   });
@@ -54,18 +54,19 @@ router.post('/signup', (req, res) => {
 router.post('/login', (req, res) => {
   userHelpers.doLogin(req.body).then((response) => {
     if (response.status) {
-      req.session.loggedIn = true;
+      req.session.userLoggedIn = true;
       req.session.user = response.user;
       res.redirect('/');
     } else {
-      req.session.loginErr = 'Invalid Username or Password';
+      req.session.userLoginErr = 'Invalid Username or Password';
       res.redirect('/login');
     }
   });
 });
 
 router.get('/logout', (req, res) => {
-  req.session.destroy();
+  req.session.user = null;
+  req.session.userLoggedIn = false;
   res.redirect('/');
 });
 
@@ -163,7 +164,7 @@ router.get('/view-order/:id', async (req, res) => {
 router.post('/edit-personal-info', (req, res) => {
   userHelpers.editPersonalInfo(req.body, req.session.user._id).then((user) => {
     req.session.user = user;
-    res.json({status: true});
+    res.json({ status: true });
   });
 });
 
@@ -176,7 +177,7 @@ router.post('/change-password', (req, res) => {
 router.post('/delete-address', (req, res) => {
   userHelpers.deleteAddress(req.body, req.session.user._id).then((user) => {
     req.session.user = user;
-    res.json({status: true});
+    res.json({ status: true });
   });
 });
 

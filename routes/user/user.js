@@ -3,6 +3,7 @@ var productHelpers = require('../../helpers/product-helpers');
 var slideHelpers = require('../../helpers/slide-helpers');
 var userHelpers = require('../../helpers/user-helpers');
 var router = express.Router();
+var fs = require('fs');
 
 const verifyLogin = (req, res, next) => {
   if (req.session.userLoggedIn) {
@@ -102,7 +103,7 @@ router.post('/remove-from-cart', (req, res, next) => {
   });
 });
 
-router.get('/my-profile/', verifyLogin, async (req, res) => {
+router.get('/my-profile', verifyLogin, async (req, res) => {
   const cartCount = await userHelpers.getCartCount(req.session.user._id);
   res.render('user/view-profile', { user: req.session.user, cartCount });
 });
@@ -185,6 +186,33 @@ router.post('/edit-address', (req, res) => {
   userHelpers.editAddress(req.body, req.session.user._id).then((user) => {
     req.session.user = user;
     res.json(req.body);
+  });
+});
+
+router.post('/update-profile-picture/:id', (req, res) => {
+  if (req.files.profilePicture) {
+    userHelpers.updateProfilePicture(req.params.id, true).then((user) => {
+
+      let image = req.files.profilePicture;
+
+      image.mv(`./public/images/users/profile-pictures/${req.params.id}.jpg`, (err, done) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(done);
+        }
+      });
+      req.session.user = user;
+      res.redirect('/my-profile')
+    });
+  }
+});
+
+router.get('/remove-profile-picture/:id', (req, res) => {
+  userHelpers.updateProfilePicture(req.params.id, false).then((user) => {
+    req.session.user = user;
+    fs.unlinkSync(`./public/images/users/profile-pictures/${req.params.id}.jpg`);
+    res.redirect('/my-profile');
   });
 });
 

@@ -1,19 +1,29 @@
 <section>
     <div class="container my-5">
-        <table class="table table-responsive-sm mt-3" id="data-table">
+        <table class="table table-responsive-sm table-hover mt-3" id="data-table">
             <thead class="bg-primary text-light">
                 <tr>
+                    <th scope="col">Image</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Mobile</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
                 {{#each users}}
                 <tr>
-                    <td>{{this.name}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{this.mobile}}</td>
+                    <td scope="row" class="align-middle">
+                        {{#if this.profilePicture}}
+                        <img src="/images/users/profile-pictures/{{this._id}}.jpg" alt="" id="viewImage"
+                            class="img-fluid img-thumbnail table-img rounded-circle" width="50%">
+                        {{else}}
+                        <img src="/images/profile-pic-male.svg" alt="" id="viewImage"
+                            class="img-fluid img-thumbnail table-img rounded-circle" width="50%">
+                        {{/if}}
+                    </td>
+                    <td class="align-middle">{{this.name}}</td>
+                    <td class="align-middle">{{this.email}}</td>
+                    <td class="align-middle">{{this.mobile}}</td>
                 </tr>
                 {{/each}}
             </tbody>

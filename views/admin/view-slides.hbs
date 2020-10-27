@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <table class="table table-responsive-sm mt-3" id="data-table">
+        <table class="table table-responsive-sm table-hover mt-3" id="data-table">
             <thead class="bg-primary text-light">
                 <tr>
                     <th scope="col">Product Name</th>
@@ -36,19 +36,19 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
                 {{#each carouselItems}}
                 <tr>
-                    <td>{{this.name}}</td>
-                    <td><img src="/images/slide-images/{{this._id}}.jpg" alt=""
+                    <td class="align-middle">{{this.name}}</td>
+                    <td class="align-middle"><img src="/images/slide-images/{{this._id}}.jpg" alt=""
                             class="img-fluid img-thumbnail table-img"></td>
-                    <td>{{this.description}}</td>
-                    <td>Rs.{{this.price}}</td>
-                    <td class="text-center">
-                        <a href="/admin/edit-slide/{{this._id}}" class="btn btn-primary">Edit</a>
+                    <td class="align-middle">{{this.description}}</td>
+                    <td class="align-middle">Rs.{{this.price}}</td>
+                    <td class="align-middle text-center" style="width: 15%;">
+                        <a href="/admin/edit-slide/{{this._id}}" class="btn btn-primary btn-sm my-1" style="width: 100%;">Edit</a>
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                        <button type="button" class="btn btn-danger btn-sm my-1" style="width: 100%;" data-toggle="modal"
                             data-target="#staticBackdrop{{this._id}}">Delete</button>
 
                         <!-- Modal -->

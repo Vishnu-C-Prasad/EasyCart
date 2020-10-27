@@ -7,6 +7,7 @@ var hbs = require('express-handlebars');
 var fileUpload = require('express-fileupload');
 var db = require('./config/connection');
 var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 var userRouter = require('./routes/user/user');
 var adminRouter = require('./routes/admin/admin');
@@ -19,7 +20,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: `${__dirname}/views/layout/`, partialsDir: `${__dirname}/views/partials/`}));
+app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'layout', layoutsDir: `${__dirname}/views/layout/`, partialsDir: `${__dirname}/views/partials/` }));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -28,10 +29,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(fileUpload());
-app.use(session({ secret: 'EasyCartKey', cookie: { maxAge: 1000 * 3600 * 24 * 30 * 2 } }));
+app.use(session({
+  secret: 'EasyCartKey5f9512305dc3d50aa84f937c', cookie: { maxAge: 1000 * 3600 * 24 * 30 * 2 }, store: new MongoStore({
+    url: 'mongodb://localhost:27017/EasyCartParellel',
+    ttl: 14 * 24 * 60 * 60
+  })
+}));
 db.connect((err) => {
- if (err) console.log(`Connection Error: ${err}`);
- else console.log('Database Connected to PORT: 27017');
+  if (err) console.log(`Connection Error: ${err}`);
+  else console.log('Database Connected to PORT: 27017');
 });
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
@@ -39,12 +45,12 @@ app.use('/admin', adminProductRouter);
 app.use('/admin', adminSlideRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -3,6 +3,7 @@ var collection = require('../config/collection');
 var bcrypt = require('bcrypt');
 const { ObjectID } = require('mongodb');
 var Razorpay = require('razorpay');
+const { resolve } = require('path');
 var instance = new Razorpay({
     key_id: 'rzp_test_TJAQ6gBYztR2QQ',
     key_secret: 'hbCi42pheI8nY536mv7SX1Sp',
@@ -473,6 +474,20 @@ module.exports = {
                     const user = db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
                     resolve(user);
                 });
+            });
+        });
+    },
+    updateProfilePicture: (userId, profilePictureStatus) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.USER_COLLECTION).updateOne({
+                _id: ObjectID(userId)
+            }, {
+                $set: {
+                    profilePicture: profilePictureStatus
+                }
+            }).then((response) => {
+                const user = db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectID(userId) });
+                resolve(user);
             });
         });
     }

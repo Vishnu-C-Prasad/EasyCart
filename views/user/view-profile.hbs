@@ -5,7 +5,76 @@
                 <div class="card" style="width: 18rem;">
                     <div class="card-body py-2">
                         <div class="row px-2">
-                            <img src="/images/profile-pic-male.svg" alt="">
+                            <div class="" style="width: 20%;">
+                                <!-- Button trigger modal -->
+                                <a type="button" class="btn btn-link p-0" data-toggle="modal"
+                                    data-target="#profile-picture-modal">
+                                    {{#if user.profilePicture}}
+                                    <img src="/images/users/profile-pictures/{{user._id}}.jpg" alt=""
+                                        style="width: 100%;" class="rounded rounded-circle">
+                                    {{else}}
+                                    <img src="/images/profile-pic-male.svg" alt="">
+                                    {{/if}}
+                                </a>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="profile-picture-modal" data-backdrop="static"
+                                    data-keyboard="false" tabindex="-1" aria-labelledby="profile-picture-modalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-primary" id="profile-picture-modalLabel">
+                                                    EasyCart
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center border-bottom mb-3">
+                                                {{#if user.profilePicture}}
+                                                <img src="/images/users/profile-pictures/{{user._id}}.jpg" alt=""
+                                                    id="viewImage" class="img-fluid" width="50%">
+                                                {{else}}
+                                                <img src="/images/profile-pic-male.svg" alt="" id="viewImage"
+                                                    class="img-fluid" width="50%">
+                                                {{/if}}
+
+                                                <form action="/update-profile-picture/{{user._id}}" method="POST"
+                                                    enctype="multipart/form-data">
+                                                    <div class="form-group text-center">
+                                                        <label for="">Upload new image</label>
+                                                        <br>
+                                                        <label class="btn btn-light border border-secondary"
+                                                            for="my-file-selector">
+                                                            <input id="my-file-selector" required type="file"
+                                                                name="profilePicture" style="display:none"
+                                                                onchange="loadImage(event);">
+                                                            Choose Image
+                                                        </label>
+                                                        <span class='bg-light text-dark rounded-pill ml-2 p-2 pl-4 pr-4'
+                                                            id="upload-file-info"></span>
+                                                    </div>
+                                                    <div class="row">
+                                                        {{#if user.profilePicture}}
+                                                        <a href="/remove-profile-picture/{{user._id}}" type="button"
+                                                            class="btn btn-danger mx-4"
+                                                            onclick="return confirm('Are you sure you want to remove this profile picture?')">Remove</a>
+                                                        <button type="submit"
+                                                            class="btn btn-primary mr-4 ml-auto">Upload</button>
+                                                        {{else}}
+                                                        <button type="submit"
+                                                            class="btn btn-primary mr-4 ml-auto">Upload</button>
+                                                        {{/if}}
+                                                    </div>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="mx-3">
                                 <p class="m-0 pt-2 small">Hello,</p>
                                 <h6 class="mt-1">{{user.name}}</h6>

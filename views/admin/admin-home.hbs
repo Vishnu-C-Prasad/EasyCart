@@ -34,7 +34,6 @@
                             <table class="table table-responsive-sm mt-3">
                                 <thead class="bg-light text-dark">
                                     <tr>
-                                        <th scope="col">#</th>
                                         <th scope="col">Product</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Description</th>
@@ -44,14 +43,13 @@
                                 <tbody>
                                     {{#with product}}
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td><img src="/images/product-images/{{_id}}.jpg" alt=""
+                                        <td class="align-middle"><img src="/images/product-images/{{_id}}.jpg" alt=""
                                                 class="img-fluid img-thumbnail table-img">
                                             <h6>{{name}}</h6>
                                         </td>
-                                        <td>{{category}}</td>
-                                        <td>{{description}}</td>
-                                        <td>Rs.{{price}}</td>
+                                        <td class="align-middle">{{category}}</td>
+                                        <td class="align-middle">{{description}}</td>
+                                        <td class="align-middle">Rs.{{price}}</td>
                                     </tr>
                                     {{/with}}
                                 </tbody>
@@ -60,6 +58,103 @@
                     </div>
                     <div class="text-center m-3">
                         <a href="/admin/all-products" class="btn btn-primary" style="width: 100%;">View All Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3" style="width: 100%;">
+                    <div class="container">
+                        <div class="container">
+                            <div class="row mt-3">
+                                <h5 class="text-primary mb-0 mt-2">Orders</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="container">
+                            <table class="table table-responsive-sm mt-3">
+                                <thead class="bg-light text-dark">
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Delivery Details</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#with order}}
+                                    <tr>
+                                        <td class="align-middle"><img
+                                                src="/images/product-images/{{productDetails.0._id}}.jpg" alt=""
+                                                class="img-fluid img-thumbnail table-img">
+                                            <h6>{{productDetails.0.name}}</h6>
+                                        </td>
+                                        <td class="align-middle">{{productDetails.0.description}}</td>
+                                        <td class="align-middle">Rs.{{productDetails.0.price}}</td>
+                                        <td class="align-middle">{{deliveryAddress}}</td>
+                                        <td class="align-middle">
+                                            Order_{{#if status.placed}}Placed{{/if}}{{#if status.pending}}Pending{{/if}}{{#if status.shipped}}Shipped{{/if}}{{#if status.delivered}}Delivered{{/if}}
+                                        </td>
+                                    </tr>
+                                    {{/with}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-center m-3">
+                        <a href="/admin/all-orders" class="btn btn-primary" style="width: 100%;">View All Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3" style="width: 100%;">
+                    <div class="container">
+                        <div class="container">
+                            <div class="row mt-3">
+                                <h5 class="text-primary mb-0 mt-2">Users</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="container">
+                            <table class="table table-responsive-sm mt-3">
+                                <thead class="bg-light text-dark">
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Mobile</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#with user}}
+                                    <tr>
+                                        <td scope="row" class="align-middle">
+                                            {{#if profilePicture}}
+                                            <img src="/images/users/profile-pictures/{{_id}}.jpg" alt=""
+                                                id="viewImage" class="img-fluid img-thumbnail table-img rounded-circle"
+                                                width="50%">
+                                            {{else}}
+                                            <img src="/images/profile-pic-male.svg" alt="" id="viewImage"
+                                                class="img-fluid img-thumbnail table-img rounded-circle" width="50%">
+                                            {{/if}}
+                                        </td>
+                                        <td class="align-middle">{{name}}</td>
+                                        <td class="align-middle">{{email}}</td>
+                                        <td class="align-middle">{{mobile}}</td>
+                                    </tr>
+                                    {{/with}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="text-center m-3">
+                        <a href="/admin/all-users" class="btn btn-primary" style="width: 100%;">View All Users</a>
                     </div>
                 </div>
             </div>

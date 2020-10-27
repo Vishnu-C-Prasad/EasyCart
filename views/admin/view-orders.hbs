@@ -1,6 +1,6 @@
 <section>
     <div class="container my-5">
-        <table class="table table-responsive-sm mt-3" id="data-table">
+        <table class="table table-responsive-sm table-hover mt-3" id="data-table">
             <thead class="bg-primary text-light">
                 <tr>
                     <th scope="col">Product</th>
@@ -11,19 +11,19 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
                 {{#each orders}}
                 {{#with this}}
                 {{#each productDetails}}
                 <tr>
-                    <td>
+                    <td class="align-middle">
                         <img src="/images/product-images/{{this._id}}.jpg" alt=""
                             class="img-fluid img-thumbnail table-img">
                         <h6>{{this.name}}</h6>
                     </td>
-                    <td>{{this.description}}</td>
-                    <td>Rs.{{this.price}}</td>
-                    <td>
+                    <td class="align-middle">{{this.description}}</td>
+                    <td class="align-middle">Rs.{{this.price}}</td>
+                    <td class="align-middle">
                         <h6>Order ID: <span class="font-weight-normal">{{../this._id}}</span></h6>
                         <h6>{{../this.deliveryAddress.name}}</h6>
                         <p>{{../this.deliveryAddress.address}}, {{../this.deliveryAddress.locality}},
@@ -32,10 +32,10 @@
                             {{../this.deliveryAddress.pincode}}, Mob. <span>{{../this.deliveryAddress.mobile}},
                                 {{../this.deliveryAddress.altPhone}}</span></p>
                     </td>
-                    <td>
+                    <td class="align-middle">
                         Order_{{#if ../this.status.placed}}Placed{{/if}}{{#if ../this.status.pending}}Pending{{/if}}{{#if ../this.status.shipped}}Shipped{{/if}}{{#if ../this.status.delivered}}Delivered{{/if}}
                     </td>
-                    <td class="text-center" style="width: 15%;">
+                    <td class="align-middle text-center" style="width: 15%;">
                         {{#if ../this.status.placed}}
                         <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;">Ship Order</a>
                         {{/if}}

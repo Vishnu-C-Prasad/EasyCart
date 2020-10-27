@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <table class="table table-responsive-sm mt-3" id="data-table">
+        <table class="table table-responsive-sm table-hover mt-3" id="data-table">
             <thead class="bg-primary text-light">
                 <tr>
                     <th scope="col">Product</th>
@@ -36,22 +36,23 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
                 {{#each products}}
                 <tr>
-                    <td><img src="/images/product-images/{{this._id}}.jpg" alt=""
+                    <td class="align-middle"><img src="/images/product-images/{{this._id}}.jpg" alt=""
                             class="img-fluid img-thumbnail table-img">
                         <h6>{{this.name}}</h6>
                     </td>
-                    <td>{{this.category}}</td>
-                    <td>{{this.description}}</td>
-                    <td>Rs.{{this.price}}</td>
-                    <td class="text-center">
-                        <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">Edit</a>
+                    <td class="align-middle">{{this.category}}</td>
+                    <td class="align-middle">{{this.description}}</td>
+                    <td class="align-middle">Rs.{{this.price}}</td>
+                    <td class="align-middle" style="width: 15%;">
+                        <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary btn-sm my-1" style="width: 100%;">Edit</a>
+                        <br>
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                            data-target="#staticBackdrop{{this._id}}">Delete</button>
+                        <button type="button" class="btn btn-danger btn-sm my-1" data-toggle="modal"
+                            data-target="#staticBackdrop{{this._id}}" style="width: 100%;">Delete</button>
 
                         <!-- Modal -->
                         <div class="modal fade" id="staticBackdrop{{this._id}}" data-backdrop="static" data-keyboard="false"

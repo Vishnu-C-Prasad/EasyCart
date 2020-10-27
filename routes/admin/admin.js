@@ -15,8 +15,15 @@ const verifyLogin = (req, res, next) => {
 router.get('/', verifyLogin, function (req, res, next) {
   productHelpers.getAllProducts().then((products) => {
     slideHelpers.getAllSlides().then((carouselItems) => {
-      const product = products[0];
-      res.render('admin/admin-home', { title: 'AdminPanel | Home', admin: true, adminDetails: req.session.admin, carouselItems, product });
+      adminHelpers.getAllOrders().then((orders) => {
+        adminHelpers.getAllUsers().then((users) => {
+          const product = products[0];
+          const order = orders[0];
+          const user = users[0];
+          console.log(user);
+          res.render('admin/admin-home', { title: 'AdminPanel | Home', admin: true, adminDetails: req.session.admin, carouselItems, product, order, user });
+        });
+      });
     })
   });
 });

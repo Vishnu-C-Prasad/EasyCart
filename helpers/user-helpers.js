@@ -263,13 +263,14 @@ module.exports = {
             resolve(cart.products);
         });
     },
-    placeOrder: (userId, address, paymentMethod, products, totalAmount) => {
+    placeOrder: (userId, address, paymentMethod, products, totalAmount, productCount) => {
         return new Promise((resolve, reject) => {
             let status = {
                 pending: false,
                 placed: false,
                 shipped: false,
-                delivered: false
+                delivered: false,
+                canceled: false
             }
 
             if (paymentMethod === 'COD') {
@@ -283,6 +284,7 @@ module.exports = {
                 deliveryAddress: address,
                 paymentMethod: paymentMethod,
                 products: products,
+                productCount: productCount,
                 totalAmount: totalAmount,
                 status: status,
                 date: new Date()

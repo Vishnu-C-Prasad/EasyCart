@@ -54,5 +54,43 @@ module.exports = {
             const users = await db.get().collection(collection.USER_COLLECTION).find().toArray();
             resolve(users);
         });
+    },
+    shipOrder: ({ orderId }) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({
+                _id: ObjectID(orderId)
+            }, {
+                $set: {
+                    status: {
+                        pending: false,
+                        placed: false,
+                        shipped: true,
+                        delivered: false,
+                        canceled: false
+                    }
+                }
+            }).then((response) => {
+                resolve();
+            });
+        });
+    },
+    orderDelivered: ({ orderId }) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({
+                _id: ObjectID(orderId)
+            }, {
+                $set: {
+                    status: {
+                        pending: false,
+                        placed: false,
+                        shipped: false,
+                        delivered: true,
+                        canceled: false
+                    }
+                }
+            }).then((response) => {
+                resolve();
+            });
+        });
     }
 }

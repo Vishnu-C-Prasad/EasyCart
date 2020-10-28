@@ -17,11 +17,7 @@ router.get('/', verifyLogin, function (req, res, next) {
     slideHelpers.getAllSlides().then((carouselItems) => {
       adminHelpers.getAllOrders().then((orders) => {
         adminHelpers.getAllUsers().then((users) => {
-          const product = products[0];
-          const order = orders[0];
-          const user = users[0];
-          console.log(user);
-          res.render('admin/admin-home', { title: 'AdminPanel | Home', admin: true, adminDetails: req.session.admin, carouselItems, product, order, user });
+          res.render('admin/admin-home', { title: 'AdminPanel | Home', admin: true, adminDetails: req.session.admin, carouselItems, products, orders, users });
         });
       });
     })
@@ -66,6 +62,18 @@ router.get('/all-users', verifyLogin, (req, res) => {
   adminHelpers.getAllUsers().then((users) => {
     console.log(users);
     res.render('admin/view-users', { users, admin: true, adminDetails: req.session.admin });
+  });
+});
+
+router.post('/ship-order', (req, res) => {
+  adminHelpers.shipOrder(req.body).then((response) => {
+    res.json({ status: true });
+  });
+});
+
+router.post('/order-delivered', (req, res) => {
+  adminHelpers.orderDelivered(req.body).then((response) => {
+    res.json({ status: true });
   });
 });
 

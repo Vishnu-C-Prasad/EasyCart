@@ -4,8 +4,8 @@
             <thead class="bg-primary text-light">
                 <tr>
                     <th scope="col">Product</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Price</th>
+                    <th scope="col" class="text-truncate">Total Amount</th>
+                    <th scope="col" class="text-truncate">Payment</th>
                     <th scope="col">Delivery Details</th>
                     <th scope="col">Status</th>
                     <th></th>
@@ -13,40 +13,51 @@
             </thead>
             <tbody class="bg-white">
                 {{#each orders}}
-                {{#with this}}
-                {{#each productDetails}}
                 <tr>
                     <td class="align-middle">
-                        <img src="/images/product-images/{{this._id}}.jpg" alt=""
+                        <p class="text-truncate">Total {{this.productCount}} product</p>
+                        <img src="/images/product-images/{{this.productDetails.0._id}}.jpg" alt=""
                             class="img-fluid img-thumbnail table-img">
-                        <h6>{{this.name}}</h6>
+                        <h6>{{this.productDetails.0.name}}</h6>
                     </td>
-                    <td class="align-middle">{{this.description}}</td>
-                    <td class="align-middle">Rs.{{this.price}}</td>
+                    <td class="align-middle">Rs.{{this.totalAmount}}</td>
+                    <td class="align-middle">{{this.paymentMethod}}</td>
                     <td class="align-middle">
-                        <h6>Order ID: <span class="font-weight-normal">{{../this._id}}</span></h6>
-                        <h6>{{../this.deliveryAddress.name}}</h6>
-                        <p>{{../this.deliveryAddress.address}}, {{../this.deliveryAddress.locality}},
-                            {{../this.deliveryAddress.landmark}},
-                            {{../this.deliveryAddress.city}}, {{../this.deliveryAddress.state}} -
-                            {{../this.deliveryAddress.pincode}}, Mob. <span>{{../this.deliveryAddress.mobile}},
-                                {{../this.deliveryAddress.altPhone}}</span></p>
+                        <h6>Order ID: <span class="font-weight-normal">{{this._id}}</span></h6>
+                        <h6>{{this.deliveryAddress.name}}</h6>
+                        <p>{{this.deliveryAddress.address}}, {{this.deliveryAddress.locality}},
+                            {{this.deliveryAddress.landmark}},
+                            {{this.deliveryAddress.city}}, {{this.deliveryAddress.state}} -
+                            {{this.deliveryAddress.pincode}}, Mob. <span>{{this.deliveryAddress.mobile}},
+                                {{this.deliveryAddress.altPhone}}</span></p>
                     </td>
-                    <td class="align-middle">
-                        Order_{{#if ../this.status.placed}}Placed{{/if}}{{#if ../this.status.pending}}Pending{{/if}}{{#if ../this.status.shipped}}Shipped{{/if}}{{#if ../this.status.delivered}}Delivered{{/if}}
+                    <td class="align-middle text-truncate" id="order-status-{{this._id}}">
+                        Order
+                        {{#if this.status.placed}}Placed{{/if}}{{#if this.status.pending}}Pending{{/if}}{{#if this.status.shipped}}Shipped{{/if}}{{#if this.status.delivered}}Delivered{{/if}}{{#if this.status.canceled}}Canceled{{/if}}
                     </td>
                     <td class="align-middle text-center" style="width: 15%;">
-                        {{#if ../this.status.placed}}
-                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;">Ship Order</a>
+                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;">View Order</a>
+                        {{#if this.status.delivered}}
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;">Remove Order</a>
+                        {{else}}
+                        {{#if this.status.canceled}}
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;">Remove Order</a>
+                        {{else}}
+                        {{#if this.status.placed}}
+                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;"
+                            onclick="shipOrder(event, '{{this._id}}');" id="ship-button-{{this._id}}">Ship
+                            Order</a>
                         {{/if}}
-                        {{#if ../this.status.shipped}}
-                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;">Order Delivered</a>
+                        {{#if this.status.shipped}}
+                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;"
+                            onclick="orderDelivered(event, '{{this._id}}');" id="delivered-button-{{this._id}}">Order
+                            Delivered</a>
                         {{/if}}
-                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;">Cancel Order</a>
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;" id="cancel-button-{{this._id}}">Cancel Order</a>
+                        {{/if}}
+                        {{/if}}
                     </td>
                 </tr>
-                {{/each}}
-                {{/with}}
                 {{/each}}
             </tbody>
         </table>

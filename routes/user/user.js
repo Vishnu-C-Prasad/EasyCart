@@ -125,7 +125,8 @@ router.post('/place-order', async (req, res) => {
   const address = await userHelpers.getAddress(req.session.user._id, req.body.addressId);
   const products = await userHelpers.getCartItemsList(req.session.user._id);
   const totalAmount = await userHelpers.getTotalAmount(req.session.user._id);
-  userHelpers.placeOrder(req.session.user._id, address, req.body.paymentMethod, products, totalAmount).then((orderId) => {
+  const cartCount = await userHelpers.getCartCount(req.session.user._id);
+  userHelpers.placeOrder(req.session.user._id, address, req.body.paymentMethod, products, totalAmount, cartCount).then((orderId) => {
     if (req.body.paymentMethod === 'COD') {
       res.json({ codSuccess: true, _id: orderId });
     } else if (req.body.paymentMethod === 'onlinepayment') {

@@ -1,36 +1,39 @@
 <section>
     <div class="container mt-3">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <div class="card mb-3" style="width: 100%;">
                     <div class="container">
                         <div class="container">
                             <div class="row mt-3">
                                 <h5 class="text-primary mb-0 mt-2">Slides</h5>
+                                <div class="text-center ml-auto">
+                                    <a href="/admin/all-slides" class="btn btn-outline-primary">View All
+                                        Slides</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div style="height: 45vh; overflow-x: auto; overflow-y: hidden;">
                         {{>user-carousel}}
-                    </div>
-                    <div class="text-center m-3">
-                        <a href="/admin/all-slides" class="btn btn-primary" style="width: 100%;">View All Slides</a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <div class="card mb-3" style="width: 100%;">
                     <div class="container">
                         <div class="container">
                             <div class="row mt-3">
                                 <h5 class="text-primary mb-0 mt-2">Products</h5>
+                                <div class="text-center ml-auto">
+                                    <a href="/admin/all-products" class="btn btn-outline-primary">View All
+                                        Products</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <div class="container">
+                        <div class="container" style="height: 45vh; overflow-x: auto; overflow-y: hidden;">
                             <table class="table table-responsive-sm mt-3">
                                 <thead class="bg-light text-dark">
                                     <tr>
@@ -41,124 +44,137 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{#with product}}
+                                    {{#each products}}
                                     <tr>
-                                        <td class="align-middle"><img src="/images/product-images/{{_id}}.jpg" alt=""
-                                                class="img-fluid img-thumbnail table-img">
-                                            <h6>{{name}}</h6>
+                                        <td class="align-middle"><img src="/images/product-images/{{this._id}}.jpg"
+                                                alt="" class="img-fluid img-thumbnail table-img">
+                                            <h6>{{this.name}}</h6>
                                         </td>
-                                        <td class="align-middle">{{category}}</td>
-                                        <td class="align-middle">{{description}}</td>
-                                        <td class="align-middle">Rs.{{price}}</td>
+                                        <td class="align-middle">{{this.category}}</td>
+                                        <td class="align-middle">{{this.description}}</td>
+                                        <td class="align-middle">Rs.{{this.price}}</td>
                                     </tr>
-                                    {{/with}}
+                                    {{/each}}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="text-center m-3">
-                        <a href="/admin/all-products" class="btn btn-primary" style="width: 100%;">View All Products</a>
-                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <div class="card mb-3" style="width: 100%;">
                     <div class="container">
                         <div class="container">
                             <div class="row mt-3">
                                 <h5 class="text-primary mb-0 mt-2">Orders</h5>
+                                <div class="text-center ml-auto">
+                                    <a href="/admin/all-orders" class="btn btn-outline-primary">View All
+                                        Orders</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div>
                         <div class="container">
-                            <table class="table table-responsive-sm mt-3">
-                                <thead class="bg-light text-dark">
-                                    <tr>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Description</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Delivery Details</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#with order}}
-                                    <tr>
-                                        <td class="align-middle"><img
-                                                src="/images/product-images/{{productDetails.0._id}}.jpg" alt=""
-                                                class="img-fluid img-thumbnail table-img">
-                                            <h6>{{productDetails.0.name}}</h6>
-                                        </td>
-                                        <td class="align-middle">{{productDetails.0.description}}</td>
-                                        <td class="align-middle">Rs.{{productDetails.0.price}}</td>
-                                        <td class="align-middle">{{deliveryAddress}}</td>
-                                        <td class="align-middle">
-                                            Order_{{#if status.placed}}Placed{{/if}}{{#if status.pending}}Pending{{/if}}{{#if status.shipped}}Shipped{{/if}}{{#if status.delivered}}Delivered{{/if}}
-                                        </td>
-                                    </tr>
-                                    {{/with}}
-                                </tbody>
-                            </table>
+                            <div class="container pl-0" style="height: 35vh; overflow-x: auto; overflow-y: hidden;">
+                                <table class="table table-responsive-sm mt-3">
+                                    <thead class="bg-light text-dark">
+                                        <tr>
+                                            <th scope="col">Product</th>
+                                            <th scope="col" class="text-truncate">Total Amount</th>
+                                            <th scope="col" class="text-truncate">Payment</th>
+                                            <th scope="col">Delivery Details</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white">
+                                        {{#each orders}}
+                                        <tr>
+                                            <td class="align-middle">
+                                                <p class="text-truncate">Total {{this.productCount}} product</p>
+                                                <img src="/images/product-images/{{this.productDetails.0._id}}.jpg"
+                                                    alt="" class="img-fluid img-thumbnail table-img">
+                                                <h6>{{this.productDetails.0.name}}</h6>
+                                            </td>
+                                            <td class="align-middle">Rs.{{this.totalAmount}}</td>
+                                            <td class="align-middle">{{this.paymentMethod}}</td>
+                                            <td class="align-middle text-truncate">
+                                                <h6>Order ID: <span class="font-weight-normal">{{this._id}}</span>
+                                                </h6>
+                                                <h6>{{this.deliveryAddress.name}}</h6>
+                                                <p>{{this.deliveryAddress.address}},
+                                                    {{this.deliveryAddress.locality}},
+                                                    {{this.deliveryAddress.landmark}},
+                                                    {{this.deliveryAddress.city}}, {{this.deliveryAddress.state}} -
+                                                    {{this.deliveryAddress.pincode}}, Mob.
+                                                    <span>{{this.deliveryAddress.mobile}},
+                                                        {{this.deliveryAddress.altPhone}}</span></p>
+                                            </td>
+                                            <td class="align-middle text-truncate" id="order-status-{{this._id}}">
+                                                Order
+                                                {{#if this.status.placed}}Placed{{/if}}{{#if this.status.pending}}Pending{{/if}}{{#if this.status.shipped}}Shipped{{/if}}{{#if this.status.delivered}}Delivered{{/if}}
+                                            </td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-center m-3">
-                        <a href="/admin/all-orders" class="btn btn-primary" style="width: 100%;">View All Orders</a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <div class="card mb-3" style="width: 100%;">
                     <div class="container">
                         <div class="container">
                             <div class="row mt-3">
                                 <h5 class="text-primary mb-0 mt-2">Users</h5>
+                                <div class="text-center ml-auto">
+                                    <a href="/admin/all-users" class="btn btn-outline-primary">View All
+                                        Users</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div>
                         <div class="container">
-                            <table class="table table-responsive-sm mt-3">
-                                <thead class="bg-light text-dark">
-                                    <tr>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Mobile</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#with user}}
-                                    <tr>
-                                        <td scope="row" class="align-middle">
-                                            {{#if profilePicture}}
-                                            <img src="/images/users/profile-pictures/{{_id}}.jpg" alt=""
-                                                id="viewImage" class="img-fluid img-thumbnail table-img rounded-circle"
-                                                width="50%">
-                                            {{else}}
-                                            <img src="/images/profile-pic-male.svg" alt="" id="viewImage"
-                                                class="img-fluid img-thumbnail table-img rounded-circle" width="50%">
-                                            {{/if}}
-                                        </td>
-                                        <td class="align-middle">{{name}}</td>
-                                        <td class="align-middle">{{email}}</td>
-                                        <td class="align-middle">{{mobile}}</td>
-                                    </tr>
-                                    {{/with}}
-                                </tbody>
-                            </table>
+                            <div class="container pl-0" style="height: 35vh; overflow-x: auto; overflow-y: hidden;">
+                                <table class="table table-responsive-sm mt-3">
+                                    <thead class="bg-light text-dark">
+                                        <tr>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Mobile</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each users}}
+                                        <tr>
+                                            <td scope="row" class="align-middle">
+                                                {{#if profilePicture}}
+                                                <img src="/images/users/profile-pictures/{{this._id}}.jpg" alt=""
+                                                    id="viewImage"
+                                                    class="img-fluid img-thumbnail table-img rounded-circle"
+                                                    width="50%">
+                                                {{else}}
+                                                <img src="/images/profile-pic-male.svg" alt="" id="viewImage"
+                                                    class="img-fluid img-thumbnail table-img rounded-circle"
+                                                    width="50%">
+                                                {{/if}}
+                                            </td>
+                                            <td class="align-middle">{{this.name}}</td>
+                                            <td class="align-middle">{{this.email}}</td>
+                                            <td class="align-middle">{{this.mobile}}</td>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-center m-3">
-                        <a href="/admin/all-users" class="btn btn-primary" style="width: 100%;">View All Users</a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </section>

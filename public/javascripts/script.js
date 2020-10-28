@@ -1,6 +1,6 @@
-$(document).ready( function () {
+$(document).ready(function () {
     $('#data-table').DataTable();
-} );
+});
 
 const loadImage = (event) => {
     document.getElementById('viewImage').src = URL.createObjectURL(event.target.files[0]);
@@ -266,6 +266,40 @@ const editAddress = (event, addressId) => {
                 }, 5000);
             }
         });
+    });
+}
+
+const shipOrder = (event, orderId) => {
+    event.preventDefault();
+    $.ajax({
+        url: '/admin/ship-order',
+        data: { orderId },
+        method: 'post',
+        success: (response) => {
+            if (response.status) {
+                document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Shipped'
+                document.getElementById(`ship-button-${orderId}`).innerHTML = 'Order Delivered'
+                document.getElementById(`ship-button-${orderId}`).setAttribute("onclick", `orderDelivered(event, ${orderId});`);
+            }
+        }
+    });
+}
+
+const orderDelivered = (event, orderId) => {
+    event.preventDefault();
+    $.ajax({
+        url: '/admin/order-delivered',
+        data: { orderId },
+        method: 'post',
+        success: (response) => {
+            if (response.status) {
+                document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Delivered'
+                document.getElementById(`delivered-button-${orderId}`).innerHTML = 'Remove Order'
+                document.getElementById(`delivered-button-${orderId}`).classList.add("btn-danger");
+                document.getElementById(`delivered-button-${orderId}`).setAttribute("onclick", `removeOrder(event, ${orderId});`);
+                document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
+            }
+        }
     });
 }
 

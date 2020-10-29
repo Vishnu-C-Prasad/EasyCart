@@ -4,13 +4,13 @@ var fs = require('fs');
 var slideHelpers = require('../../helpers/slide-helpers');
 
 const state = {
-  toastMessage: false
+  alertMessage: false
 }
 
 router.get('/all-slides', function (req, res) {
   slideHelpers.getAllSlides().then((carouselItems) => {
-    res.render('admin/view-slides', { title: 'AdminPanel | All Slides', admin: true, adminDetails: req.session.admin, carouselItems, toastMessage: state.toastMessage });
-    state.toastMessage = false;
+    res.render('admin/view-slides', { title: 'AdminPanel | All Slides', admin: true, adminDetails: req.session.admin, carouselItems, alertMessage: state.alertMessage });
+    state.alertMessage = false;
   });
 });
 
@@ -26,7 +26,7 @@ router.get('/add-slide', function (req, res, next) {
 
 router.post('/add-slide', function (req, res) {
   slideHelpers.addSlide(req.body, (id) => {
-    state.toastMessage = `Added ${req.body.name}.`;
+    state.alertMessage = `Added ${req.body.name}.`;
     let image = req.files.image;
 
     image.mv(`./public/images/slide-images/${id}.jpg`, (err, done) => {
@@ -35,8 +35,8 @@ router.post('/add-slide', function (req, res) {
       } else {
         console.log(done);
 
-        res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, adminDetails: req.session.admin, toastMessage: state.toastMessage });
-        state.toastMessage = false;
+        res.render('admin/add-slide', { title: 'AdminPanel | Add Slide', admin: true, adminDetails: req.session.admin, alertMessage: state.alertMessage });
+        state.alertMessage = false;
       }
     });
   });
@@ -49,7 +49,7 @@ router.get('/edit-slide/:id', async (req, res) => {
 
 router.post('/edit-slide/:id', (req, res) => {
   slideHelpers.updateSlide(req.params.id, req.body).then(() => {
-    state.toastMessage = `Updated ${req.body.name} details.`;
+    state.alertMessage = `Updated ${req.body.name} details.`;
     res.redirect('/admin/all-slides');
 
     if (req.files.image) {
@@ -70,7 +70,7 @@ router.get('/delete-slide/:id', async (req, res) => {
   let slide = await slideHelpers.getSlide(req.params.id);
   slideHelpers.deleteSlide(req.params.id).then(() => {
     fs.unlinkSync(`./public/images/slide-images/${req.params.id}.jpg`);
-    state.toastMessage = `Deleted ${slide.name}.`;
+    state.alertMessage = `Deleted ${slide.name}.`;
     res.redirect('/admin/all-slides');
   });
 });

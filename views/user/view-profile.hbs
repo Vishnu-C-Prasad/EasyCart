@@ -11,9 +11,9 @@
                                     data-target="#profile-picture-modal">
                                     {{#if user.profilePicture}}
                                     <img src="/images/users/profile-pictures/{{user._id}}.jpg" alt=""
-                                        style="width: 100%;" class="rounded rounded-circle">
+                                        style="width: 4rem; height: 4rem; object-fit: cover;" class="rounded rounded-circle">
                                     {{else}}
-                                    <img src="/images/profile-pic-male.svg" alt="">
+                                    <img src="/images/profile-pic-male.svg" style="width: 4rem; height: 4rem; object-fit: cover;" alt="">
                                     {{/if}}
                                 </a>
 
@@ -308,7 +308,7 @@
                         <div id="manage-addresses" hidden>
                             <div class="alert alert-primary alert-dismissible fade show" role="alert"
                                 id="manage-address-alert" hidden>
-                                <strong class="text-success" id="manage-address-alert-body"></strong>
+                                <strong class="text-success" id="manage-address-alert-body">{{alertMessage}}</strong>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>

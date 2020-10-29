@@ -4,13 +4,13 @@ var fs = require('fs');
 var productHelpers = require('../../helpers/product-helpers');
 
 const state = {
-  toastMessage: false
+  alertMessage: false
 }
 
 router.get('/all-products', function (req, res, next) {
   productHelpers.getAllProducts().then((products) => {
-    res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, adminDetails: req.session.admin, products, toastMessage: state.toastMessage });
-    state.toastMessage = false;
+    res.render('admin/admin-products', { title: 'AdminPanel | All Products', admin: true, adminDetails: req.session.admin, products, alertMessage: state.alertMessage });
+    state.alertMessage = false;
   });
 });
 
@@ -20,7 +20,7 @@ router.get('/add-product', function (req, res) {
 
 router.post('/add-product', function (req, res) {
   productHelpers.addProduct(req.body, (id) => {
-    state.toastMessage = `Added ${req.body.name}.`;
+    state.alertMessage = `Added ${req.body.name}.`;
     let image = req.files.image;
 
     image.mv(`./public/images/product-images/${id}.jpg`, (err, done) => {
@@ -29,8 +29,8 @@ router.post('/add-product', function (req, res) {
       } else {
         console.log(done);
 
-        res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true, adminDetails: req.session.admin, toastMessage: state.toastMessage });
-        state.toastMessage = false;
+        res.render('admin/add-product', { title: 'AdminPanel | Add Product', admin: true, adminDetails: req.session.admin, alertMessage: state.alertMessage });
+        state.alertMessage = false;
       }
     });
 
@@ -44,7 +44,7 @@ router.get('/edit-product/:id', async (req, res) => {
 
 router.post('/edit-product/:id', (req, res) => {
   productHelpers.updateProduct(req.params.id, req.body).then(() => {
-    state.toastMessage = `Updated ${req.body.name} details.`;
+    state.alertMessage = `Updated ${req.body.name} details.`;
     res.redirect('/admin/all-products');
 
     if (req.files.image) {
@@ -65,7 +65,7 @@ router.get('/delete-product/:id', async (req, res) => {
   let product = await productHelpers.getProduct(req.params.id);
   productHelpers.deleteProduct(req.params.id).then(() => {
     fs.unlinkSync(`./public/images/product-images/${req.params.id}.jpg`);
-    state.toastMessage = `Deleted ${product.name}.`;
+    state.alertMessage = `Deleted ${product.name}.`;
     res.redirect('/admin/all-products');
   });
 });

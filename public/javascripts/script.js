@@ -1,5 +1,8 @@
 $(document).ready(function () {
     $('#data-table').DataTable();
+    setTimeout(() => {
+        document.getElementById('manage-alert').setAttribute('hidden', true);
+    }, 5000);
 });
 
 const loadImage = (event) => {
@@ -271,36 +274,97 @@ const editAddress = (event, addressId) => {
 
 const shipOrder = (event, orderId) => {
     event.preventDefault();
-    $.ajax({
-        url: '/admin/ship-order',
-        data: { orderId },
-        method: 'post',
-        success: (response) => {
-            if (response.status) {
-                document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Shipped'
-                document.getElementById(`ship-button-${orderId}`).innerHTML = 'Order Delivered'
-                document.getElementById(`ship-button-${orderId}`).setAttribute("onclick", `orderDelivered(event, ${orderId});`);
+    if (confirm("Are you want to ship this order ?")) {
+        $.ajax({
+            url: '/admin/ship-order',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Shipped';
+                    document.getElementById(`ship-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`delivered-button-${orderId}`).removeAttribute("hidden");
+                    document.getElementById('alert-body').innerHTML = 'Order Shipped';
+                    document.getElementById('alert').removeAttribute("hidden");
+                    setTimeout(() => {
+                        document.getElementById('alert').setAttribute('hidden', true);
+                    }, 5000);
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 const orderDelivered = (event, orderId) => {
     event.preventDefault();
-    $.ajax({
-        url: '/admin/order-delivered',
-        data: { orderId },
-        method: 'post',
-        success: (response) => {
-            if (response.status) {
-                document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Delivered'
-                document.getElementById(`delivered-button-${orderId}`).innerHTML = 'Remove Order'
-                document.getElementById(`delivered-button-${orderId}`).classList.add("btn-danger");
-                document.getElementById(`delivered-button-${orderId}`).setAttribute("onclick", `removeOrder(event, ${orderId});`);
-                document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
+    if (confirm("Are you want to make this order as delivered ?")) {
+        $.ajax({
+            url: '/admin/order-delivered',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Delivered'
+                    document.getElementById(`delivered-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`remove-button-${orderId}`).removeAttribute("hidden");
+                    document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById('alert-body').innerHTML = 'Order Delivered';
+                    document.getElementById('alert').removeAttribute("hidden");
+                    setTimeout(() => {
+                        document.getElementById('alert').setAttribute('hidden', true);
+                    }, 5000);
+                }
             }
-        }
-    });
+        });
+    }
+}
+
+const cancelOrder = (event, orderId) => {
+    event.preventDefault();
+    if (confirm("Are you sure you want to cancel this order ?")) {
+        $.ajax({
+            url: '/admin/cancel-order',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Canceled'
+                    document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`remove-button-${orderId}`).removeAttribute("hidden");
+                    document.getElementById(`ship-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`delivered-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById('alert-body').classList.add("text-danger");
+                    document.getElementById('alert-body').innerHTML = 'Order Canceled';
+                    document.getElementById('alert').removeAttribute("hidden");
+                    setTimeout(() => {
+                        document.getElementById('alert').setAttribute('hidden', true);
+                    }, 5000);
+                }
+            }
+        });
+    }
+}
+
+const removeOrder = (event, orderId) => {
+    event.preventDefault();
+    if (confirm("Are you sure you want to remove this order ?")) {
+        $.ajax({
+            url: '/admin/remove-order',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order${orderId}`).remove();
+                    document.getElementById('alert-body').classList.add("text-danger");
+                    document.getElementById('alert-body').innerHTML = 'Order Removed';
+                    document.getElementById('alert').removeAttribute("hidden");
+                    setTimeout(() => {
+                        document.getElementById('alert').setAttribute('hidden', true);
+                    }, 5000);
+                }
+            }
+        });
+    }
 }
 
 $(document).ready(function () {

@@ -40,8 +40,9 @@
 }
 
 .table-img {
-  height: auto !important;
+  height: 5em !important;
   width: 5em !important;
+  object-fit: cover !important;
 }
 
 .upload-file-info, #upload-file-info {

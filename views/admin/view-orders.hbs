@@ -1,5 +1,13 @@
 <section>
     <div class="container my-5">
+        <div class="row">
+            <div class="alert alert-primary alert-dismissible fade show ml-3" role="alert" id="alert" hidden>
+                <strong class="text-success" id="alert-body"></strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
         <table class="table table-responsive-sm table-hover mt-3" id="data-table">
             <thead class="bg-primary text-light">
                 <tr>
@@ -13,7 +21,7 @@
             </thead>
             <tbody class="bg-white">
                 {{#each orders}}
-                <tr>
+                <tr id="order{{this._id}}">
                     <td class="align-middle">
                         <p class="text-truncate">Total {{this.productCount}} product</p>
                         <img src="/images/product-images/{{this.productDetails.0._id}}.jpg" alt=""
@@ -36,24 +44,40 @@
                         {{#if this.status.placed}}Placed{{/if}}{{#if this.status.pending}}Pending{{/if}}{{#if this.status.shipped}}Shipped{{/if}}{{#if this.status.delivered}}Delivered{{/if}}{{#if this.status.canceled}}Canceled{{/if}}
                     </td>
                     <td class="align-middle text-center" style="width: 15%;">
-                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;">View Order</a>
+                        <a href="/admin/view-order/{{this._id}}" class="btn btn-primary btn-sm my-1"
+                            style="width: 100%;">View Order</a>
                         {{#if this.status.delivered}}
-                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;">Remove Order</a>
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;"
+                            onclick="removeOrder(event, '{{this._id}}');" id="remove-button-{{this._id}}">Remove
+                            Order</a>
                         {{else}}
                         {{#if this.status.canceled}}
-                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;">Remove Order</a>
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;"
+                            onclick="removeOrder(event, '{{this._id}}');" id="remove-button-{{this._id}}">Remove
+                            Order</a>
                         {{else}}
                         {{#if this.status.placed}}
                         <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;"
                             onclick="shipOrder(event, '{{this._id}}');" id="ship-button-{{this._id}}">Ship
                             Order</a>
+                        <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;"
+                            onclick="orderDelivered(event, '{{this._id}}');" id="delivered-button-{{this._id}}"
+                            hidden>Order
+                            Delivered</a>
                         {{/if}}
                         {{#if this.status.shipped}}
                         <a href="" class="btn btn-primary btn-sm my-1" style="width: 100%;"
                             onclick="orderDelivered(event, '{{this._id}}');" id="delivered-button-{{this._id}}">Order
                             Delivered</a>
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;"
+                            onclick="removeOrder(event, '{{this._id}}');" id="remove-button-{{this._id}}" hidden>Remove
+                            Order</a>
                         {{/if}}
-                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;" id="cancel-button-{{this._id}}">Cancel Order</a>
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;"
+                            onclick="removeOrder(event, '{{this._id}}');" id="remove-button-{{this._id}}" hidden>Remove
+                            Order</a>
+                        <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;"
+                            id="cancel-button-{{this._id}}" onclick="cancelOrder(event, '{{this._id}}');"">Cancel Order</a>
                         {{/if}}
                         {{/if}}
                     </td>

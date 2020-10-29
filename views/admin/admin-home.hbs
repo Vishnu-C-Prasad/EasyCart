@@ -155,12 +155,10 @@
                                                 {{#if profilePicture}}
                                                 <img src="/images/users/profile-pictures/{{this._id}}.jpg" alt=""
                                                     id="viewImage"
-                                                    class="img-fluid img-thumbnail table-img rounded-circle"
-                                                    width="50%">
+                                                    class="img-fluid img-thumbnail rounded-circle" style="width: 3rem; height: 3rem; object-fit: cover;">
                                                 {{else}}
                                                 <img src="/images/profile-pic-male.svg" alt="" id="viewImage"
-                                                    class="img-fluid img-thumbnail table-img rounded-circle"
-                                                    width="50%">
+                                                    class="img-fluid img-thumbnail rounded-circle" style="width: 3rem; height: 3rem; object-fit: cover;">
                                                 {{/if}}
                                             </td>
                                             <td class="align-middle">{{this.name}}</td>

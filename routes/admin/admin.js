@@ -77,4 +77,21 @@ router.post('/order-delivered', (req, res) => {
   });
 });
 
+router.post('/cancel-order', (req, res) => {
+  adminHelpers.cancelOrder(req.body).then((response) => {
+    res.json({ status: true });
+  });
+});
+
+router.post('/remove-order', (req, res) => {
+  adminHelpers.removeOrder(req.body).then((response) => {
+    res.json({ status: true });
+  });
+});
+
+router.get('/view-order/:id', async (req, res) => {
+  const order = await adminHelpers.getOrder(req.params.id);
+  res.render('user/view-order', { order, admin: true, adminDetails: req.session.admin });
+});
+
 module.exports = router;

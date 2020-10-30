@@ -45,7 +45,8 @@
   object-fit: cover !important;
 }
 
-.upload-file-info, #upload-file-info {
+.upload-file-info,
+#upload-file-info {
   display: none;
 }
 
@@ -53,4 +54,28 @@
   height: 75vh;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.card-animated {
+  transition: transform 450ms;
+}
+
+.card-animated:hover {
+  transform: scale(1.05);
+}
+
+.card-animated-sm {
+  transition: transform 450ms;
+}
+
+.card-animated-sm:hover {
+  transform: scale(1.02);
+}
+
+.card-animated-lg {
+  transition: transform 250ms;
+}
+
+.card-animated-lg:hover {
+  transform: scale(1.2);
 }

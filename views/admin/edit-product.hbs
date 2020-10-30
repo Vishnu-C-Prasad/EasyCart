@@ -16,12 +16,13 @@
             </div>
             <div class="form-group">
                 <label for="">Price</label>
-                <input type="text" name="price" value="{{product.price}}" class="form-control">
+                <input type="number" name="price" value="{{product.price}}" class="form-control">
             </div>
             <div class="form-group">
                 <label for="">Image</label>
                 <br>
-                <img src="/images/product-images/{{product._id}}.jpg" alt="" class="img-fluid" id="viewImage" style="width: 10%; height: auto;">
+                <img src="/images/product-images/{{product._id}}.jpg" alt="" class="img-fluid" id="viewImage"
+                    style="width: 10%; height: auto;">
                 <br>
                 <label class="btn btn-light border border-secondary" for="my-file-selector">
                     <input id="my-file-selector" type="file" name="image" style="display:none"

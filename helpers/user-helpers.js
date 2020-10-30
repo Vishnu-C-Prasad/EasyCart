@@ -231,6 +231,63 @@ module.exports = {
             }
         });
     },
+    addToWishList: (productId, userId) => {
+        return new Promise(async (resolve, reject) => {
+            const wishList = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({ user: ObjectID(userId) });
+            if (wishList) {
+                productExist = wishList.products.findIndex(product => product.item == productId);
+
+                if (productExist != -1) {
+                    resolve();
+                } else {
+                    db.get().collection(collection.WISHLIST_COLLECTION).updateOne({
+                        user: ObjectID(userId)
+                    }, {
+                        $push: {
+                            products: { item: ObjectID(productId) }
+                        }
+                    }).then((response) => {
+                        resolve(response);
+                    });
+                }
+            } else {
+                const cartObject = {
+                    user: ObjectID(userId),
+                    products: [{item: ObjectID(productId)}]
+                }
+                db.get().collection(collection.WISHLIST_COLLECTION).insertOne(cartObject).then((response) => {
+                    resolve(response);
+                });
+            }
+        });
+    },
+    getWishList: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            const wishList = await db.get().collection(collection.WISHLIST_COLLECTION).aggregate([
+                {
+                    $match: {
+                        user: ObjectID(userId)
+                    }
+                }, {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        let: { productList: '$products.item' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $in: ['$_id', '$$productList']
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'productDetails'
+                    }
+                }
+            ]).toArray();
+            resolve(wishList[0].productDetails);
+        });
+    },
     addNewAddress: (userId, data) => {
         return new Promise((resolve, response) => {
             data._id = new ObjectID();

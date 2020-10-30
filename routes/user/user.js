@@ -80,8 +80,24 @@ router.get('/cart', verifyLogin, async (req, res) => {
 });
 
 router.get('/add-to-cart/:id', (req, res) => {
-  if (req.session.user) {
+  if (req.session.userLoggedIn) {
     userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
+      res.json({ status: true });
+    });
+  } else {
+    res.json({ status: false });
+  }
+});
+
+router.get('/wishlist', verifyLogin, async (req, res) => {
+  const wishList = await userHelpers.getWishList(req.session.user._id);
+  const cartCount = await userHelpers.getCartCount(req.session.user._id);
+  res.render('user/view-profile', { user: req.session.user, wishList, wishListCall: true, cartCount });
+});
+
+router.get('/add-to-wishlist/:id', (req, res) => {
+  if (req.session.userLoggedIn) {
+    userHelpers.addToWishList(req.params.id, req.session.user._id).then(() => {
       res.json({ status: true });
     });
   } else {
@@ -104,8 +120,9 @@ router.post('/remove-from-cart', (req, res, next) => {
 });
 
 router.get('/my-profile', verifyLogin, async (req, res) => {
+  const wishList = await userHelpers.getWishList(req.session.user._id);
   const cartCount = await userHelpers.getCartCount(req.session.user._id);
-  res.render('user/view-profile', { user: req.session.user, cartCount });
+  res.render('user/view-profile', { user: req.session.user, cartCount, wishList });
 });
 
 router.post('/add-new-address', (req, res) => {

@@ -60,7 +60,6 @@ router.get('/all-orders', verifyLogin, (req, res) => {
 
 router.get('/all-users', verifyLogin, (req, res) => {
   adminHelpers.getAllUsers().then((users) => {
-    console.log(users);
     res.render('admin/view-users', { users, admin: true, adminDetails: req.session.admin });
   });
 });

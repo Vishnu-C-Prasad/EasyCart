@@ -11,9 +11,11 @@
                                     data-target="#profile-picture-modal">
                                     {{#if user.profilePicture}}
                                     <img src="/images/users/profile-pictures/{{user._id}}.jpg" alt=""
-                                        style="width: 4rem; height: 4rem; object-fit: cover;" class="rounded rounded-circle">
+                                        style="width: 4rem; height: 4rem; object-fit: cover;"
+                                        class="rounded rounded-circle">
                                     {{else}}
-                                    <img src="/images/profile-pic-male.svg" style="width: 4rem; height: 4rem; object-fit: cover;" alt="">
+                                    <img src="/images/profile-pic-male.svg"
+                                        style="width: 4rem; height: 4rem; object-fit: cover;" alt="">
                                     {{/if}}
                                 </a>
 
@@ -99,6 +101,18 @@
                         <div class="row py-3 border-bottom">
                             <span class="mx-3">
                                 <svg width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                                    class="bi bi-heart-fill text-primary" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg>
+                            </span>
+                            <a type="button" id="wishlist-toggle" class="text-decoration-none text-secondary font-weight-bold mt-auto">MY
+                                WISHLIST</a>
+                        </div>
+                        <div class="row py-3 border-bottom">
+                            <span class="mx-3">
+                                <svg width="1.5em" height="1.5em" viewBox="0 0 16 16"
                                     class="bi bi-person-circle text-primary" fill="currentColor"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -174,7 +188,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div id="personal-info">
+                        <div id="personal-info" {{#if wishListCall}}hidden{{/if}}>
                             <div>
                                 <div class="row">
                                     <h5 class="ml-3">Personal Information</h5>
@@ -559,6 +573,41 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div id="wishlist" {{#if wishListCall}}{{else}}hidden{{/if}}>
+                            {{#if wishList}}
+                            <h5 class="p-2">My Wishlist</h5>
+                            {{#each wishList}}
+                            <div id="div{{this._id}}" class="row mt-4 pb-4 border-bottom">
+                                <div class="col-md-2">
+                                    <img src="/images/product-images/{{this._id}}.jpg" alt="" class="img-fluid">
+                                </div>
+                                <div class="col-md-10 d-flex flex-column justify-content-between flex-wrap">
+                                    <div>
+                                        <h5>{{this.name}}</h5>
+                                        <h6>{{this.category}}</h6>
+                                        <p>{{this.description}}</p>
+                                        <h5><span style="font-family: Roboto,Arial,sans-serif;">₹</span> <span
+                                                id="{{this._id}}-price">{{this.price}}</span>
+                                        </h5>
+                                    </div>
+                                    <div class="">
+                                        <a role="button" onclick=""
+                                            class="font-weight-bold text-decoration-none text-primary border-right pr-3">ADD
+                                            TO CART</a>
+                                        <a role="button" onclick=""
+                                            class="font-weight-bold text-decoration-none text-danger pl-2">REMOVE</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                            {{else}}
+                            <h5 class="p-2">My Wishlist</h5>
+                            <div class="text-center empty-cart">
+                                <h5 class="font-weight-normal">Nothing in your Wishlist!</h5>
+                                <a href="/" class="btn btn-primary pr-5 pl-5">Shop now</a>
+                            </div>
+                            {{/if}}
                         </div>
                     </div>
                 </div>

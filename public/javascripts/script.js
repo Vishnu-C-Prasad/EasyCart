@@ -25,6 +25,17 @@ const addToCart = (event, productId) => {
     });
 }
 
+const addToWishList = (event, productId) => {
+    event.preventDefault();
+    $.ajax({
+        url: `/add-to-wishlist/${productId}`,
+        method: 'get',
+        success: (response) => {
+            alert(response);
+        }
+    });
+}
+
 const changeProductQuantity = (event, cartId, productId, count) => {
     let quantity = document.getElementById(productId).value;
     quantity = parseInt(quantity);
@@ -410,12 +421,19 @@ $(document).ready(function () {
     $("#cancel-new-address").click(function () {
         $("#new-address-form").attr("hidden", "true");
     });
+    $("#wishlist-toggle").click(function () {
+        $("#manage-addresses").attr("hidden", "true");
+        $("#personal-info").attr("hidden", "true");
+        $("#wishlist").removeAttr("hidden");
+    });
     $("#personal-info-toggle").click(function () {
         $("#manage-addresses").attr("hidden", "true");
+        $("#wishlist").attr("hidden", "true");
         $("#personal-info").removeAttr("hidden");
     });
     $("#manage-addresses-toggle").click(function () {
         $("#personal-info").attr("hidden", "true");
+        $("#wishlist").attr("hidden", "true");
         $("#manage-addresses").removeAttr("hidden");
     });
 })

@@ -253,7 +253,7 @@ module.exports = {
             } else {
                 const cartObject = {
                     user: ObjectID(userId),
-                    products: [{item: ObjectID(productId)}]
+                    products: [{ item: ObjectID(productId) }]
                 }
                 db.get().collection(collection.WISHLIST_COLLECTION).insertOne(cartObject).then((response) => {
                     resolve(response);
@@ -288,8 +288,22 @@ module.exports = {
             resolve(wishList[0].productDetails);
         });
     },
+    removeFromWishList: (userId, { productId }) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.WISHLIST_COLLECTION).updateOne({
+                user: ObjectID(userId),
+                'products.item': ObjectID(productId)
+            }, {
+                $pull: {
+                    products: { item: ObjectID(productId) }
+                }
+            }).then((response) => {
+                resolve(response);
+            });
+        });
+    },
     addNewAddress: (userId, data) => {
-        return new Promise((resolve, response) => {
+        return new Promise((resolve, reject) => {
             data._id = new ObjectID();
             db.get().collection(collection.USER_COLLECTION).updateOne({
                 _id: ObjectID(userId)

@@ -105,6 +105,12 @@ router.get('/add-to-wishlist/:id', (req, res) => {
   }
 });
 
+router.post('/remove-from-wishlist', (req, res) => {
+  userHelpers.removeFromWishList(req.session.user._id, req.body).then(() => {
+    res.json({ status: true });
+  });
+});
+
 router.post('/change-product-quantity', (req, res) => {
   userHelpers.changeProductQuantity(req.body).then(async (response) => {
     const totalAmount = await userHelpers.getTotalAmount(req.session.user._id);

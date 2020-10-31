@@ -1,4 +1,10 @@
 <div class="container mt-5 mb-5">
+    <div class="alert bg-dark alert-dismissible fade show" role="alert" id="alert" hidden>
+        <strong class="text-success" id="alert-body"></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true" class="text-success">&times;</span>
+        </button>
+    </div>
     {{#if cartItems}}
     <div class="row">
         <div class="col-md-8">

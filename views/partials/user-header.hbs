@@ -13,10 +13,13 @@
                         <a class="nav-link" href="/">Products <span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control form-control-sm mr-sm-2" type="search" placeholder="Search"
-                        aria-label="Search">
-                    <button class="btn btn-sm btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                <form class="form-inline bg-white rounded-pill my-2 px-2 my-lg-0" id="search-form">
+                    <input class="form-control form-control-sm mr-sm-2" type="search" autocomplete="off" placeholder="Search"
+                        aria-label="Search" id="search-box" name="searchQuery"
+                        onkeyup="searchProducts(event,this.value);" data-toggle="dropdown">
+                    <div class="dropdown-menu" id="dropdown-menu" aria-labelledby="dropdownMenuButton" style="margin-left: 32%; width: 31%;" hidden>
+                        
+                    </div>
                 </form>
                 <div class="ml-auto">
                     <div class="dropdown">

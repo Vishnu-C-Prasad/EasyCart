@@ -19,13 +19,14 @@
     <title>{{title}}</title>
 </head>
 
-<body class="bg-light">
+<body class="bg-light h-100">
     {{#if admin}}
     {{>admin-header}}
     {{else}}
     {{>user-header}}
     {{/if}}
     {{{body}}}
+    {{>footer}}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS, then Local JS -->

@@ -146,337 +146,369 @@ const removeFromWishList = (event, productId) => {
 
 
 $('#Add-Address-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/add-new-address',
+        data: $('#Add-Address-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            const div = `<h6>${response.name} &nbsp;&nbsp;${response.mobile}</h6> <p class="m-0">${response.address}, ${response.locality}, ${response.landmark}, ${response.city}, ${response.state} - <span class="font-weight-bold">${response.pincode}</span></p>`
+            document.getElementById('new-address-content').innerHTML = div;
+            document.getElementById('new-address-form').setAttribute("hidden", true);
+            document.getElementById('new-address-show').removeAttribute("hidden");
+        }
+    });
+});
+
+$('#add-address-checkout').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/add-new-address',
+        data: $('#add-address-checkout').serialize(),
+        method: 'post',
+        success: (response) => {
+            if (response) {
+                location.reload();
+            }
+        }
+    });
+});
+
+$('#checkout-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/place-order',
+        data: $('#checkout-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            if (response.codSuccess) {
+                location.href = `/order-success/${response._id}`
+            } else {
+                razorpayPayment(response);
+            }
+        }
+    });
+});
+
+const razorpayPayment = (order) => {
+    var options = {
+        "key": "rzp_test_TJAQ6gBYztR2QQ", // Enter the Key ID generated from the Dashboard
+        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "EasyCart",
+        "description": "Secure Payments",
+        "image": "https://avatars2.githubusercontent.com/u/64061326?s=460&u=361cb89e920400e33326d1abbdcda9399f15f955&v=4",
+        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response) {
+            verifyPayment(response, order);
+        },
+        "prefill": {
+            "name": "Vishnu C Prasad",
+            "email": "vishnucprasad@example.com",
+            "contact": "9999999999"
+        },
+        "notes": {
+            "address": "EasyCart PVT.Ltd"
+        },
+        "theme": {
+            "color": "#007bff"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+}
+
+const verifyPayment = (payment, order) => {
+    console.log(order);
+    $.ajax({
+        url: 'verify-payment',
+        data: {
+            payment,
+            order
+        },
+        method: 'post',
+        success: (response) => {
+            if (response.status) {
+                location.href = `/order-success/${order.receipt}`
+            } else {
+                alert(response.errMessage);
+            }
+        }
+    });
+}
+
+const editPersonalInfo = (formId) => {
+    $(`#${formId}`).submit((e) => {
         e.preventDefault();
         $.ajax({
-            url: '/add-new-address',
-            data: $('#Add-Address-form').serialize(),
+            url: '/edit-personal-info',
+            data: $(`#${formId}`).serialize(),
             method: 'post',
             success: (response) => {
+                if (response.status) {
+                    document.getElementById('update-success-alert').removeAttribute('hidden');
+                    setTimeout(() => {
+                        document.getElementById('update-success-alert').setAttribute('hidden', true);
+                    }, 5000);
+                }
+            }
+        });
+    });
+}
+
+$('#change-password-form').submit((e) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/change-password',
+        data: $('#change-password-form').serialize(),
+        method: 'post',
+        success: (response) => {
+            if (response.status) {
+                document.getElementById('password-change-alert-body').innerHTML = response.successMessage;
+                document.getElementById('password-change-alert-body').classList.remove("text-danger");
+                document.getElementById('password-change-alert').removeAttribute('hidden');
+                setTimeout(() => {
+                    document.getElementById('password-change-alert').setAttribute('hidden', true);
+                }, 5000);
+            } else {
+                document.getElementById('password-change-alert-body').innerHTML = response.errMessage;
+                document.getElementById('password-change-alert-body').classList.add("text-danger");
+                document.getElementById('password-change-alert').removeAttribute('hidden');
+                setTimeout(() => {
+                    document.getElementById('password-change-alert').setAttribute('hidden', true);
+                }, 5000);
+            }
+        }
+    });
+});
+
+const deleteAddress = (event, addressId) => {
+    event.preventDefault();
+    $.ajax({
+        url: '/delete-address',
+        data: {
+            addressId
+        },
+        method: 'post',
+        success: (response) => {
+            document.getElementById(`address-${addressId}`).remove();
+            document.getElementById('manage-address-alert-body').innerHTML = 'Address deleted';
+            document.getElementById('manage-address-alert-body').classList.add("text-danger");
+            document.getElementById('manage-address-alert').removeAttribute('hidden');
+            setTimeout(() => {
+                document.getElementById('manage-address-alert').setAttribute('hidden', true);
+            }, 5000);
+        }
+    });
+}
+
+const editAddress = (event, addressId) => {
+    $(`#edit-address-form-${addressId}`).submit((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: '/edit-address',
+            data: $(`#edit-address-form-${addressId}`).serialize(),
+            method: 'post',
+            success: (response) => {
+                console.log(response);
+                document.getElementById(`address-${addressId}`).remove();
                 const div = `<h6>${response.name} &nbsp;&nbsp;${response.mobile}</h6> <p class="m-0">${response.address}, ${response.locality}, ${response.landmark}, ${response.city}, ${response.state} - <span class="font-weight-bold">${response.pincode}</span></p>`
                 document.getElementById('new-address-content').innerHTML = div;
-                document.getElementById('new-address-form').setAttribute("hidden", true);
                 document.getElementById('new-address-show').removeAttribute("hidden");
-            }
-        });
-    });
-
-    $('#add-address-checkout').submit((e) => {
-        e.preventDefault();
-        $.ajax({
-            url: '/add-new-address',
-            data: $('#add-address-checkout').serialize(),
-            method: 'post',
-            success: (response) => {
-                if (response) {
-                    location.reload();
-                }
-            }
-        });
-    });
-
-    $('#checkout-form').submit((e) => {
-        e.preventDefault();
-        $.ajax({
-            url: '/place-order',
-            data: $('#checkout-form').serialize(),
-            method: 'post',
-            success: (response) => {
-                if (response.codSuccess) {
-                    location.href = `/order-success/${response._id}`
-                } else {
-                    razorpayPayment(response);
-                }
-            }
-        });
-    });
-
-    const razorpayPayment = (order) => {
-        var options = {
-            "key": "rzp_test_TJAQ6gBYztR2QQ", // Enter the Key ID generated from the Dashboard
-            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            "currency": "INR",
-            "name": "EasyCart",
-            "description": "Secure Payments",
-            "image": "https://avatars2.githubusercontent.com/u/64061326?s=460&u=361cb89e920400e33326d1abbdcda9399f15f955&v=4",
-            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            "handler": function (response) {
-                verifyPayment(response, order);
-            },
-            "prefill": {
-                "name": "Vishnu C Prasad",
-                "email": "vishnucprasad@example.com",
-                "contact": "9999999999"
-            },
-            "notes": {
-                "address": "EasyCart PVT.Ltd"
-            },
-            "theme": {
-                "color": "#007bff"
-            }
-        };
-        var rzp1 = new Razorpay(options);
-        rzp1.open();
-    }
-
-    const verifyPayment = (payment, order) => {
-        console.log(order);
-        $.ajax({
-            url: 'verify-payment',
-            data: {
-                payment,
-                order
-            },
-            method: 'post',
-            success: (response) => {
-                if (response.status) {
-                    location.href = `/order-success/${order.receipt}`
-                } else {
-                    alert(response.errMessage);
-                }
-            }
-        });
-    }
-
-    const editPersonalInfo = (formId) => {
-        $(`#${formId}`).submit((e) => {
-            e.preventDefault();
-            $.ajax({
-                url: '/edit-personal-info',
-                data: $(`#${formId}`).serialize(),
-                method: 'post',
-                success: (response) => {
-                    if (response.status) {
-                        document.getElementById('update-success-alert').removeAttribute('hidden');
-                        setTimeout(() => {
-                            document.getElementById('update-success-alert').setAttribute('hidden', true);
-                        }, 5000);
-                    }
-                }
-            });
-        });
-    }
-
-    $('#change-password-form').submit((e) => {
-        e.preventDefault();
-        $.ajax({
-            url: '/change-password',
-            data: $('#change-password-form').serialize(),
-            method: 'post',
-            success: (response) => {
-                if (response.status) {
-                    document.getElementById('password-change-alert-body').innerHTML = response.successMessage;
-                    document.getElementById('password-change-alert-body').classList.remove("text-danger");
-                    document.getElementById('password-change-alert').removeAttribute('hidden');
-                    setTimeout(() => {
-                        document.getElementById('password-change-alert').setAttribute('hidden', true);
-                    }, 5000);
-                } else {
-                    document.getElementById('password-change-alert-body').innerHTML = response.errMessage;
-                    document.getElementById('password-change-alert-body').classList.add("text-danger");
-                    document.getElementById('password-change-alert').removeAttribute('hidden');
-                    setTimeout(() => {
-                        document.getElementById('password-change-alert').setAttribute('hidden', true);
-                    }, 5000);
-                }
-            }
-        });
-    });
-
-    const deleteAddress = (event, addressId) => {
-        event.preventDefault();
-        $.ajax({
-            url: '/delete-address',
-            data: {
-                addressId
-            },
-            method: 'post',
-            success: (response) => {
-                document.getElementById(`address-${addressId}`).remove();
-                document.getElementById('manage-address-alert-body').innerHTML = 'Address deleted';
-                document.getElementById('manage-address-alert-body').classList.add("text-danger");
+                document.getElementById('manage-address-alert-body').innerHTML = 'Address edited successfully';
+                document.getElementById('manage-address-alert-body').classList.remove("text-danger");
                 document.getElementById('manage-address-alert').removeAttribute('hidden');
                 setTimeout(() => {
                     document.getElementById('manage-address-alert').setAttribute('hidden', true);
                 }, 5000);
             }
         });
-    }
+    });
+}
 
-    const editAddress = (event, addressId) => {
-        $(`#edit-address-form-${addressId}`).submit((e) => {
-            e.preventDefault();
-            $.ajax({
-                url: '/edit-address',
-                data: $(`#edit-address-form-${addressId}`).serialize(),
-                method: 'post',
-                success: (response) => {
-                    console.log(response);
-                    document.getElementById(`address-${addressId}`).remove();
-                    const div = `<h6>${response.name} &nbsp;&nbsp;${response.mobile}</h6> <p class="m-0">${response.address}, ${response.locality}, ${response.landmark}, ${response.city}, ${response.state} - <span class="font-weight-bold">${response.pincode}</span></p>`
-                    document.getElementById('new-address-content').innerHTML = div;
-                    document.getElementById('new-address-show').removeAttribute("hidden");
-                    document.getElementById('manage-address-alert-body').innerHTML = 'Address edited successfully';
-                    document.getElementById('manage-address-alert-body').classList.remove("text-danger");
-                    document.getElementById('manage-address-alert').removeAttribute('hidden');
+const shipOrder = (event, orderId) => {
+    event.preventDefault();
+    if (confirm("Are you want to ship this order ?")) {
+        $.ajax({
+            url: '/admin/ship-order',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Shipped';
+                    document.getElementById(`ship-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`delivered-button-${orderId}`).removeAttribute("hidden");
+                    document.getElementById('alert-body').innerHTML = 'Order Shipped';
+                    document.getElementById('alert').removeAttribute("hidden");
                     setTimeout(() => {
-                        document.getElementById('manage-address-alert').setAttribute('hidden', true);
+                        document.getElementById('alert').setAttribute('hidden', true);
                     }, 5000);
                 }
-            });
+            }
         });
     }
+}
 
-    const shipOrder = (event, orderId) => {
-        event.preventDefault();
-        if (confirm("Are you want to ship this order ?")) {
-            $.ajax({
-                url: '/admin/ship-order',
-                data: { orderId },
-                method: 'post',
-                success: (response) => {
-                    if (response.status) {
-                        document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Shipped';
-                        document.getElementById(`ship-button-${orderId}`).setAttribute("hidden", true);
-                        document.getElementById(`delivered-button-${orderId}`).removeAttribute("hidden");
-                        document.getElementById('alert-body').innerHTML = 'Order Shipped';
-                        document.getElementById('alert').removeAttribute("hidden");
-                        setTimeout(() => {
-                            document.getElementById('alert').setAttribute('hidden', true);
-                        }, 5000);
-                    }
+const orderDelivered = (event, orderId) => {
+    event.preventDefault();
+    if (confirm("Are you want to make this order as delivered ?")) {
+        $.ajax({
+            url: '/admin/order-delivered',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Delivered'
+                    document.getElementById(`delivered-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`remove-button-${orderId}`).removeAttribute("hidden");
+                    document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById('alert-body').innerHTML = 'Order Delivered';
+                    document.getElementById('alert').removeAttribute("hidden");
+                    setTimeout(() => {
+                        document.getElementById('alert').setAttribute('hidden', true);
+                    }, 5000);
                 }
-            });
-        }
+            }
+        });
     }
+}
 
-    const orderDelivered = (event, orderId) => {
-        event.preventDefault();
-        if (confirm("Are you want to make this order as delivered ?")) {
-            $.ajax({
-                url: '/admin/order-delivered',
-                data: { orderId },
-                method: 'post',
-                success: (response) => {
-                    if (response.status) {
-                        document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Delivered'
-                        document.getElementById(`delivered-button-${orderId}`).setAttribute("hidden", true);
-                        document.getElementById(`remove-button-${orderId}`).removeAttribute("hidden");
-                        document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
-                        document.getElementById('alert-body').innerHTML = 'Order Delivered';
-                        document.getElementById('alert').removeAttribute("hidden");
-                        setTimeout(() => {
-                            document.getElementById('alert').setAttribute('hidden', true);
-                        }, 5000);
-                    }
+const cancelOrder = (event, orderId) => {
+    event.preventDefault();
+    if (confirm("Are you sure you want to cancel this order ?")) {
+        $.ajax({
+            url: '/admin/cancel-order',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Canceled'
+                    document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`remove-button-${orderId}`).removeAttribute("hidden");
+                    document.getElementById(`ship-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById(`delivered-button-${orderId}`).setAttribute("hidden", true);
+                    document.getElementById('alert-body').classList.add("text-danger");
+                    document.getElementById('alert-body').innerHTML = 'Order Canceled';
+                    document.getElementById('alert').removeAttribute("hidden");
+                    setTimeout(() => {
+                        document.getElementById('alert').setAttribute('hidden', true);
+                    }, 5000);
                 }
-            });
-        }
+            }
+        });
     }
+}
 
-    const cancelOrder = (event, orderId) => {
-        event.preventDefault();
-        if (confirm("Are you sure you want to cancel this order ?")) {
-            $.ajax({
-                url: '/admin/cancel-order',
-                data: { orderId },
-                method: 'post',
-                success: (response) => {
-                    if (response.status) {
-                        document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Canceled'
-                        document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
-                        document.getElementById(`remove-button-${orderId}`).removeAttribute("hidden");
-                        document.getElementById(`ship-button-${orderId}`).setAttribute("hidden", true);
-                        document.getElementById(`delivered-button-${orderId}`).setAttribute("hidden", true);
-                        document.getElementById('alert-body').classList.add("text-danger");
-                        document.getElementById('alert-body').innerHTML = 'Order Canceled';
-                        document.getElementById('alert').removeAttribute("hidden");
-                        setTimeout(() => {
-                            document.getElementById('alert').setAttribute('hidden', true);
-                        }, 5000);
-                    }
+const removeOrder = (event, orderId) => {
+    event.preventDefault();
+    if (confirm("Are you sure you want to remove this order ?")) {
+        $.ajax({
+            url: '/admin/remove-order',
+            data: { orderId },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    document.getElementById(`order${orderId}`).remove();
+                    document.getElementById('alert-body').classList.add("text-danger");
+                    document.getElementById('alert-body').innerHTML = 'Order Removed';
+                    document.getElementById('alert').removeAttribute("hidden");
+                    setTimeout(() => {
+                        document.getElementById('alert').setAttribute('hidden', true);
+                    }, 5000);
                 }
-            });
-        }
+            }
+        });
     }
+}
 
-    const removeOrder = (event, orderId) => {
-        event.preventDefault();
-        if (confirm("Are you sure you want to remove this order ?")) {
-            $.ajax({
-                url: '/admin/remove-order',
-                data: { orderId },
-                method: 'post',
-                success: (response) => {
-                    if (response.status) {
-                        document.getElementById(`order${orderId}`).remove();
-                        document.getElementById('alert-body').classList.add("text-danger");
-                        document.getElementById('alert-body').innerHTML = 'Order Removed';
-                        document.getElementById('alert').removeAttribute("hidden");
-                        setTimeout(() => {
-                            document.getElementById('alert').setAttribute('hidden', true);
-                        }, 5000);
-                    }
+const searchProducts = (event, searchQuery) => {
+    $.ajax({
+        url: '/search',
+        data: {
+            searchQuery
+        },
+        method: 'post',
+        success: (response) => {
+            if (searchQuery.length != 0) {
+                let dropdown = `<a href="/search-product/${searchQuery}" class="dropdown-item border-bottom p-2 py-3" href="#">${searchQuery}</a>`
+                if (response[0]) {
+                    response.forEach(product => {
+                        dropdown += `<a href="/search-product/${product.name}" style="display: flex;" class="dropdown-item border-bottom p-2"><img src="/images/product-images/${product._id}.jpg" alt="" class="img-fluid" style="width: 10%;"><p>${product.name}</p></a>`
+                    });
                 }
-            });
+                document.getElementById('dropdown-menu').removeAttribute('hidden');
+                document.getElementById('dropdown-menu').innerHTML = dropdown;
+            } else {
+                document.getElementById('dropdown-menu').setAttribute('hidden', true);
+            }
         }
-    }
+    });
+}
 
-    $(document).ready(function () {
-        $("#edit-personal-info").click(function () {
-            $("#input-personal-info").removeAttr("readonly");
-            $("#save-personal-info").removeAttr("hidden");
-            $("#edit-personal-info").attr("hidden", "true");
-            $("#cancel-personal-info").removeAttr("hidden");
-        });
-        $("#cancel-personal-info").click(function () {
-            $("#input-personal-info").attr("readonly", "true");
-            $("#save-personal-info").attr("hidden", "true");
-            $("#cancel-personal-info").attr("hidden", "true");
-            $("#edit-personal-info").removeAttr("hidden");
-        });
-        $("#edit-email").click(function () {
-            $("#input-email").removeAttr("readonly");
-            $("#save-email").removeAttr("hidden");
-            $("#edit-email").attr("hidden", "true");
-            $("#cancel-email").removeAttr("hidden");
-        });
-        $("#cancel-email").click(function () {
-            $("#input-email").attr("readonly", "true");
-            $("#save-email").attr("hidden", "true");
-            $("#cancel-email").attr("hidden", "true");
-            $("#edit-email").removeAttr("hidden");
-        });
-        $("#edit-mobile").click(function () {
-            $("#input-mobile").removeAttr("readonly");
-            $("#save-mobile").removeAttr("hidden");
-            $("#edit-mobile").attr("hidden", "true");
-            $("#cancel-mobile").removeAttr("hidden");
-        });
-        $("#cancel-mobile").click(function () {
-            $("#input-mobile").attr("readonly", "true");
-            $("#save-mobile").attr("hidden", "true");
-            $("#cancel-mobile").attr("hidden", "true");
-            $("#edit-mobile").removeAttr("hidden");
-        });
-        $("#add-new-address").click(function () {
-            $("#new-address-form").removeAttr("hidden");
-        });
-        $("#cancel-new-address").click(function () {
-            $("#new-address-form").attr("hidden", "true");
-        });
-        $("#wishlist-toggle").click(function () {
-            $("#manage-addresses").attr("hidden", "true");
-            $("#personal-info").attr("hidden", "true");
-            $("#wishlist").removeAttr("hidden");
-        });
-        $("#personal-info-toggle").click(function () {
-            $("#manage-addresses").attr("hidden", "true");
-            $("#wishlist").attr("hidden", "true");
-            $("#personal-info").removeAttr("hidden");
-        });
-        $("#manage-addresses-toggle").click(function () {
-            $("#personal-info").attr("hidden", "true");
-            $("#wishlist").attr("hidden", "true");
-            $("#manage-addresses").removeAttr("hidden");
-        });
-    })
+$('#search-form').submit((e) => {
+    e.preventDefault();
+    const query = document.getElementById('search-box').value;
+    if (query.length != 0) {
+        location.href = `/search-product/${query}`;
+    }
+});
+
+$(document).ready(function () {
+    $("#edit-personal-info").click(function () {
+        $("#input-personal-info").removeAttr("readonly");
+        $("#save-personal-info").removeAttr("hidden");
+        $("#edit-personal-info").attr("hidden", "true");
+        $("#cancel-personal-info").removeAttr("hidden");
+    });
+    $("#cancel-personal-info").click(function () {
+        $("#input-personal-info").attr("readonly", "true");
+        $("#save-personal-info").attr("hidden", "true");
+        $("#cancel-personal-info").attr("hidden", "true");
+        $("#edit-personal-info").removeAttr("hidden");
+    });
+    $("#edit-email").click(function () {
+        $("#input-email").removeAttr("readonly");
+        $("#save-email").removeAttr("hidden");
+        $("#edit-email").attr("hidden", "true");
+        $("#cancel-email").removeAttr("hidden");
+    });
+    $("#cancel-email").click(function () {
+        $("#input-email").attr("readonly", "true");
+        $("#save-email").attr("hidden", "true");
+        $("#cancel-email").attr("hidden", "true");
+        $("#edit-email").removeAttr("hidden");
+    });
+    $("#edit-mobile").click(function () {
+        $("#input-mobile").removeAttr("readonly");
+        $("#save-mobile").removeAttr("hidden");
+        $("#edit-mobile").attr("hidden", "true");
+        $("#cancel-mobile").removeAttr("hidden");
+    });
+    $("#cancel-mobile").click(function () {
+        $("#input-mobile").attr("readonly", "true");
+        $("#save-mobile").attr("hidden", "true");
+        $("#cancel-mobile").attr("hidden", "true");
+        $("#edit-mobile").removeAttr("hidden");
+    });
+    $("#add-new-address").click(function () {
+        $("#new-address-form").removeAttr("hidden");
+    });
+    $("#cancel-new-address").click(function () {
+        $("#new-address-form").attr("hidden", "true");
+    });
+    $("#wishlist-toggle").click(function () {
+        $("#manage-addresses").attr("hidden", "true");
+        $("#personal-info").attr("hidden", "true");
+        $("#wishlist").removeAttr("hidden");
+    });
+    $("#personal-info-toggle").click(function () {
+        $("#manage-addresses").attr("hidden", "true");
+        $("#wishlist").attr("hidden", "true");
+        $("#personal-info").removeAttr("hidden");
+    });
+    $("#manage-addresses-toggle").click(function () {
+        $("#personal-info").attr("hidden", "true");
+        $("#wishlist").attr("hidden", "true");
+        $("#manage-addresses").removeAttr("hidden");
+    });
+})

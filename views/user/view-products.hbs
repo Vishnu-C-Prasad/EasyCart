@@ -1,7 +1,70 @@
+{{#if searchedProducts}}
+{{#if searchNotFound}}
+<div class="container my-4">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <div class="text-center empty-cart">
+                <img src="/images/EasyCart-not-found.png" class="img-fluid" style="width: 15rem;">
+                <h5 class="font-weight-normal">Sorry, no results found!</h5>
+                <p>Please check the spelling or try searching for something else</p>
+            </div>
+        </div>
+    </div>
+</div>
+{{else}}
+<section>
+    <div class="container mt-4">
+        <div class="alert bg-dark alert-dismissible fade show" role="alert" id="add-alert" hidden>
+            <strong class="text-success" id="add-alert-body"></strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" class="text-success">&times;</span>
+            </button>
+        </div>
+        <div class="row">
+            {{#each searchedProducts}}
+
+            <div class="col-md-3 p-0">
+                <div class="container mb-4">
+                    <div class="product-card">
+                        <div class="imgBx">
+                            <img src="/images/product-images/{{this._id}}.jpg" alt="image" />
+                        </div>
+                        <div class="contentBx">
+                            <div class="row">
+                                <div class="col-2 p-0"></div>
+                                <div class="col-8 p-0">
+                                    <h4>{{this.name}}</h4>
+                                </div>
+                                <div class="col-2 p-0">
+                                    <a type="button" onclick="addToWishList(event, '{{this._id}}');"
+                                        class="text-decoration-none card-animated-lg rounded-circle mb-2 mr-2 wishlist"
+                                        title="Add to wishlist">
+                                        <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-heart-fill"
+                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <h6><span style="font-family: Roboto,Arial,sans-serif;">₹</span>{{this.price}}</h6>
+                            <p class="card-text">{{this.description}}</p>
+                            <a role="button" onclick="addToCart(event, '{{this._id}}')"
+                                class="btn btn-outline-primary rounded-pill">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</section>
+{{/if}}
+{{else}}
 <div>
     {{>user-carousel}}
 </div>
-<section>
+<div>
     <div class="container mt-4">
         <div class="alert bg-dark alert-dismissible fade show" role="alert" id="add-alert" hidden>
             <strong class="text-success" id="add-alert-body"></strong>
@@ -26,7 +89,8 @@
                                 </div>
                                 <div class="col-2 p-0">
                                     <a type="button" onclick="addToWishList(event, '{{this._id}}');"
-                                        class="text-decoration-none card-animated-lg rounded-circle mb-2 mr-2 wishlist" title="Add to wishlist">
+                                        class="text-decoration-none card-animated-lg rounded-circle mb-2 mr-2 wishlist"
+                                        title="Add to wishlist">
                                         <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-heart-fill"
                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd"
@@ -46,4 +110,5 @@
             {{/each}}
         </div>
     </div>
-</section>
+</div>
+{{/if}}

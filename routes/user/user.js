@@ -240,4 +240,28 @@ router.get('/remove-profile-picture/:id', (req, res) => {
   });
 });
 
+router.post('/search', (req, res) => {
+  userHelpers.searchProduct(req.body).then(async (products) => {
+    res.json(products);
+  });
+});
+
+router.get('/search-product/:query', (req, res) => {
+  userHelpers.searchProduct({ searchQuery: req.params.query }).then(async (products) => {
+    let cartCount = null;
+    let searchNotFound = false;
+
+    cartCount = await userHelpers.getCartCount(req.session.user._id);
+
+    if (products[0]) {
+      searchedProducts = products;
+    } else {
+      searchNotFound = true;
+      searchedProducts = true;
+    }
+
+    res.render('user/view-products', { searchedProducts, user: req.session.user, loggedIn: req.session.userLoggedIn, cartCount, searchNotFound });
+  });
+});
+
 module.exports = router;

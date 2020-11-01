@@ -2,16 +2,16 @@
 {{#if searchNotFound}}
 <section>
     <div class="container my-4">
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <div class="text-center empty-cart">
-                <img src="/images/EasyCart-not-found.png" class="img-fluid" style="width: 15rem;">
-                <h5 class="font-weight-normal">Sorry, no results found!</h5>
-                <p>Please check the spelling or try searching for something else</p>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <div class="text-center empty-cart">
+                    <img src="/images/EasyCart-not-found.png" class="img-fluid" style="width: 15rem;">
+                    <h5 class="font-weight-normal">Sorry, no results found!</h5>
+                    <p>Please check the spelling or try searching for something else</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </section>
 {{else}}
 <section>
@@ -25,7 +25,7 @@
         <div class="row">
             {{#each searchedProducts}}
 
-            <div class="col-md-3 p-0">
+            <div class="col-md-2 col-6 p-0">
                 <div class="container mb-4">
                     <div class="product-card">
                         <div class="imgBx">
@@ -41,8 +41,9 @@
                                     <a type="button" onclick="addToWishList(event, '{{this._id}}');"
                                         class="text-decoration-none card-animated-lg rounded-circle mb-2 mr-2 wishlist"
                                         title="Add to wishlist">
-                                        <svg width="1.4em" height="1.4em" viewBox="0 0 16 16" class="bi bi-heart-fill"
-                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <svg width="0.8em" height="0.8em" viewBox="0 0 16 16"
+                                            class="bi bi-heart-fill mr-3 mb-2" fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd"
                                                 d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                                         </svg>
@@ -52,7 +53,7 @@
                             <h6><span style="font-family: Roboto,Arial,sans-serif;">₹</span>{{this.price}}</h6>
                             <p class="card-text">{{this.description}}</p>
                             <a role="button" onclick="addToCart(event, '{{this._id}}')"
-                                class="btn btn-outline-primary rounded-pill">Add to Cart</a>
+                                class="btn btn-outline-primary btn-sm rounded-pill">Add to Cart</a>
                         </div>
                     </div>
                 </div>
@@ -93,8 +94,9 @@
                                     <a type="button" onclick="addToWishList(event, '{{this._id}}');"
                                         class="text-decoration-none card-animated-lg rounded-circle mb-2 mr-2 wishlist"
                                         title="Add to wishlist">
-                                        <svg width="0.8em" height="0.8em" viewBox="0 0 16 16" class="bi bi-heart-fill mr-3 mb-2"
-                                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <svg width="0.8em" height="0.8em" viewBox="0 0 16 16"
+                                            class="bi bi-heart-fill mr-3 mb-2" fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg">
                                             <path fill-rule="evenodd"
                                                 d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                                         </svg>

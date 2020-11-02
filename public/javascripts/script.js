@@ -429,6 +429,7 @@ const searchProducts = (event, searchQuery) => {
         },
         method: 'post',
         success: (response) => {
+            console.log(response);
             if (searchQuery.length != 0) {
                 let dropdown = `<a href="/search-product/${searchQuery}" class="dropdown-item border-bottom p-2 py-3" href="#">${searchQuery}</a>`
                 if (response[0]) {

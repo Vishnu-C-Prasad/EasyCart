@@ -4,6 +4,7 @@ var ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
     addProduct: (product, callback) => {
+        product.price = Number(product.price);
         db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product).then((data) => {
             callback(data.ops[0]._id);
         });
@@ -30,7 +31,7 @@ module.exports = {
                     name: productDetails.name,
                     category: productDetails.category,
                     description: productDetails.description,
-                    price: productDetails.price
+                    price: Number(productDetails.price)
                 }
             }).then((response) => {
                 resolve(response);

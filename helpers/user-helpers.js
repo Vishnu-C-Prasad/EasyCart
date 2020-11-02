@@ -565,15 +565,18 @@ module.exports = {
         });
     },
     searchProduct: ({ searchQuery }) => {
-        return new Promise( (resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).createIndex({ name: "text", description: "text" }).then(async(response) => {
-                searchResult = await db.get().collection(collection.PRODUCT_COLLECTION).find({
-                    name: {
-                        $regex: new RegExp(searchQuery, 'i')
-                    }
-                }).toArray();
-                resolve(searchResult);
-            });
+        return new Promise(async (resolve, reject) => {
+            searchInName = await db.get().collection(collection.PRODUCT_COLLECTION).find({
+                name: {
+                    $regex: new RegExp(searchQuery, 'i')
+                }
+            }).toArray();
+            searchInCategory = await db.get().collection(collection.PRODUCT_COLLECTION).find({
+                category: {
+                    $regex: new RegExp(searchQuery, 'i')
+                }
+            }).toArray();
+            resolve([...searchInName, ...searchInCategory]);
         });
     }
 }

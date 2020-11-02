@@ -86,7 +86,14 @@ section {
 
 #add-alert {
   position: fixed !important;
-  top: 90vh;
+  top: 80vh;
+  margin: 0 30%;
+  z-index: 999999999999999;
+}
+
+#manage-alert {
+  position: fixed !important;
+  top: 10vh;
   margin: 0 30%;
   z-index: 999999999999999;
 }
@@ -231,8 +238,25 @@ section {
 
 #search-box {
   width: 30vw;
+  min-width: 360px;
   border-radius: 30px;
   padding: 10px;
   border: none;
   box-shadow: none;
+}
+
+#dropdown-menu {
+  right: auto;
+  left: auto;
+  width: 30.5vw;
+  min-width: 360px;
+  max-height: 80vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media(max-width: 480px) {
+  #carousel-container {
+    display: none;
+  }
 }

@@ -92,7 +92,7 @@ router.get('/add-to-cart/:id', (req, res) => {
 router.get('/wishlist', verifyLogin, async (req, res) => {
   const wishList = await userHelpers.getWishList(req.session.user._id);
   const cartCount = await userHelpers.getCartCount(req.session.user._id);
-  res.render('user/view-profile', { user: req.session.user, wishList, wishListCall: true, cartCount });
+  res.render('user/view-profile', { title: 'EasyCart | My Profile', user: req.session.user, wishList, wishListCall: true, cartCount });
 });
 
 router.get('/add-to-wishlist/:id', (req, res) => {
@@ -128,7 +128,7 @@ router.post('/remove-from-cart', (req, res, next) => {
 router.get('/my-profile', verifyLogin, async (req, res) => {
   const wishList = await userHelpers.getWishList(req.session.user._id);
   const cartCount = await userHelpers.getCartCount(req.session.user._id);
-  res.render('user/view-profile', { user: req.session.user, cartCount, wishList });
+  res.render('user/view-profile', { title: 'EasyCart | My Profile', user: req.session.user, cartCount, wishList });
 });
 
 router.post('/add-new-address', (req, res) => {
@@ -141,7 +141,7 @@ router.post('/add-new-address', (req, res) => {
 router.get('/place-order', verifyLogin, async (req, res) => {
   const totalAmount = await userHelpers.getTotalAmount(req.session.user._id);
   const cartItems = await userHelpers.getCartItems(req.session.user._id);
-  res.render('user/place-order', { user: req.session.user, totalAmount, cartItems });
+  res.render('user/place-order', { title: 'EasyCart | Place Order', user: req.session.user, totalAmount, cartItems });
 });
 
 router.post('/place-order', async (req, res) => {
@@ -173,17 +173,17 @@ router.post('/verify-payment', (req, res) => {
 
 router.get('/order-success/:id', verifyLogin, async (req, res) => {
   const order = await userHelpers.getOrder(req.params.id);
-  res.render('user/order-success', { order, user: req.session.user });
+  res.render('user/order-success', { title: 'EasyCart | Order Success', order, user: req.session.user });
 });
 
 router.get('/my-orders', verifyLogin, async (req, res) => {
   const orders = await userHelpers.getAllOrders(req.session.user._id);
-  res.render('user/my-orders', { orders, user: req.session.user });
+  res.render('user/my-orders', { title: 'EasyCart | My Orders', orders, user: req.session.user });
 });
 
 router.get('/view-order/:id', async (req, res) => {
   const order = await userHelpers.getOrder(req.params.id);
-  res.render('user/view-order', { order, user: req.session.user });
+  res.render('user/view-order', { title: 'EasyCart | Order Details', order, user: req.session.user });
 });
 
 router.post('/edit-personal-info', (req, res) => {
@@ -260,7 +260,7 @@ router.get('/search-product/:query', (req, res) => {
       searchedProducts = true;
     }
 
-    res.render('user/view-products', { searchedProducts, user: req.session.user, loggedIn: req.session.userLoggedIn, cartCount, searchNotFound });
+    res.render('user/view-products', { title: `EasyCart | Search?q=${req.params.query}`, searchedProducts, user: req.session.user, loggedIn: req.session.userLoggedIn, cartCount, searchNotFound });
   });
 });
 

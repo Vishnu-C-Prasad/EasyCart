@@ -4,8 +4,8 @@
             <div class="carousel-inner">
                 {{#each carouselItems}}
                 <div class="carousel-item {{this.class}}">
-                    <img class="d-block w-100" src="/images/slide-images/{{this._id}}.jpg" alt="First slide">
-                    <div class="carousel-caption d-none d-md-block">
+                    <img class="d-block w-100" src="/images/slide-images/{{this._id}}.jpg" alt="First slide" id="carousel-slide">
+                    <div class="carousel-caption bg-dark">
                         <h5 class="text-left">{{this.name}}</h5>
                         <p class="text-left m-0">{{this.description}}</p>
                         <h6 class="text-left pt-2 pb-2">From ₹{{this.price}}</h6>

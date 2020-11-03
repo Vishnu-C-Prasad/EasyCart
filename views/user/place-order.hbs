@@ -124,6 +124,7 @@
                         </div>
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                             data-parent="#accordionExample">
+                            {{#if cartItems}}
                             <div class="card-body" style="height: 42vh; overflow-x: hidden; overflow-y: auto;">
                                 {{#each cartItems}}
                                 <div id="div{{this.product._id}}" class="row mt-4 pb-4 border-bottom">
@@ -131,7 +132,7 @@
                                         <img src="/images/product-images/{{this.item}}.jpg" alt="" class="img-fluid">
                                         <form class="form-inline my-2 my-lg-0 ml-5">
                                             <a role="button"
-                                                onclick="changeProductQuantity(event, '{{this._id}}', '{{this.product._id}}', -1)"
+                                                onclick="changeProductQuantity(event, '{{this._id}}', '{{this.product._id}}', -1); location.reload();"
                                                 class="btn btn-light btn-sm border border-secondary font-weight-bold"
                                                 style="width: 2em; height:2em;">-</a>
                                             <input id="{{this.product._id}}"
@@ -139,7 +140,7 @@
                                                 type="text" name="count" value="{{this.quantity}}" readonly
                                                 style="width: 3em; height:2em;">
                                             <a role="button"
-                                                onclick="changeProductQuantity(event, '{{this._id}}', '{{this.product._id}}', 1)"
+                                                onclick="changeProductQuantity(event, '{{this._id}}', '{{this.product._id}}', 1); location.reload();"
                                                 class="btn btn-light btn-sm border border-secondary font-weight-bold"
                                                 style="width: 2em; height:2em;">+</a>
                                         </form>
@@ -155,7 +156,7 @@
                                         </div>
                                         <div class="mb-5">
                                             <a role="button"
-                                                onclick="removeFromCart(event, '{{this._id}}', '{{this.product._id}}')"
+                                                onclick="removeFromCart(event, '{{this._id}}', '{{this.product._id}}'); location.reload();"
                                                 class="font-weight-bold text-decoration-none text-danger">REMOVE</a>
                                         </div>
                                     </div>
@@ -166,14 +167,19 @@
                                 data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                 <h6 class="mb-1">CONTINUE</h6>
                             </button>
+                            {{else}}
+                            <div class="text-center card-body">
+                                <p>Your Checkout has No Items.</p>
+                            </div>
+                            {{/if}}
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-header bg-primary p-0" id="headingThree">
                             <h2 class="mb-0">
                                 <button class="btn btn-link text-white text-decoration-none collapsed" type="button"
-                                    data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
-                                    aria-controls="collapseThree">
+                                    {{#if cartItems}}data-toggle="collapse" {{/if}} data-target="#collapseThree"
+                                    aria-expanded="false" aria-controls="collapseThree">
                                     <h6 class="mb-1">PAYMENT OPTIONS</h6>
                                 </button>
                             </h2>

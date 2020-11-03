@@ -151,5 +151,35 @@ module.exports = {
             ]).toArray();
             resolve({ orderDetails, productDetails });
         });
+    },
+    filterOrders: (filterKey) => {
+        return new Promise(async (resolve, reject) => {
+            const orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match: {
+                        $expr: {
+                            $in: [`$status.${filterKey}`, [true]]
+                        }
+                    }
+                }, {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        let: { productList: '$products.item' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $in: ['$_id', '$$productList']
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'productDetails'
+                    }
+                }
+            ]).toArray();
+            console.log(orders);
+            resolve(orders);
+        });
     }
 }

@@ -28,7 +28,7 @@ router.get('/login', (req, res) => {
   if (req.session.adminLoggedIn) {
     res.redirect('/admin');
   } else {
-    res.render('admin/login', { title: 'EasyCart | Login', loginErr: req.session.adminLoginErr });
+    res.render('admin/login', { title: 'EasyCart | Admin Login', loginErr: req.session.adminLoginErr });
     req.session.adminLoginErr = false;
   }
 });
@@ -54,13 +54,19 @@ router.get('/logout', (req, res) => {
 
 router.get('/all-orders', verifyLogin, (req, res) => {
   adminHelpers.getAllOrders().then((orders) => {
-    res.render('admin/view-orders', { orders, admin: true, adminDetails: req.session.admin });
+    res.render('admin/view-orders', { title: 'AdminPanel | Orders', filter: 'All', orders, admin: true, adminDetails: req.session.admin });
+  });
+});
+
+router.get('/all-orders/:filterKey', verifyLogin, (req, res) => {
+  adminHelpers.filterOrders(req.params.filterKey).then((orders) => {
+    res.render('admin/view-orders', { title: 'AdminPanel | Orders', filter: req.params.filterKey, orders, admin: true, adminDetails: req.session.admin });
   });
 });
 
 router.get('/all-users', verifyLogin, (req, res) => {
   adminHelpers.getAllUsers().then((users) => {
-    res.render('admin/view-users', { users, admin: true, adminDetails: req.session.admin });
+    res.render('admin/view-users', { title: 'AdminPanel | Users', users, admin: true, adminDetails: req.session.admin });
   });
 });
 
@@ -90,7 +96,7 @@ router.post('/remove-order', (req, res) => {
 
 router.get('/view-order/:id', async (req, res) => {
   const order = await adminHelpers.getOrder(req.params.id);
-  res.render('user/view-order', { order, admin: true, adminDetails: req.session.admin });
+  res.render('user/view-order', {  title: 'AdminPanel | View Order', order, admin: true, adminDetails: req.session.admin });
 });
 
 module.exports = router;

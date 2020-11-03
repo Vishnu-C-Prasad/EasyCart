@@ -602,8 +602,8 @@
                                         <a role="button"
                                             class="font-weight-bold text-decoration-none text-primary border-right pr-3"
                                             onclick="addToCart(event, '{{this._id}}')">ADD TO CART</a>
-                                        <a role="button"
-                                            class="font-weight-bold text-decoration-none text-danger pl-2" onclick="removeFromWishList(event, '{{this._id}}')">REMOVE</a>
+                                        <a role="button" class="font-weight-bold text-decoration-none text-danger pl-2"
+                                            onclick="removeFromWishList(event, '{{this._id}}')">REMOVE</a>
                                     </div>
                                 </div>
                             </div>
@@ -611,7 +611,9 @@
                             {{else}}
                             <h5 class="p-2">My Wishlist</h5>
                             <div class="text-center empty-cart">
+                                <img src="images/empty-cart.webp" class="img-fluid" style="width: 15rem;">
                                 <h5 class="font-weight-normal">Nothing in your Wishlist!</h5>
+                                <p class="small">Add items to it now.</p>
                                 <a href="/" class="btn btn-primary pr-5 pl-5">Shop now</a>
                             </div>
                             {{/if}}

@@ -341,7 +341,7 @@ module.exports = {
                 placed: false,
                 shipped: false,
                 delivered: false,
-                canceled: false
+                cancelled: false
             }
 
             if (paymentMethod === 'COD') {
@@ -358,7 +358,8 @@ module.exports = {
                 productCount: productCount,
                 totalAmount: totalAmount,
                 status: status,
-                date: new Date()
+                date: new Date(),
+                placedOn: new Date()
             }
 
             db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObject).then((response) => {
@@ -423,8 +424,27 @@ module.exports = {
                         as: 'productDetails'
                     }
                 }
-            ]).toArray();
+            ]).sort({ placedOn: -1 }).toArray();
             resolve(orders);
+        });
+    },
+    cancelRequest: (orderId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.ORDER_COLLECTION).updateOne({
+                _id: ObjectID(orderId)
+            }, {
+                $set: {
+                    'status.pending': false,
+                    'status.placed': false,
+                    'status.shipped': false,
+                    'status.delivered': false,
+                    'status.cancelled': false,
+                    'status.cancelRequest': true,
+                    date: new Date()
+                }
+            }).then((response) => {
+                resolve(response);
+            });
         });
     },
     generateRazorpay: (orderId, totalAmount) => {
@@ -460,13 +480,20 @@ module.exports = {
         });
     },
     changeOrderStatus: (orderId) => {
+        console.log("Order" ,orderId);
         return new Promise((resolve, reject) => {
             db.get().collection(collection.ORDER_COLLECTION).updateOne({
                 _id: ObjectID(orderId)
             }, {
                 $set: {
                     'status.pending': false,
-                    'status.placed': true
+                    'status.placed': true,
+                    'status.shipped': false,
+                    'status.delivered': false,
+                    'status.cancelled': false,
+                    'status.cancelRequest': false,
+                    paymentMethod: 'onlinepayment',
+                    date: new Date()
                 }
             }).then((response) => {
                 resolve(response);

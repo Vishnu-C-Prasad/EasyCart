@@ -27,7 +27,7 @@
                     <h6 class="mb-4">Order Details</h6>
                     <h6 class="font-weight-normal">ID: <span>{{orderDetails._id}}</span></h6>
                     <h6 class="font-weight-normal">Status:
-                        <span>{{#if orderDetails.status.placed}}Placed{{/if}}{{#if orderDetails.status.pending}}Pending{{/if}}{{#if orderDetails.status.shipped}}Shipped{{/if}}{{#if orderDetails.status.delivered}}Delivered{{/if}}</span>
+                        <span>{{#if orderDetails.status.placed}}Placed{{/if}}{{#if orderDetails.status.pending}}Pending{{/if}}{{#if orderDetails.status.shipped}}Shipped{{/if}}{{#if orderDetails.status.delivered}}Delivered{{/if}}{{#if orderDetails.status.cancelled}}Cancelled{{/if}}</span>
                     </h6>
                     <h6 class="font-weight-normal">Placed on: <span>{{orderDetails.date}}</span></h6>
                 </div>

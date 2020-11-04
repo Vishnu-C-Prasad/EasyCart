@@ -7,7 +7,7 @@
                     {{#with order}}
                     <div class="ml-auto">
                         <h6>Order status:
-                            <span>{{#if orderDetails.status.placed}}Placed{{/if}}{{#if orderDetails.status.pending}}Pending{{/if}}{{#if orderDetails.status.shipped}}Shipped{{/if}}{{#if orderDetails.status.delivered}}Delivered{{/if}}</span>
+                            <span>{{#if orderDetails.status.placed}}Placed{{/if}}{{#if orderDetails.status.pending}}Pending{{/if}}{{#if orderDetails.status.shipped}}Shipped{{/if}}{{#if orderDetails.status.delivered}}Delivered{{/if}}{{#if orderDetails.status.cancelled}}Cancelled{{/if}}</span>
                         </h6>
                         <h6>Order placed on: <span class="font-weight-normal">{{orderDetails.date}}</span></h6>
                     </div>
@@ -49,11 +49,13 @@
                     </div>
                 </div>
                 {{/each}}
+                {{#ifCond orderDetails.paymentMethod '==' "COD"}}
                 <div class="mt-5">
                     <h6>Payment details</h6>
                     <p>Amount Payable on Delivery <span
                             style="font-family: Roboto,Arial,sans-serif;">₹</span>{{orderDetails.totalAmount}}</p>
                 </div>
+                {{/ifCond}}
                 {{/with}}
             </div>
         </div>

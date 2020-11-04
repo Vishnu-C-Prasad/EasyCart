@@ -19,17 +19,63 @@
                         <h5>Total Amount: <span
                                 style="font-family: Roboto,Arial,sans-serif;">₹</span>{{orderDetails.totalAmount}}</h5>
                         <p>Payment: <span>{{orderDetails.paymentMethod}}</span></p>
+                        {{#ifCond orderDetails.paymentMethod '==' "onlinepayment"}}
+                        <p>Payment Status: <span>{{#if orderDetails.status.pending}}Failed{{else}}Success{{/if}}</span>
+                        </p>
+                        {{/ifCond}}
+                        {{#ifCond orderDetails.paymentMethod '==' "COD"}}
                         <p>Amount Payable on Delivery: <span
                                 style="font-family: Roboto,Arial,sans-serif;">₹</span>{{orderDetails.totalAmount}}</p>
+                        {{#ifCond orderDetails.status.placed '||' orderDetails.status.shipped}}
+                        <a type="button" class="btn btn-primary my-2"
+                            onclick="makePayment(event, '{{orderDetails._id}}', {{orderDetails.totalAmount}})">Pay
+                            Online</a>
+                        {{/ifCond}}
+                        {{/ifCond}}
+                        {{#if orderDetails.status.pending}}
+                        <a type="button" class="btn btn-primary my-2"
+                            onclick="makePayment(event, '{{orderDetails._id}}', {{orderDetails.totalAmount}})">Pay
+                            Now</a>
+                        {{/if}}
                     </div>
                 </div>
                 <div class="p-2 pt-3 border-top">
                     <h6 class="mb-4">Order Details</h6>
                     <h6 class="font-weight-normal">ID: <span>{{orderDetails._id}}</span></h6>
                     <h6 class="font-weight-normal">Status:
-                        <span>{{#if orderDetails.status.placed}}Placed{{/if}}{{#if orderDetails.status.pending}}Pending{{/if}}{{#if orderDetails.status.shipped}}Shipped{{/if}}{{#if orderDetails.status.delivered}}Delivered{{/if}}</span>
+                        <span>{{#if orderDetails.status.placed}}Placed{{/if}}{{#if orderDetails.status.pending}}Pending{{/if}}{{#if orderDetails.status.shipped}}Shipped{{/if}}{{#if orderDetails.status.delivered}}Delivered{{/if}}{{#if orderDetails.status.cancelled}}Cancelled{{/if}}{{#if orderDetails.status.cancelRequest}}Requested
+                            for Cancellation{{/if}}</span> on : <span>{{orderDetails.date}}</span>
                     </h6>
-                    <h6 class="font-weight-normal">Placed on: <span>{{orderDetails.date}}</span></h6>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-outline-danger" data-toggle="modal"
+                        data-target="#staticBackdrop" {{#if orderDetails.status.cancelRequest}}hidden{{/if}}
+                        {{#if orderDetails.status.cancelled}}hidden{{/if}}{{#if orderDetails.status.delivered}}hidden{{/if}}>
+                        Cancel Order
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-primary" id="staticBackdropLabel">EasyCart</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="text-center font-weight-bold">Are you sure you want to cancel this order ?
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a href="/cancel-order/{{orderDetails._id}}" class="btn btn-danger px-4">Yes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

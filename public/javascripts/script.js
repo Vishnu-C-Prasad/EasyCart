@@ -190,6 +190,22 @@ $('#checkout-form').submit((e) => {
     });
 });
 
+const makePayment = (e, orderId, totalAmount) => {
+    e.preventDefault();
+    $.ajax({
+        url: '/make-payment',
+        data: { orderId, totalAmount },
+        method: 'post',
+        success: (response) => {
+            if (response.codSuccess) {
+                location.href = `/order-success/${response._id}`
+            } else {
+                razorpayPayment(response);
+            }
+        }
+    });
+}
+
 const razorpayPayment = (order) => {
     var options = {
         "key": "rzp_test_TJAQ6gBYztR2QQ", // Enter the Key ID generated from the Dashboard
@@ -221,7 +237,7 @@ const razorpayPayment = (order) => {
 const verifyPayment = (payment, order) => {
     console.log(order);
     $.ajax({
-        url: 'verify-payment',
+        url: '/verify-payment',
         data: {
             payment,
             order
@@ -229,7 +245,7 @@ const verifyPayment = (payment, order) => {
         method: 'post',
         success: (response) => {
             if (response.status) {
-                location.href = `/order-success/${order.receipt}`
+                location.href = `/view-order/${order.receipt}`
             } else {
                 alert(response.errMessage);
             }
@@ -382,13 +398,13 @@ const cancelOrder = (event, orderId) => {
             method: 'post',
             success: (response) => {
                 if (response.status) {
-                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Canceled'
+                    document.getElementById(`order-status-${orderId}`).innerHTML = 'Order Cancelled'
                     document.getElementById(`cancel-button-${orderId}`).setAttribute("hidden", true);
                     document.getElementById(`remove-button-${orderId}`).removeAttribute("hidden");
                     document.getElementById(`ship-button-${orderId}`).setAttribute("hidden", true);
                     document.getElementById(`delivered-button-${orderId}`).setAttribute("hidden", true);
                     document.getElementById('alert-body').classList.add("text-danger");
-                    document.getElementById('alert-body').innerHTML = 'Order Canceled';
+                    document.getElementById('alert-body').innerHTML = 'Order Cancelled';
                     document.getElementById('alert').removeAttribute("hidden");
                     setTimeout(() => {
                         document.getElementById('alert').setAttribute('hidden', true);

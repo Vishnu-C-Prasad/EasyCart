@@ -66,8 +66,10 @@ module.exports = {
                         placed: false,
                         shipped: true,
                         delivered: false,
-                        canceled: false
-                    }
+                        cancelled: false,
+                        cancelRequest: false
+                    },
+                    date: new Date()
                 }
             }).then((response) => {
                 resolve();
@@ -85,8 +87,10 @@ module.exports = {
                         placed: false,
                         shipped: false,
                         delivered: true,
-                        canceled: false
-                    }
+                        cancelled: false,
+                        cancelRequest: false
+                    },
+                    date: new Date()
                 }
             }).then((response) => {
                 resolve();
@@ -104,8 +108,10 @@ module.exports = {
                         placed: false,
                         shipped: false,
                         delivered: false,
-                        canceled: true
-                    }
+                        cancelled: true,
+                        cancelRequest: false
+                    },
+                    date: new Date()
                 }
             }).then((response) => {
                 resolve();

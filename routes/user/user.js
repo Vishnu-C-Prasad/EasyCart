@@ -160,6 +160,12 @@ router.post('/place-order', async (req, res) => {
   });
 });
 
+router.post('/make-payment', async (req, res) => {
+  userHelpers.generateRazorpay(req.body.orderId, parseFloat(req.body.totalAmount)).then((response) => {
+    res.json(response);
+  });
+});
+
 router.post('/verify-payment', (req, res) => {
   console.log(req.body);
   userHelpers.verifyPayment(req.body).then(() => {
@@ -173,17 +179,28 @@ router.post('/verify-payment', (req, res) => {
 
 router.get('/order-success/:id', verifyLogin, async (req, res) => {
   const order = await userHelpers.getOrder(req.params.id);
+  order.orderDetails.date = `${order.orderDetails.date.getDate()}-${order.orderDetails.date.getMonth()}-${order.orderDetails.date.getFullYear()}`;
   res.render('user/order-success', { title: 'EasyCart | Order Success', order, user: req.session.user });
 });
 
 router.get('/my-orders', verifyLogin, async (req, res) => {
   const orders = await userHelpers.getAllOrders(req.session.user._id);
+  orders.forEach(order => {
+    order.date = `${order.date.getDate()}-${order.date.getMonth()}-${order.date.getFullYear()}`;
+  });
   res.render('user/my-orders', { title: 'EasyCart | My Orders', orders, user: req.session.user });
 });
 
 router.get('/view-order/:id', async (req, res) => {
   const order = await userHelpers.getOrder(req.params.id);
+  order.orderDetails.date = `${order.orderDetails.date.getDate()}-${order.orderDetails.date.getMonth()}-${order.orderDetails.date.getFullYear()}`;
   res.render('user/view-order', { title: 'EasyCart | Order Details', order, user: req.session.user });
+});
+
+router.get('/cancel-order/:id', (req, res) => {
+  userHelpers.cancelRequest(req.params.id).then((response) => {
+    res.redirect(`/view-order/${req.params.id}`);
+  });
 });
 
 router.post('/edit-personal-info', (req, res) => {
@@ -251,7 +268,10 @@ router.get('/search-product/:query', (req, res) => {
     let cartCount = null;
     let searchNotFound = false;
 
-    cartCount = await userHelpers.getCartCount(req.session.user._id);
+    if (req.session.user) {
+      cartCount = await userHelpers.getCartCount(req.session.user._id);
+    }
+
 
     if (products[0]) {
       searchedProducts = products;

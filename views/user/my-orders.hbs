@@ -5,7 +5,8 @@
         <a href="/view-order/{{this._id}}" class="text-decoration-none text-dark">
             <div class="card card-animated-sm mb-3" style="width: 18rem;">
                 <div class="card-header bg-white border-0 p-0">
-                    <p class="text-center m-0 mt-2">{{this.date}}</p>
+                    <p class="text-right font-weight-bold m-0 mt-2 mr-2"><span>{{#if this.status.placed}}Placed{{/if}}{{#if this.status.pending}}Pending{{/if}}{{#if this.status.shipped}}Shipped{{/if}}{{#if this.status.delivered}}Delivered{{/if}}{{#if this.status.cancelled}}Cancelled{{/if}}{{#if this.status.cancelRequest}}Requested
+                            for Cancellation{{/if}}</span> on : <span>{{this.date}}</span></p>
                 </div>
                 <div class="card-body">
                     <div class="row">

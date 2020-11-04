@@ -20,7 +20,8 @@
                     <a class="dropdown-item" href="/admin/all-orders/shipped">Shipped</a>
                     <a class="dropdown-item" href="/admin/all-orders/delivered">Delivered</a>
                     <a class="dropdown-item" href="/admin/all-orders/pending">Pending</a>
-                    <a class="dropdown-item" href="/admin/all-orders/canceled">Canceled</a>
+                    <a class="dropdown-item" href="/admin/all-orders/cancelled">Cancelled</a>
+                    <a class="dropdown-item" href="/admin/all-orders/cancelRequest">Cancellation Requests</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/admin/all-orders">All</a>
                 </div>
@@ -58,8 +59,7 @@
                                 {{this.deliveryAddress.altPhone}}</span></p>
                     </td>
                     <td class="align-middle text-truncate" id="order-status-{{this._id}}">
-                        Order
-                        {{#if this.status.placed}}Placed{{/if}}{{#if this.status.pending}}Pending{{/if}}{{#if this.status.shipped}}Shipped{{/if}}{{#if this.status.delivered}}Delivered{{/if}}{{#if this.status.canceled}}Canceled{{/if}}
+                        {{#if this.status.placed}}Order Placed{{/if}}{{#if this.status.pending}}Order Pending{{/if}}{{#if this.status.shipped}}Order Shipped{{/if}}{{#if this.status.delivered}}Order Delivered{{/if}}{{#if this.status.cancelled}}Order Cancelled{{/if}}{{#if this.status.cancelRequest}}Requested for Cancellation{{/if}}
                     </td>
                     <td class="align-middle text-center" style="width: 15%;">
                         <a href="/admin/view-order/{{this._id}}" class="btn btn-primary btn-sm my-1"
@@ -69,7 +69,7 @@
                             onclick="removeOrder(event, '{{this._id}}');" id="remove-button-{{this._id}}">Remove
                             Order</a>
                         {{else}}
-                        {{#if this.status.canceled}}
+                        {{#if this.status.cancelled}}
                         <a href="" class="btn btn-danger btn-sm my-1" style="width: 100%;"
                             onclick="removeOrder(event, '{{this._id}}');" id="remove-button-{{this._id}}">Remove
                             Order</a>

@@ -45,9 +45,23 @@ section {
   object-fit: cover !important;
 }
 
+.carousel {
+  box-shadow: 5px 5px 18px #888888;
+}
+
 #carousel-slide {
   width: 100% !important;
   height: 20rem !important;
+  object-fit: cover;
+}
+
+.admin-carousel .carousel {
+  box-shadow: none;
+}
+
+.admin-carousel #carousel-slide {
+  width: 100% !important;
+  height: 19rem !important;
   object-fit: cover;
 }
 
@@ -269,3 +283,6 @@ section {
   overflow-y: auto;
 }
 
+.nav-item .active {
+  color: #007bff !important;
+}

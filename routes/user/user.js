@@ -280,7 +280,27 @@ router.get('/search-product/:query', (req, res) => {
       searchedProducts = true;
     }
 
-    res.render('user/view-products', { title: `EasyCart | Search?q=${req.params.query}`, searchedProducts, user: req.session.user, loggedIn: req.session.userLoggedIn, cartCount, searchNotFound });
+    res.render('user/view-products', { title: `EasyCart | Search?q=${req.params.query}`, searchedProducts, searchQuery: req.params.query, sortMethod: 'Popularity', user: req.session.user, loggedIn: req.session.userLoggedIn, cartCount, searchNotFound });
+  });
+});
+
+router.get('/sort-product', (req, res) => {
+  userHelpers.sortProduct(req.query).then(async (products) => {
+    let cartCount = null;
+    let searchNotFound = false;
+
+    if (req.session.user) {
+      cartCount = await userHelpers.getCartCount(req.session.user._id);
+    }
+
+    if (products[0]) {
+      searchedProducts = products;
+    } else {
+      searchNotFound = true;
+      searchedProducts = true;
+    }
+
+    res.render('user/view-products', { title: `EasyCart | Search?q=${req.params.query}`, searchedProducts, searchQuery: req.query.search, sortMethod: req.query.sort, user: req.session.user, loggedIn: req.session.userLoggedIn, cartCount, searchNotFound });
   });
 });
 

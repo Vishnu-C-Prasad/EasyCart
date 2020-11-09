@@ -605,5 +605,21 @@ module.exports = {
             }).toArray();
             resolve([...searchInName, ...searchInCategory]);
         });
+    },
+    sortProduct: ({ search, sort }) => {
+        return new Promise(async (resolve, reject) => {
+            searchInName = await db.get().collection(collection.PRODUCT_COLLECTION).find({
+                name: {
+                    $regex: new RegExp(search, 'i')
+                }
+            }).sort({ price: parseInt(sort) }).toArray();
+            searchInCategory = await db.get().collection(collection.PRODUCT_COLLECTION).find({
+                category: {
+                    $regex: new RegExp(search, 'i')
+                }
+            }).sort({ price: parseInt(sort) }).toArray();
+            console.log([...searchInName, ...searchInCategory]);
+            resolve([...searchInName, ...searchInCategory]);
+        });
     }
 }

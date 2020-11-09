@@ -6,7 +6,7 @@
             <div class="card-body">
                 <div class="text-center empty-cart">
                     <img src="/images/EasyCart-not-found.png" class="img-fluid" style="width: 15rem;">
-                    <h5 class="font-weight-normal">Sorry, no results found!</h5>
+                    <h5 class="font-weight-normal">Sorry, no results found for "{{searchQuery}}" !</h5>
                     <p>Please check the spelling or try searching for something else</p>
                 </div>
             </div>
@@ -22,6 +22,21 @@
                 <span aria-hidden="true" class="text-success">&times;</span>
             </button>
         </div>
+        <h5 class="border-bottom pb-3">Search result for "{{searchQuery}}"</h5>
+        <ul class="nav nav-tabs mb-3">
+            <li class="nav-item">
+                <span class="nav-link font-weight-bold text-dark">Sort By</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark {{#ifCond sortMethod '==' 'Popularity'}} active {{/ifCond}}" href="/search-product/{{searchQuery}}">Popularity</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark {{#ifCond sortMethod '==' '1'}} active {{/ifCond}}" href="/sort-product?search={{searchQuery}}&sort=1">Price - Low to Heigh</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark {{#ifCond sortMethod '==' '-1'}} active {{/ifCond}}" href="/sort-product?search={{searchQuery}}&sort=-1">Price - Heigh to Low</a>
+            </li>
+        </ul>
         <div class="row">
             {{#each searchedProducts}}
 
